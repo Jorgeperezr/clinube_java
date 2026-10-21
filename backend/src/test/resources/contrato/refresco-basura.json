@@ -1,0 +1,12 @@
+{
+ "estado": 401,
+ "cuerpo": {
+  "error": {
+   "code": "token_not_valid",
+   "message": "Token is invalid",
+   "details": {
+    "code": "token_not_valid"
+   }
+  }
+ }
+}

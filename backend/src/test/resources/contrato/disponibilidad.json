@@ -1,0 +1,7 @@
+{
+ "estado": 200,
+ "cuerpo": {
+  "status": "ok",
+  "database": "ok"
+ }
+}

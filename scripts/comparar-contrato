@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+# Levanta Django (8010) y Kotlin (8000) contra sus copias de la misma base
+# y compara las respuestas de los dos. Al terminar, los para.
+set -uo pipefail
+raiz="$(cd "$(dirname "$0")/.." && pwd)"
+clinube="${CLINUBE:-$raiz/../clinube}"
+base_django="${BASE_DJANGO:-clinube_ref}"
+base_kotlin="${BASE_KOTLIN:-clinube_kotlin}"
+
+[ -x "$clinube/.venv/bin/python" ] || { echo "clinube no tiene su .venv en $clinube" >&2; exit 1; }
+if [ -x "$raiz/gradlew" ]; then GRADLE=./gradlew
+elif command -v gradle >/dev/null 2>&1; then GRADLE=gradle
+else echo "No hay ni ./gradlew ni gradle. Mira: ./scripts/comprobar-entorno.sh" >&2; exit 1
+fi
+
+pids=()
+limpiar() { for p in "${pids[@]:-}"; do kill "$p" 2>/dev/null; done; }
+trap limpiar EXIT
+
+esperar() {
+  for _ in $(seq 1 90); do
+    curl -s -o /dev/null -m 2 "$1/api/v1/health/" && return 0
+    sleep 1
+  done
+  echo "No arrancó: $1" >&2; return 1
+}
+
+echo "→ Copiando $base_django a $base_kotlin (misma base, dos copias)"
+psql -h localhost -d postgres -tc "SELECT 1 FROM pg_database WHERE datname='$base_kotlin'" | grep -q 1 \
+  && psql -h localhost -d postgres -qc "DROP DATABASE $base_kotlin"
+psql -h localhost -d postgres -qc "CREATE DATABASE $base_kotlin WITH TEMPLATE $base_django OWNER clinica"
+
+echo "→ Django en el 8010"
+( cd "$clinube/django-api" && \
+  POSTGRES_HOST=localhost POSTGRES_DB="$base_django" POSTGRES_USER=clinica POSTGRES_PASSWORD=clinica \
+  DJANGO_DEBUG=True DJANGO_LOG_LEVEL=WARNING \
+  "$clinube/.venv/bin/python" manage.py runserver 127.0.0.1:8010 --noreload >/tmp/clinube-django.log 2>&1 ) &
+pids+=($!)
+
+echo "→ Kotlin en el 8000"
+( cd "$raiz" && POSTGRES_HOST=localhost POSTGRES_DB="$base_kotlin" POSTGRES_USER=clinica \
+  POSTGRES_PASSWORD=clinica "$GRADLE" --quiet :backend:bootRun >/tmp/clinube-kotlin.log 2>&1 ) &
+pids+=($!)
+
+esperar http://127.0.0.1:8010 || { tail -20 /tmp/clinube-django.log; exit 1; }
+esperar http://127.0.0.1:8000 || { tail -30 /tmp/clinube-kotlin.log; exit 1; }
+
+echo
+python3 "$raiz/scripts/comparar-contrato.py" \
+  --markdown "$raiz/docs/contrato/INFORME-COMPARADOR.md" "$@"

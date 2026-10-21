@@ -1,0 +1,43 @@
+{
+  "_comentario": [
+    "La lista de peticiones que el comparador lanza contra los DOS servidores.",
+    "Cada módulo terminado añade las suyas. `usuario` elige con qué cuenta se",
+    "autentica (null = sin autenticar). `volatiles` son las claves que cambian",
+    "solas y no se comparan por valor, solo por tipo."
+  ],
+  "usuarios": {
+    "admin": { "email": "admin@clinube.local", "password": "OdontoDemo2026" }
+  },
+  "peticiones": [
+    { "nombre": "salud",                "metodo": "GET",  "ruta": "/api/v1/health/", "usuario": null },
+    { "nombre": "disponibilidad",       "metodo": "GET",  "ruta": "/api/v1/ready/",  "usuario": null },
+
+    { "nombre": "login correcto",       "metodo": "POST", "ruta": "/api/v1/auth/login/", "usuario": null,
+      "cuerpo": { "email": "admin@clinube.local", "password": "OdontoDemo2026" },
+      "volatiles": ["access", "refresh"] },
+    { "nombre": "login contraseña mala", "metodo": "POST", "ruta": "/api/v1/auth/login/", "usuario": null,
+      "cuerpo": { "email": "admin@clinube.local", "password": "mala" } },
+    { "nombre": "login sin campos",      "metodo": "POST", "ruta": "/api/v1/auth/login/", "usuario": null,
+      "cuerpo": {} },
+    { "nombre": "login campos vacíos",   "metodo": "POST", "ruta": "/api/v1/auth/login/", "usuario": null,
+      "cuerpo": { "email": "", "password": "" } },
+    { "nombre": "login de un paciente",  "metodo": "POST", "ruta": "/api/v1/auth/login/", "usuario": null,
+      "cuerpo": { "email": "paciente@clinube.local", "password": "OdontoDemo2026" } },
+    { "nombre": "login usuario inactivo", "metodo": "POST", "ruta": "/api/v1/auth/login/", "usuario": null,
+      "cuerpo": { "email": "inactivo@clinube.local", "password": "OdontoDemo2026" } },
+    { "nombre": "login método GET",      "metodo": "GET",  "ruta": "/api/v1/auth/login/", "usuario": null },
+
+    { "nombre": "refresco sin campo",    "metodo": "POST", "ruta": "/api/v1/auth/token/refresh/",
+      "usuario": null, "cuerpo": {} },
+    { "nombre": "refresco con basura",   "metodo": "POST", "ruta": "/api/v1/auth/token/refresh/",
+      "usuario": null, "cuerpo": { "refresh": "basura" } },
+
+    { "nombre": "perfil",                "metodo": "GET",  "ruta": "/api/v1/auth/me/", "usuario": "admin",
+      "volatiles": ["id"] },
+    { "nombre": "perfil sin token",      "metodo": "GET",  "ruta": "/api/v1/auth/me/", "usuario": null },
+    { "nombre": "perfil token basura",   "metodo": "GET",  "ruta": "/api/v1/auth/me/", "usuario": null,
+      "cabeceras": { "Authorization": "Bearer basura" } },
+    { "nombre": "cabecera mal formada",  "metodo": "GET",  "ruta": "/api/v1/auth/me/", "usuario": null,
+      "cabeceras": { "Authorization": "Bearer" } }
+  ]
+}

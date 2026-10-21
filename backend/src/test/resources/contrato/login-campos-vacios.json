@@ -1,0 +1,17 @@
+{
+ "estado": 400,
+ "cuerpo": {
+  "error": {
+   "code": "invalid",
+   "message": "Ocurrió un error al procesar la solicitud.",
+   "details": {
+    "email": [
+     "Este campo no puede estar en blanco."
+    ],
+    "password": [
+     "Este campo no puede estar en blanco."
+    ]
+   }
+  }
+ }
+}

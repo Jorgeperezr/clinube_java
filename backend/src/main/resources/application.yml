@@ -1,0 +1,77 @@
+# Las variables de entorno son las MISMAS que usa Django, para que el .env
+# de `clinube` sirva sin tocarlo y los dos servidores se puedan arrancar
+# contra la misma base.
+spring:
+  application:
+    name: clinube
+  threads:
+    virtual:
+      enabled: true
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB:clinica}
+    username: ${POSTGRES_USER:clinica}
+    password: ${POSTGRES_PASSWORD:clinica}
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 10000
+  jpa:
+    # El esquema lo manda la línea base de Flyway, que es el de Django.
+    # `validate` hace que el servidor no arranque si una entidad y la
+    # tabla no coinciden: el fallo sale al arrancar, no en producción.
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          # Las marcas de tiempo se guardan en UTC, como las de Django.
+          time_zone: UTC
+        format_sql: false
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    # La V1 crea el esquema entero: no hay nada anterior que adoptar.
+    baseline-on-migrate: false
+  data:
+    redis:
+      url: ${REDIS_URL:redis://localhost:6379/0}
+  mail:
+    host: ${EMAIL_HOST:}
+    port: ${EMAIL_PORT:587}
+    username: ${EMAIL_HOST_USER:}
+    password: ${EMAIL_HOST_PASSWORD:}
+    properties:
+      mail.smtp.starttls.enable: ${EMAIL_USE_TLS:true}
+      mail.smtp.timeout: 15000
+
+server:
+  # El mismo puerto que usaba Django: así el panel en desarrollo
+  # (NEXT_PUBLIC_API_URL=http://localhost:8000) y la app funcionan sin
+  # cambiar nada.
+  port: 8000
+  error:
+    whitelabel:
+      enabled: false
+
+clinube:
+  # Firma los JWT. Es la misma clave de Django para que un token emitido
+  # por cualquiera de los dos servidores valga en el otro.
+  secreto: ${DJANGO_SECRET_KEY:dev-only-insecure-key-change-me-never-use-in-production}
+  entorno: ${DJANGO_ENTORNO:desarrollo}
+  depuracion: ${DJANGO_DEBUG:false}
+  # Zona de la clínica: «hoy», los meses y los filtros por día se calculan
+  # en ella, aunque todo se guarde en UTC.
+  zona: ${DJANGO_TIME_ZONE:America/Guayaquil}
+  marca: Clinube
+  panel-url: ${PANEL_URL:}
+  jwt:
+    vida-acceso: PT30M
+    vida-refresco: P7D
+  cors:
+    origenes: ${CORS_ALLOWED_ORIGINS:http://localhost:3000}
+
+logging:
+  level:
+    root: ${DJANGO_LOG_LEVEL:INFO}
+    org.hibernate.SQL: WARN

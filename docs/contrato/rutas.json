@@ -1,0 +1,2336 @@
+[
+ {
+  "ruta": "/api/v1/health/",
+  "vista": "HealthView",
+  "modulo": "apps.common.health",
+  "archivo": "django-api/apps/common/health.py",
+  "linea": 44,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "health"
+ },
+ {
+  "ruta": "/api/v1/ready/",
+  "vista": "ReadyView",
+  "modulo": "apps.common.health",
+  "archivo": "django-api/apps/common/health.py",
+  "linea": 55,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "ready"
+ },
+ {
+  "ruta": "/api/v1/legal/privacidad/",
+  "vista": "AvisoPrivacidadView",
+  "modulo": "apps.common.legal_views",
+  "archivo": "django-api/apps/common/legal_views.py",
+  "linea": 36,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "legal-privacidad"
+ },
+ {
+  "ruta": "/api/v1/legal/condiciones/",
+  "vista": "CondicionesView",
+  "modulo": "apps.common.legal_views",
+  "archivo": "django-api/apps/common/legal_views.py",
+  "linea": 41,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "legal-condiciones"
+ },
+ {
+  "ruta": "/api/v1/legal/condiciones/aceptar/",
+  "vista": "AceptarCondicionesView",
+  "modulo": "apps.common.legal_views",
+  "archivo": "django-api/apps/common/legal_views.py",
+  "linea": 60,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "legal-condiciones-aceptar"
+ },
+ {
+  "ruta": "/api/v1/publico/solicitudes/",
+  "vista": "SolicitudPublicaView",
+  "modulo": "apps.common.solicitudes",
+  "archivo": "django-api/apps/common/solicitudes.py",
+  "linea": 87,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "solicitud-publica"
+ },
+ {
+  "ruta": "/api/v1/publico/solicitudes/<uuid:pk>/confirmar/",
+  "vista": "ConfirmarSolicitudView",
+  "modulo": "apps.common.solicitudes",
+  "archivo": "django-api/apps/common/solicitudes.py",
+  "linea": 126,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "solicitud-confirmar"
+ },
+ {
+  "ruta": "/api/v1/platform/solicitudes/",
+  "vista": "SolicitudesPlataformaView",
+  "modulo": "apps.common.solicitudes",
+  "archivo": "django-api/apps/common/solicitudes.py",
+  "linea": 209,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "platform-solicitudes"
+ },
+ {
+  "ruta": "/api/v1/platform/solicitudes/<uuid:pk>/",
+  "vista": "SolicitudPlataformaView",
+  "modulo": "apps.common.solicitudes",
+  "archivo": "django-api/apps/common/solicitudes.py",
+  "linea": 219,
+  "metodos": [
+   "PUT",
+   "PATCH"
+  ],
+  "nombre": "platform-solicitud"
+ },
+ {
+  "ruta": "/api/v1/platform/overview/",
+  "vista": "PlatformOverviewView",
+  "modulo": "apps.common.platform_views",
+  "archivo": "django-api/apps/common/platform_views.py",
+  "linea": 416,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "platform-overview"
+ },
+ {
+  "ruta": "/api/v1/platform/clinics/",
+  "vista": "ClinicListCreateView",
+  "modulo": "apps.common.platform_views",
+  "archivo": "django-api/apps/common/platform_views.py",
+  "linea": 144,
+  "metodos": [
+   "GET",
+   "POST"
+  ],
+  "nombre": "platform-clinics"
+ },
+ {
+  "ruta": "/api/v1/platform/clinics/<uuid:pk>/",
+  "vista": "ClinicDetailView",
+  "modulo": "apps.common.platform_views",
+  "archivo": "django-api/apps/common/platform_views.py",
+  "linea": 211,
+  "metodos": [
+   "GET",
+   "PUT",
+   "PATCH"
+  ],
+  "nombre": "platform-clinic-detail"
+ },
+ {
+  "ruta": "/api/v1/platform/clinics/<uuid:pk>/admin/",
+  "vista": "ClinicAdminView",
+  "modulo": "apps.common.platform_views",
+  "archivo": "django-api/apps/common/platform_views.py",
+  "linea": 293,
+  "metodos": [
+   "GET",
+   "POST",
+   "PATCH"
+  ],
+  "nombre": "platform-clinic-admin"
+ },
+ {
+  "ruta": "/api/v1/platform/clinics/<uuid:pk>/admin/reset-password/",
+  "vista": "ClinicAdminResetPasswordView",
+  "modulo": "apps.common.platform_views",
+  "archivo": "django-api/apps/common/platform_views.py",
+  "linea": 383,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "platform-clinic-admin-reset"
+ },
+ {
+  "ruta": "/api/v1/platform/audit/",
+  "vista": "PlatformAuditView",
+  "modulo": "apps.common.platform_views",
+  "archivo": "django-api/apps/common/platform_views.py",
+  "linea": 433,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "platform-audit"
+ },
+ {
+  "ruta": "/api/v1/platform/config/",
+  "vista": "PlatformConfigView",
+  "modulo": "apps.common.platform_views",
+  "archivo": "django-api/apps/common/platform_views.py",
+  "linea": 560,
+  "metodos": [
+   "GET",
+   "PATCH"
+  ],
+  "nombre": "platform-config"
+ },
+ {
+  "ruta": "/api/v1/platform/config/correo-de-prueba/",
+  "vista": "CorreoDePruebaView",
+  "modulo": "apps.common.platform_views",
+  "archivo": "django-api/apps/common/platform_views.py",
+  "linea": 576,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "platform-correo-prueba"
+ },
+ {
+  "ruta": "/api/v1/platform/funcionalidades/",
+  "vista": "FuncionalidadesView",
+  "modulo": "apps.common.platform_views",
+  "archivo": "django-api/apps/common/platform_views.py",
+  "linea": 507,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "platform-funcionalidades"
+ },
+ {
+  "ruta": "/api/v1/platform/funcionalidades/<str:clave>/",
+  "vista": "FuncionalidadPublicacionView",
+  "modulo": "apps.common.platform_views",
+  "archivo": "django-api/apps/common/platform_views.py",
+  "linea": 533,
+  "metodos": [
+   "PATCH"
+  ],
+  "nombre": "platform-funcionalidad"
+ },
+ {
+  "ruta": "/api/v1/platform/clinics/<uuid:pk>/identidad/",
+  "vista": "ClinicIdentidadView",
+  "modulo": "apps.common.platform_views",
+  "archivo": "django-api/apps/common/platform_views.py",
+  "linea": 234,
+  "metodos": [
+   "GET",
+   "PATCH"
+  ],
+  "nombre": "platform-clinic-identidad"
+ },
+ {
+  "ruta": "/api/v1/auth/login/",
+  "vista": "StaffLoginView",
+  "modulo": "apps.accounts.views",
+  "archivo": "django-api/apps/accounts/views.py",
+  "linea": 53,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "staff-login"
+ },
+ {
+  "ruta": "/api/v1/auth/token/refresh/",
+  "vista": "TokenRefreshView",
+  "modulo": "rest_framework_simplejwt.views",
+  "archivo": ".venv/lib/python3.12/site-packages/rest_framework_simplejwt/views.py",
+  "linea": 65,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "token-refresh"
+ },
+ {
+  "ruta": "/api/v1/auth/me/",
+  "vista": "MeView",
+  "modulo": "apps.accounts.views",
+  "archivo": "django-api/apps/accounts/views.py",
+  "linea": 483,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "auth-me"
+ },
+ {
+  "ruta": "/api/v1/auth/me/preferencias/",
+  "vista": "PreferenciasView",
+  "modulo": "apps.accounts.views",
+  "archivo": "django-api/apps/accounts/views.py",
+  "linea": 548,
+  "metodos": [
+   "GET",
+   "PATCH"
+  ],
+  "nombre": "auth-me-preferencias"
+ },
+ {
+  "ruta": "/api/v1/auth/change-password/",
+  "vista": "CambiarMiContrasenaView",
+  "modulo": "apps.accounts.password_views",
+  "archivo": "django-api/apps/accounts/password_views.py",
+  "linea": 17,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "auth-change-password"
+ },
+ {
+  "ruta": "/api/v1/auth/google/config/",
+  "vista": "GoogleConfigView",
+  "modulo": "apps.accounts.google",
+  "archivo": "django-api/apps/accounts/google.py",
+  "linea": 75,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "google-config"
+ },
+ {
+  "ruta": "/api/v1/auth/google/",
+  "vista": "GoogleLoginView",
+  "modulo": "apps.accounts.google",
+  "archivo": "django-api/apps/accounts/google.py",
+  "linea": 83,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "google-login"
+ },
+ {
+  "ruta": "/api/v1/auth/otp/canal/",
+  "vista": "OTPCanalView",
+  "modulo": "apps.accounts.views",
+  "archivo": "django-api/apps/accounts/views.py",
+  "linea": 59,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "otp-canal"
+ },
+ {
+  "ruta": "/api/v1/auth/otp/request/",
+  "vista": "OTPRequestView",
+  "modulo": "apps.accounts.views",
+  "archivo": "django-api/apps/accounts/views.py",
+  "linea": 72,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "otp-request"
+ },
+ {
+  "ruta": "/api/v1/auth/otp/verify/",
+  "vista": "OTPVerifyView",
+  "modulo": "apps.accounts.views",
+  "archivo": "django-api/apps/accounts/views.py",
+  "linea": 209,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "otp-verify"
+ },
+ {
+  "ruta": "/api/v1/auth/recovery/request/",
+  "vista": "StaffRecoveryRequestView",
+  "modulo": "apps.accounts.views",
+  "archivo": "django-api/apps/accounts/views.py",
+  "linea": 260,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "recovery-request"
+ },
+ {
+  "ruta": "/api/v1/auth/recovery/confirm/",
+  "vista": "StaffRecoveryConfirmView",
+  "modulo": "apps.accounts.views",
+  "archivo": "django-api/apps/accounts/views.py",
+  "linea": 307,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "recovery-confirm"
+ },
+ {
+  "ruta": "/api/v1/users/",
+  "vista": "UserListCreateView",
+  "modulo": "apps.accounts.views",
+  "archivo": "django-api/apps/accounts/views.py",
+  "linea": 348,
+  "metodos": [
+   "GET",
+   "POST"
+  ],
+  "nombre": "user-list"
+ },
+ {
+  "ruta": "/api/v1/users/funciones/",
+  "vista": "CatalogoFuncionesView",
+  "modulo": "apps.accounts.views",
+  "archivo": "django-api/apps/accounts/views.py",
+  "linea": 518,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "user-funciones"
+ },
+ {
+  "ruta": "/api/v1/users/<uuid:pk>/",
+  "vista": "UserDetailView",
+  "modulo": "apps.accounts.views",
+  "archivo": "django-api/apps/accounts/views.py",
+  "linea": 434,
+  "metodos": [
+   "GET",
+   "PUT",
+   "PATCH"
+  ],
+  "nombre": "user-detail"
+ },
+ {
+  "ruta": "/api/v1/users/<uuid:pk>/invitar/",
+  "vista": "InvitarUsuarioView",
+  "modulo": "apps.accounts.views",
+  "archivo": "django-api/apps/accounts/views.py",
+  "linea": 398,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "user-invitar"
+ },
+ {
+  "ruta": "/api/v1/audit-logs/",
+  "vista": "AuditLogListView",
+  "modulo": "apps.accounts.views",
+  "archivo": "django-api/apps/accounts/views.py",
+  "linea": 453,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "audit-log-list"
+ },
+ {
+  "ruta": "/api/v1/me/device-tokens/",
+  "vista": "DeviceTokenRegisterView",
+  "modulo": "apps.accounts.views",
+  "archivo": "django-api/apps/accounts/views.py",
+  "linea": 464,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "device-token-register"
+ },
+ {
+  "ruta": "/api/v1/patients/",
+  "vista": "PatientListCreateView",
+  "modulo": "apps.patients.views",
+  "archivo": "django-api/apps/patients/views.py",
+  "linea": 22,
+  "metodos": [
+   "GET",
+   "POST"
+  ],
+  "nombre": "patient-list"
+ },
+ {
+  "ruta": "/api/v1/patients/<uuid:pk>/",
+  "vista": "PatientDetailView",
+  "modulo": "apps.patients.views",
+  "archivo": "django-api/apps/patients/views.py",
+  "linea": 83,
+  "metodos": [
+   "GET",
+   "PUT",
+   "PATCH",
+   "DELETE"
+  ],
+  "nombre": "patient-detail"
+ },
+ {
+  "ruta": "/api/v1/patients/<uuid:pk>/aviso-privacidad/",
+  "vista": "AvisoPrivacidadView",
+  "modulo": "apps.patients.views",
+  "archivo": "django-api/apps/patients/views.py",
+  "linea": 239,
+  "metodos": [
+   "GET",
+   "POST"
+  ],
+  "nombre": "patient-aviso-privacidad"
+ },
+ {
+  "ruta": "/api/v1/patients/<uuid:pk>/app-access/",
+  "vista": "AccesoAppView",
+  "modulo": "apps.patients.acceso_app",
+  "archivo": "django-api/apps/patients/acceso_app.py",
+  "linea": 85,
+  "metodos": [
+   "GET",
+   "POST",
+   "DELETE"
+  ],
+  "nombre": "patient-app-access"
+ },
+ {
+  "ruta": "/api/v1/patients/<uuid:pk>/medical-background/",
+  "vista": "MedicalBackgroundView",
+  "modulo": "apps.patients.views",
+  "archivo": "django-api/apps/patients/views.py",
+  "linea": 100,
+  "metodos": [
+   "GET",
+   "PUT",
+   "PATCH"
+  ],
+  "nombre": "patient-medical-background"
+ },
+ {
+  "ruta": "/api/v1/patients/<uuid:pk>/documents/<int:doc_id>/file/",
+  "vista": "PatientDocumentFileView",
+  "modulo": "apps.patients.views",
+  "archivo": "django-api/apps/patients/views.py",
+  "linea": 149,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "patient-document-file"
+ },
+ {
+  "ruta": "/api/v1/patients/<uuid:pk>/documents/<int:doc_id>/",
+  "vista": "PatientDocumentDeleteView",
+  "modulo": "apps.patients.views",
+  "archivo": "django-api/apps/patients/views.py",
+  "linea": 188,
+  "metodos": [
+   "DELETE"
+  ],
+  "nombre": "patient-document-delete"
+ },
+ {
+  "ruta": "/api/v1/patients/<uuid:pk>/documents/",
+  "vista": "PatientDocumentListCreateView",
+  "modulo": "apps.patients.views",
+  "archivo": "django-api/apps/patients/views.py",
+  "linea": 129,
+  "metodos": [
+   "GET",
+   "POST"
+  ],
+  "nombre": "patient-documents"
+ },
+ {
+  "ruta": "/api/v1/patients/<uuid:pk>/treatment-history/",
+  "vista": "PatientTreatmentHistoryView",
+  "modulo": "apps.patients.views",
+  "archivo": "django-api/apps/patients/views.py",
+  "linea": 212,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "patient-treatment-history"
+ },
+ {
+  "ruta": "/api/v1/doctors/",
+  "vista": "DoctorListView",
+  "modulo": "apps.agenda.views",
+  "archivo": "django-api/apps/agenda/views.py",
+  "linea": 27,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "doctor-list"
+ },
+ {
+  "ruta": "/api/v1/appointments/",
+  "vista": "AppointmentListCreateView",
+  "modulo": "apps.agenda.views",
+  "archivo": "django-api/apps/agenda/views.py",
+  "linea": 44,
+  "metodos": [
+   "GET",
+   "POST"
+  ],
+  "nombre": "appointment-list"
+ },
+ {
+  "ruta": "/api/v1/appointments/<uuid:pk>/",
+  "vista": "AppointmentDetailView",
+  "modulo": "apps.agenda.views",
+  "archivo": "django-api/apps/agenda/views.py",
+  "linea": 106,
+  "metodos": [
+   "GET",
+   "PUT",
+   "PATCH"
+  ],
+  "nombre": "appointment-detail"
+ },
+ {
+  "ruta": "/api/v1/appointments/<uuid:pk>/confirm/",
+  "vista": "AppointmentConfirmView",
+  "modulo": "apps.agenda.views",
+  "archivo": "django-api/apps/agenda/views.py",
+  "linea": 129,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "appointment-confirm"
+ },
+ {
+  "ruta": "/api/v1/appointments/<uuid:pk>/cancel/",
+  "vista": "AppointmentCancelView",
+  "modulo": "apps.agenda.views",
+  "archivo": "django-api/apps/agenda/views.py",
+  "linea": 139,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "appointment-cancel"
+ },
+ {
+  "ruta": "/api/v1/appointments/<uuid:pk>/reschedule/",
+  "vista": "AppointmentRescheduleView",
+  "modulo": "apps.agenda.views",
+  "archivo": "django-api/apps/agenda/views.py",
+  "linea": 149,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "appointment-reschedule"
+ },
+ {
+  "ruta": "/api/v1/appointments/waiting/",
+  "vista": "WaitingPatientsView",
+  "modulo": "apps.agenda.views",
+  "archivo": "django-api/apps/agenda/views.py",
+  "linea": 363,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "appointments-waiting"
+ },
+ {
+  "ruta": "/api/v1/appointments/<uuid:pk>/checkin/",
+  "vista": "AppointmentCheckinView",
+  "modulo": "apps.agenda.views",
+  "archivo": "django-api/apps/agenda/views.py",
+  "linea": 178,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "appointment-checkin"
+ },
+ {
+  "ruta": "/api/v1/appointments/<uuid:pk>/start/",
+  "vista": "AppointmentStartView",
+  "modulo": "apps.agenda.views",
+  "archivo": "django-api/apps/agenda/views.py",
+  "linea": 263,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "appointment-start"
+ },
+ {
+  "ruta": "/api/v1/doctors/me/signature/",
+  "vista": "DoctorMySignatureView",
+  "modulo": "apps.agenda.views",
+  "archivo": "django-api/apps/agenda/views.py",
+  "linea": 325,
+  "metodos": [
+   "GET",
+   "POST"
+  ],
+  "nombre": "doctor-my-signature"
+ },
+ {
+  "ruta": "/api/v1/doctors/<uuid:pk>/calendar-url/",
+  "vista": "DoctorCalendarURLView",
+  "modulo": "apps.agenda.views",
+  "archivo": "django-api/apps/agenda/views.py",
+  "linea": 292,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "doctor-calendar-url"
+ },
+ {
+  "ruta": "/api/v1/calendar/<uuid:token>.ics",
+  "vista": "doctor_calendar_feed",
+  "modulo": "apps.agenda.calendar_feed",
+  "archivo": "django-api/apps/agenda/calendar_feed.py",
+  "linea": 34,
+  "metodos": [
+   "?"
+  ],
+  "nombre": "doctor-calendar-feed"
+ },
+ {
+  "ruta": "/api/v1/appointments/<uuid:pk>/checkout/",
+  "vista": "AppointmentCheckoutView",
+  "modulo": "apps.agenda.views",
+  "archivo": "django-api/apps/agenda/views.py",
+  "linea": 207,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "appointment-checkout"
+ },
+ {
+  "ruta": "/api/v1/agenda/view/",
+  "vista": "AgendaViewList",
+  "modulo": "apps.agenda.views",
+  "archivo": "django-api/apps/agenda/views.py",
+  "linea": 220,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "agenda-view"
+ },
+ {
+  "ruta": "/api/v1/patients/<uuid:pk>/clinical-record/",
+  "vista": "ClinicalRecordView",
+  "modulo": "apps.clinical.views",
+  "archivo": "django-api/apps/clinical/views.py",
+  "linea": 53,
+  "metodos": [
+   "GET",
+   "PUT",
+   "PATCH"
+  ],
+  "nombre": "clinical-record"
+ },
+ {
+  "ruta": "/api/v1/patients/<uuid:pk>/clinical-record/export-pdf/",
+  "vista": "ClinicalHistoryExportView",
+  "modulo": "apps.clinical.views",
+  "archivo": "django-api/apps/clinical/views.py",
+  "linea": 428,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "clinical-history-export"
+ },
+ {
+  "ruta": "/api/v1/patients/<uuid:pk>/certificado-atencion/",
+  "vista": "CertificadoAtencionView",
+  "modulo": "apps.clinical.certificado_views",
+  "archivo": "django-api/apps/clinical/certificado_views.py",
+  "linea": 52,
+  "metodos": [
+   "GET",
+   "POST"
+  ],
+  "nombre": "certificado-atencion"
+ },
+ {
+  "ruta": "/api/v1/patients/<uuid:pk>/alertas/",
+  "vista": "AlertasPacienteView",
+  "modulo": "apps.clinical.alertas_views",
+  "archivo": "django-api/apps/clinical/alertas_views.py",
+  "linea": 38,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "alertas-paciente"
+ },
+ {
+  "ruta": "/api/v1/patients/<uuid:pk>/alertas/revisar/",
+  "vista": "RevisarRecetaView",
+  "modulo": "apps.clinical.alertas_views",
+  "archivo": "django-api/apps/clinical/alertas_views.py",
+  "linea": 45,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "alertas-revisar"
+ },
+ {
+  "ruta": "/api/v1/patients/<uuid:pk>/evolutions/",
+  "vista": "EvolutionListCreateView",
+  "modulo": "apps.clinical.views",
+  "archivo": "django-api/apps/clinical/views.py",
+  "linea": 67,
+  "metodos": [
+   "GET",
+   "POST"
+  ],
+  "nombre": "evolution-list"
+ },
+ {
+  "ruta": "/api/v1/evolutions/<uuid:pk>/",
+  "vista": "EvolutionDetailView",
+  "modulo": "apps.clinical.views",
+  "archivo": "django-api/apps/clinical/views.py",
+  "linea": 502,
+  "metodos": [
+   "GET",
+   "PUT",
+   "PATCH",
+   "DELETE"
+  ],
+  "nombre": "evolution-detail"
+ },
+ {
+  "ruta": "/api/v1/patients/<uuid:pk>/form033/",
+  "vista": "Form033ListCreateView",
+  "modulo": "apps.clinical.form033_views",
+  "archivo": "django-api/apps/clinical/form033_views.py",
+  "linea": 62,
+  "metodos": [
+   "GET",
+   "POST"
+  ],
+  "nombre": "form033-list"
+ },
+ {
+  "ruta": "/api/v1/form033/<uuid:pk>/",
+  "vista": "Form033DetailView",
+  "modulo": "apps.clinical.form033_views",
+  "archivo": "django-api/apps/clinical/form033_views.py",
+  "linea": 86,
+  "metodos": [
+   "GET",
+   "PUT",
+   "PATCH"
+  ],
+  "nombre": "form033-detail"
+ },
+ {
+  "ruta": "/api/v1/cie10/",
+  "vista": "Cie10SearchView",
+  "modulo": "apps.clinical.form033_views",
+  "archivo": "django-api/apps/clinical/form033_views.py",
+  "linea": 101,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "cie10-search"
+ },
+ {
+  "ruta": "/api/v1/patients/<uuid:pk>/cpo-ceo/",
+  "vista": "CpoCeoIndexView",
+  "modulo": "apps.clinical.form033_views",
+  "archivo": "django-api/apps/clinical/form033_views.py",
+  "linea": 192,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "cpo-ceo-index"
+ },
+ {
+  "ruta": "/api/v1/patients/<uuid:pk>/exam-requests/<uuid:exam_id>/pdf/",
+  "vista": "ExamRequestPDFView",
+  "modulo": "apps.clinical.form033_views",
+  "archivo": "django-api/apps/clinical/form033_views.py",
+  "linea": 364,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "exam-request-pdf"
+ },
+ {
+  "ruta": "/api/v1/patients/<uuid:pk>/form033/export-pdf/",
+  "vista": "Form033PDFExportView",
+  "modulo": "apps.clinical.form033_views",
+  "archivo": "django-api/apps/clinical/form033_views.py",
+  "linea": 250,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "form033-export-pdf"
+ },
+ {
+  "ruta": "/api/v1/patients/<uuid:pk>/form033/export-xlsx/",
+  "vista": "Form033XlsxExportView",
+  "modulo": "apps.clinical.form033_views",
+  "archivo": "django-api/apps/clinical/form033_views.py",
+  "linea": 326,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "form033-export-xlsx"
+ },
+ {
+  "ruta": "/api/v1/patients/<uuid:pk>/exam-requests/",
+  "vista": "ExamRequestListCreateView",
+  "modulo": "apps.clinical.form033_views",
+  "archivo": "django-api/apps/clinical/form033_views.py",
+  "linea": 144,
+  "metodos": [
+   "GET",
+   "POST"
+  ],
+  "nombre": "exam-request-list"
+ },
+ {
+  "ruta": "/api/v1/exam-requests/<uuid:pk>/report/",
+  "vista": "ExamRequestReportView",
+  "modulo": "apps.clinical.form033_views",
+  "archivo": "django-api/apps/clinical/form033_views.py",
+  "linea": 164,
+  "metodos": [
+   "PATCH"
+  ],
+  "nombre": "exam-request-report"
+ },
+ {
+  "ruta": "/api/v1/clinical/plan-templates/",
+  "vista": "TemplateListCreateView",
+  "modulo": "apps.clinical.sprint22_views",
+  "archivo": "django-api/apps/clinical/sprint22_views.py",
+  "linea": 33,
+  "metodos": [
+   "GET",
+   "POST"
+  ],
+  "nombre": "plan-templates"
+ },
+ {
+  "ruta": "/api/v1/clinical/plan-templates/<uuid:pk>/items/",
+  "vista": "TemplateItemCreateView",
+  "modulo": "apps.clinical.sprint22_views",
+  "archivo": "django-api/apps/clinical/sprint22_views.py",
+  "linea": 312,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "plan-template-item-create"
+ },
+ {
+  "ruta": "/api/v1/clinical/plan-template-items/<uuid:pk>/",
+  "vista": "TemplateItemDeleteView",
+  "modulo": "apps.clinical.sprint22_views",
+  "archivo": "django-api/apps/clinical/sprint22_views.py",
+  "linea": 339,
+  "metodos": [
+   "DELETE"
+  ],
+  "nombre": "plan-template-item-delete"
+ },
+ {
+  "ruta": "/api/v1/patients/<uuid:pk>/apply-plan-template/",
+  "vista": "ApplyTemplateView",
+  "modulo": "apps.clinical.sprint22_views",
+  "archivo": "django-api/apps/clinical/sprint22_views.py",
+  "linea": 72,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "apply-plan-template"
+ },
+ {
+  "ruta": "/api/v1/treatment-plans/<uuid:pk>/generate-budget/",
+  "vista": "PlanToBudgetView",
+  "modulo": "apps.clinical.sprint22_views",
+  "archivo": "django-api/apps/clinical/sprint22_views.py",
+  "linea": 143,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "plan-to-budget"
+ },
+ {
+  "ruta": "/api/v1/clinical/follow-ups/",
+  "vista": "FollowUpAlertsView",
+  "modulo": "apps.clinical.sprint22_views",
+  "archivo": "django-api/apps/clinical/sprint22_views.py",
+  "linea": 208,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "follow-up-alerts"
+ },
+ {
+  "ruta": "/api/v1/evolutions/<uuid:pk>/prescription-pdf/",
+  "vista": "PrescriptionPDFView",
+  "modulo": "apps.clinical.sprint22_views",
+  "archivo": "django-api/apps/clinical/sprint22_views.py",
+  "linea": 239,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "prescription-pdf"
+ },
+ {
+  "ruta": "/api/v1/patients/<uuid:pk>/diagnoses/",
+  "vista": "DiagnosisListCreateView",
+  "modulo": "apps.clinical.views",
+  "archivo": "django-api/apps/clinical/views.py",
+  "linea": 89,
+  "metodos": [
+   "GET",
+   "POST"
+  ],
+  "nombre": "diagnosis-list"
+ },
+ {
+  "ruta": "/api/v1/patients/<uuid:pk>/treatment-plans/",
+  "vista": "TreatmentPlanListCreateView",
+  "modulo": "apps.clinical.views",
+  "archivo": "django-api/apps/clinical/views.py",
+  "linea": 106,
+  "metodos": [
+   "GET",
+   "POST"
+  ],
+  "nombre": "treatment-plan-list"
+ },
+ {
+  "ruta": "/api/v1/treatment-plans/<uuid:pk>/",
+  "vista": "TreatmentPlanDetailView",
+  "modulo": "apps.clinical.views",
+  "archivo": "django-api/apps/clinical/views.py",
+  "linea": 123,
+  "metodos": [
+   "GET",
+   "PUT",
+   "PATCH"
+  ],
+  "nombre": "treatment-plan-detail"
+ },
+ {
+  "ruta": "/api/v1/treatment-plans/<uuid:pk>/items/",
+  "vista": "TreatmentPlanItemCreateView",
+  "modulo": "apps.clinical.views",
+  "archivo": "django-api/apps/clinical/views.py",
+  "linea": 135,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "treatment-plan-item-create"
+ },
+ {
+  "ruta": "/api/v1/treatment-plan-items/<uuid:pk>/",
+  "vista": "TreatmentPlanItemUpdateView",
+  "modulo": "apps.clinical.views",
+  "archivo": "django-api/apps/clinical/views.py",
+  "linea": 156,
+  "metodos": [
+   "PUT",
+   "PATCH"
+  ],
+  "nombre": "treatment-plan-item-update"
+ },
+ {
+  "ruta": "/api/v1/odontogram-states/",
+  "vista": "OdontogramStateListView",
+  "modulo": "apps.clinical.views",
+  "archivo": "django-api/apps/clinical/views.py",
+  "linea": 208,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "odontogram-state-list"
+ },
+ {
+  "ruta": "/api/v1/patients/<uuid:pk>/tooth-records/",
+  "vista": "ToothRecordListCreateView",
+  "modulo": "apps.clinical.views",
+  "archivo": "django-api/apps/clinical/views.py",
+  "linea": 226,
+  "metodos": [
+   "GET",
+   "POST"
+  ],
+  "nombre": "tooth-record-list"
+ },
+ {
+  "ruta": "/api/v1/patients/<uuid:pk>/odontogram/current/",
+  "vista": "CurrentOdontogramView",
+  "modulo": "apps.clinical.views",
+  "archivo": "django-api/apps/clinical/views.py",
+  "linea": 253,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "odontogram-current"
+ },
+ {
+  "ruta": "/api/v1/tooth-records/<uuid:pk>/",
+  "vista": "ToothRecordDeleteView",
+  "modulo": "apps.clinical.views",
+  "archivo": "django-api/apps/clinical/views.py",
+  "linea": 468,
+  "metodos": [
+   "DELETE"
+  ],
+  "nombre": "tooth-record-delete"
+ },
+ {
+  "ruta": "/api/v1/patients/<uuid:pk>/radiographs/",
+  "vista": "RadiographPhotoListCreateView",
+  "modulo": "apps.clinical.views",
+  "archivo": "django-api/apps/clinical/views.py",
+  "linea": 288,
+  "metodos": [
+   "GET",
+   "POST"
+  ],
+  "nombre": "radiograph-list"
+ },
+ {
+  "ruta": "/api/v1/patients/<uuid:pk>/consents/",
+  "vista": "InformedConsentListCreateView",
+  "modulo": "apps.clinical.views",
+  "archivo": "django-api/apps/clinical/views.py",
+  "linea": 311,
+  "metodos": [
+   "GET",
+   "POST"
+  ],
+  "nombre": "consent-list"
+ },
+ {
+  "ruta": "/api/v1/consents/<uuid:pk>/sign/",
+  "vista": "ConsentSignView",
+  "modulo": "apps.clinical.views",
+  "archivo": "django-api/apps/clinical/views.py",
+  "linea": 339,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "consent-sign"
+ },
+ {
+  "ruta": "/api/v1/consents/<uuid:pk>/detail/",
+  "vista": "ConsentDetailView",
+  "modulo": "apps.clinical.views",
+  "archivo": "django-api/apps/clinical/views.py",
+  "linea": 588,
+  "metodos": [
+   "GET",
+   "PUT",
+   "PATCH"
+  ],
+  "nombre": "consent-detail"
+ },
+ {
+  "ruta": "/api/v1/consents/<uuid:pk>/pdf/",
+  "vista": "ConsentPDFView",
+  "modulo": "apps.clinical.form033_views",
+  "archivo": "django-api/apps/clinical/form033_views.py",
+  "linea": 438,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "consent-pdf"
+ },
+ {
+  "ruta": "/api/v1/patients/<uuid:pk>/periodontal-exams/",
+  "vista": "PeriodontalExamListCreateView",
+  "modulo": "apps.clinical.views",
+  "archivo": "django-api/apps/clinical/views.py",
+  "linea": 623,
+  "metodos": [
+   "GET",
+   "POST"
+  ],
+  "nombre": "periodontal-exams"
+ },
+ {
+  "ruta": "/api/v1/periodontal-teeth/<uuid:pk>/",
+  "vista": "PeriodontalToothUpdateView",
+  "modulo": "apps.clinical.views",
+  "archivo": "django-api/apps/clinical/views.py",
+  "linea": 665,
+  "metodos": [
+   "GET",
+   "PUT",
+   "PATCH"
+  ],
+  "nombre": "periodontal-tooth"
+ },
+ {
+  "ruta": "/api/v1/consent-templates/",
+  "vista": "ConsentTemplateListCreateView",
+  "modulo": "apps.clinical.views",
+  "archivo": "django-api/apps/clinical/views.py",
+  "linea": 553,
+  "metodos": [
+   "GET",
+   "POST"
+  ],
+  "nombre": "consent-template-list"
+ },
+ {
+  "ruta": "/api/v1/consent-templates/<uuid:pk>/",
+  "vista": "ConsentTemplateDetailView",
+  "modulo": "apps.clinical.views",
+  "archivo": "django-api/apps/clinical/views.py",
+  "linea": 574,
+  "metodos": [
+   "GET",
+   "PUT",
+   "PATCH",
+   "DELETE"
+  ],
+  "nombre": "consent-template-detail"
+ },
+ {
+  "ruta": "/api/v1/specialties/",
+  "vista": "SpecialtyListCreateView",
+  "modulo": "apps.specialties.views",
+  "archivo": "django-api/apps/specialties/views.py",
+  "linea": 23,
+  "metodos": [
+   "GET",
+   "POST"
+  ],
+  "nombre": "specialty-list"
+ },
+ {
+  "ruta": "/api/v1/specialties/<uuid:pk>/",
+  "vista": "SpecialtyDetailView",
+  "modulo": "apps.specialties.views",
+  "archivo": "django-api/apps/specialties/views.py",
+  "linea": 38,
+  "metodos": [
+   "GET",
+   "PUT",
+   "PATCH",
+   "DELETE"
+  ],
+  "nombre": "specialty-detail"
+ },
+ {
+  "ruta": "/api/v1/specialties/<uuid:pk>/form-template/",
+  "vista": "SpecialtyFormTemplateView",
+  "modulo": "apps.specialties.views",
+  "archivo": "django-api/apps/specialties/views.py",
+  "linea": 52,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "specialty-form-template"
+ },
+ {
+  "ruta": "/api/v1/patients/<uuid:pk>/specialty-forms/",
+  "vista": "PatientSpecialtyFormListCreateView",
+  "modulo": "apps.specialties.views",
+  "archivo": "django-api/apps/specialties/views.py",
+  "linea": 70,
+  "metodos": [
+   "GET",
+   "POST"
+  ],
+  "nombre": "patient-specialty-forms"
+ },
+ {
+  "ruta": "/api/v1/specialty-forms/<uuid:pk>/",
+  "vista": "SpecialtyFormDetailView",
+  "modulo": "apps.specialties.views",
+  "archivo": "django-api/apps/specialties/views.py",
+  "linea": 95,
+  "metodos": [
+   "GET",
+   "PUT",
+   "PATCH"
+  ],
+  "nombre": "specialty-form-detail"
+ },
+ {
+  "ruta": "/api/v1/patients/<uuid:pk>/budgets/",
+  "vista": "BudgetListCreateView",
+  "modulo": "apps.billing.views",
+  "archivo": "django-api/apps/billing/views.py",
+  "linea": 37,
+  "metodos": [
+   "GET",
+   "POST"
+  ],
+  "nombre": "budget-list"
+ },
+ {
+  "ruta": "/api/v1/budgets/<uuid:pk>/",
+  "vista": "BudgetDetailView",
+  "modulo": "apps.billing.views",
+  "archivo": "django-api/apps/billing/views.py",
+  "linea": 57,
+  "metodos": [
+   "GET",
+   "PUT",
+   "PATCH"
+  ],
+  "nombre": "budget-detail"
+ },
+ {
+  "ruta": "/api/v1/budgets/<uuid:pk>/items/",
+  "vista": "BudgetItemCreateView",
+  "modulo": "apps.billing.views",
+  "archivo": "django-api/apps/billing/views.py",
+  "linea": 67,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "budget-item-create"
+ },
+ {
+  "ruta": "/api/v1/budgets/<uuid:pk>/approve/",
+  "vista": "BudgetApproveView",
+  "modulo": "apps.billing.views",
+  "archivo": "django-api/apps/billing/views.py",
+  "linea": 81,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "budget-approve"
+ },
+ {
+  "ruta": "/api/v1/budgets/<uuid:pk>/generate-payment-plan/",
+  "vista": "GeneratePaymentPlanView",
+  "modulo": "apps.billing.views",
+  "archivo": "django-api/apps/billing/views.py",
+  "linea": 93,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "generate-payment-plan"
+ },
+ {
+  "ruta": "/api/v1/payment-plans/<uuid:pk>/installments/",
+  "vista": "PaymentPlanInstallmentsView",
+  "modulo": "apps.billing.views",
+  "archivo": "django-api/apps/billing/views.py",
+  "linea": 146,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "payment-plan-installments"
+ },
+ {
+  "ruta": "/api/v1/installments/<uuid:pk>/pay/",
+  "vista": "PayInstallmentView",
+  "modulo": "apps.billing.views",
+  "archivo": "django-api/apps/billing/views.py",
+  "linea": 172,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "installment-pay"
+ },
+ {
+  "ruta": "/api/v1/patients/<uuid:pk>/payments/",
+  "vista": "PatientPaymentListCreateView",
+  "modulo": "apps.billing.views",
+  "archivo": "django-api/apps/billing/views.py",
+  "linea": 564,
+  "metodos": [
+   "GET",
+   "POST"
+  ],
+  "nombre": "patient-payments"
+ },
+ {
+  "ruta": "/api/v1/patients/birthdays/",
+  "vista": "BirthdaysView",
+  "modulo": "apps.billing.views",
+  "archivo": "django-api/apps/billing/views.py",
+  "linea": 594,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "patient-birthdays"
+ },
+ {
+  "ruta": "/api/v1/patients/<uuid:pk>/account-statement/",
+  "vista": "PatientAccountStatementView",
+  "modulo": "apps.billing.views",
+  "archivo": "django-api/apps/billing/views.py",
+  "linea": 209,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "account-statement"
+ },
+ {
+  "ruta": "/api/v1/doctors/<uuid:pk>/fees/",
+  "vista": "DoctorFeeListCreateView",
+  "modulo": "apps.billing.views",
+  "archivo": "django-api/apps/billing/views.py",
+  "linea": 244,
+  "metodos": [
+   "GET",
+   "POST"
+  ],
+  "nombre": "doctor-fees"
+ },
+ {
+  "ruta": "/api/v1/reports/financial/",
+  "vista": "FinancialReportView",
+  "modulo": "apps.billing.views",
+  "archivo": "django-api/apps/billing/views.py",
+  "linea": 260,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "report-financial"
+ },
+ {
+  "ruta": "/api/v1/reports/appointments-summary/",
+  "vista": "AppointmentsSummaryReportView",
+  "modulo": "apps.billing.views",
+  "archivo": "django-api/apps/billing/views.py",
+  "linea": 524,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "report-appointments-summary"
+ },
+ {
+  "ruta": "/api/v1/reports/delinquency/",
+  "vista": "DelinquencyReportView",
+  "modulo": "apps.billing.views",
+  "archivo": "django-api/apps/billing/views.py",
+  "linea": 341,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "report-delinquency"
+ },
+ {
+  "ruta": "/api/v1/reports/production-by-doctor/",
+  "vista": "ProductionByDoctorReportView",
+  "modulo": "apps.billing.views",
+  "archivo": "django-api/apps/billing/views.py",
+  "linea": 392,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "report-production"
+ },
+ {
+  "ruta": "/api/v1/reports/new-patients/",
+  "vista": "NewPatientsReportView",
+  "modulo": "apps.billing.views",
+  "archivo": "django-api/apps/billing/views.py",
+  "linea": 426,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "report-new-patients"
+ },
+ {
+  "ruta": "/api/v1/reports/inventory/",
+  "vista": "InventoryReportView",
+  "modulo": "apps.billing.views",
+  "archivo": "django-api/apps/billing/views.py",
+  "linea": 478,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "report-inventory"
+ },
+ {
+  "ruta": "/api/v1/products/",
+  "vista": "ProductListCreateView",
+  "modulo": "apps.inventory.views",
+  "archivo": "django-api/apps/inventory/views.py",
+  "linea": 24,
+  "metodos": [
+   "GET",
+   "POST"
+  ],
+  "nombre": "product-list"
+ },
+ {
+  "ruta": "/api/v1/products/<uuid:pk>/",
+  "vista": "ProductDetailView",
+  "modulo": "apps.inventory.views",
+  "archivo": "django-api/apps/inventory/views.py",
+  "linea": 42,
+  "metodos": [
+   "GET",
+   "PUT",
+   "PATCH"
+  ],
+  "nombre": "product-detail"
+ },
+ {
+  "ruta": "/api/v1/products/<uuid:pk>/batches/",
+  "vista": "BatchListCreateView",
+  "modulo": "apps.inventory.views",
+  "archivo": "django-api/apps/inventory/views.py",
+  "linea": 50,
+  "metodos": [
+   "GET",
+   "POST"
+  ],
+  "nombre": "batch-list"
+ },
+ {
+  "ruta": "/api/v1/inventory/alerts/low-stock/",
+  "vista": "LowStockAlertView",
+  "modulo": "apps.inventory.views",
+  "archivo": "django-api/apps/inventory/views.py",
+  "linea": 94,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "low-stock-alert"
+ },
+ {
+  "ruta": "/api/v1/inventory/alerts/expiring/",
+  "vista": "ExpiringBatchAlertView",
+  "modulo": "apps.inventory.views",
+  "archivo": "django-api/apps/inventory/views.py",
+  "linea": 115,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "expiring-alert"
+ },
+ {
+  "ruta": "/api/v1/inventory/movements/",
+  "vista": "InventoryMovementListView",
+  "modulo": "apps.inventory.views",
+  "archivo": "django-api/apps/inventory/views.py",
+  "linea": 148,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "inventory-movements"
+ },
+ {
+  "ruta": "/api/v1/config/treatments/",
+  "vista": "TreatmentListCreateView",
+  "modulo": "apps.configuration.views",
+  "archivo": "django-api/apps/configuration/views.py",
+  "linea": 38,
+  "metodos": [
+   "GET",
+   "POST"
+  ],
+  "nombre": "treatment-list"
+ },
+ {
+  "ruta": "/api/v1/config/treatments/<uuid:pk>/",
+  "vista": "TreatmentDetailView",
+  "modulo": "apps.configuration.views",
+  "archivo": "django-api/apps/configuration/views.py",
+  "linea": 52,
+  "metodos": [
+   "GET",
+   "PUT",
+   "PATCH",
+   "DELETE"
+  ],
+  "nombre": "treatment-detail"
+ },
+ {
+  "ruta": "/api/v1/config/agreements/",
+  "vista": "AgreementListCreateView",
+  "modulo": "apps.configuration.views",
+  "archivo": "django-api/apps/configuration/views.py",
+  "linea": 59,
+  "metodos": [
+   "GET",
+   "POST"
+  ],
+  "nombre": "agreement-list"
+ },
+ {
+  "ruta": "/api/v1/config/agreements/<uuid:pk>/",
+  "vista": "AgreementDetailView",
+  "modulo": "apps.configuration.views",
+  "archivo": "django-api/apps/configuration/views.py",
+  "linea": 76,
+  "metodos": [
+   "GET",
+   "PUT",
+   "PATCH",
+   "DELETE"
+  ],
+  "nombre": "agreement-detail"
+ },
+ {
+  "ruta": "/api/v1/config/tarifarios/",
+  "vista": "TariffListCreateView",
+  "modulo": "apps.configuration.views",
+  "archivo": "django-api/apps/configuration/views.py",
+  "linea": 83,
+  "metodos": [
+   "GET",
+   "POST"
+  ],
+  "nombre": "tariff-list"
+ },
+ {
+  "ruta": "/api/v1/config/tarifarios/<uuid:pk>/",
+  "vista": "TariffDetailView",
+  "modulo": "apps.configuration.views",
+  "archivo": "django-api/apps/configuration/views.py",
+  "linea": 93,
+  "metodos": [
+   "GET",
+   "PUT",
+   "PATCH",
+   "DELETE"
+  ],
+  "nombre": "tariff-detail"
+ },
+ {
+  "ruta": "/api/v1/config/price-matrix/",
+  "vista": "PriceMatrixView",
+  "modulo": "apps.configuration.views",
+  "archivo": "django-api/apps/configuration/views.py",
+  "linea": 100,
+  "metodos": [
+   "GET",
+   "PUT"
+  ],
+  "nombre": "price-matrix"
+ },
+ {
+  "ruta": "/api/v1/config/branding/",
+  "vista": "ClinicBrandingView",
+  "modulo": "apps.configuration.views",
+  "archivo": "django-api/apps/configuration/views.py",
+  "linea": 192,
+  "metodos": [
+   "GET",
+   "PATCH"
+  ],
+  "nombre": "clinic-branding"
+ },
+ {
+  "ruta": "/api/v1/config/temas/previsualizar/",
+  "vista": "TemasPrevisualizarView",
+  "modulo": "apps.configuration.views",
+  "archivo": "django-api/apps/configuration/views.py",
+  "linea": 250,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "temas-previsualizar"
+ },
+ {
+  "ruta": "/api/v1/config/document-appearance/",
+  "vista": "DocumentAppearanceView",
+  "modulo": "apps.configuration.views",
+  "archivo": "django-api/apps/configuration/views.py",
+  "linea": 277,
+  "metodos": [
+   "GET",
+   "PATCH",
+   "DELETE"
+  ],
+  "nombre": "document-appearance"
+ },
+ {
+  "ruta": "/api/v1/config/backup/",
+  "vista": "TenantBackupView",
+  "modulo": "apps.configuration.views",
+  "archivo": "django-api/apps/configuration/views.py",
+  "linea": 376,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "tenant-backup"
+ },
+ {
+  "ruta": "/api/v1/config/backup/herramientas/",
+  "vista": "TenantBackupToolsView",
+  "modulo": "apps.configuration.views",
+  "archivo": "django-api/apps/configuration/views.py",
+  "linea": 436,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "tenant-backup-tools"
+ },
+ {
+  "ruta": "/api/v1/config/backup/decrypt/",
+  "vista": "TenantBackupDecryptView",
+  "modulo": "apps.configuration.views",
+  "archivo": "django-api/apps/configuration/views.py",
+  "linea": 455,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "tenant-backup-decrypt"
+ },
+ {
+  "ruta": "/api/v1/config/modulos/",
+  "vista": "ModulosClinicaView",
+  "modulo": "apps.configuration.views",
+  "archivo": "django-api/apps/configuration/views.py",
+  "linea": 538,
+  "metodos": [
+   "GET",
+   "PATCH"
+  ],
+  "nombre": "modulos-clinica"
+ },
+ {
+  "ruta": "/api/v1/config/parameters/",
+  "vista": "SystemParameterListView",
+  "modulo": "apps.configuration.views",
+  "archivo": "django-api/apps/configuration/views.py",
+  "linea": 172,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "parameter-list"
+ },
+ {
+  "ruta": "/api/v1/config/parameters/<uuid:pk>/",
+  "vista": "SystemParameterDetailView",
+  "modulo": "apps.configuration.views",
+  "archivo": "django-api/apps/configuration/views.py",
+  "linea": 182,
+  "metodos": [
+   "GET",
+   "PUT",
+   "PATCH"
+  ],
+  "nombre": "parameter-detail"
+ },
+ {
+  "ruta": "/api/v1/config/whatsapp/",
+  "vista": "ConfiguracionWhatsAppView",
+  "modulo": "apps.whatsapp.config_views",
+  "archivo": "django-api/apps/whatsapp/config_views.py",
+  "linea": 42,
+  "metodos": [
+   "GET",
+   "PATCH"
+  ],
+  "nombre": "whatsapp-configuracion"
+ },
+ {
+  "ruta": "/api/v1/config/whatsapp-templates/",
+  "vista": "WhatsAppTemplateListCreateView",
+  "modulo": "apps.whatsapp.views",
+  "archivo": "django-api/apps/whatsapp/views.py",
+  "linea": 16,
+  "metodos": [
+   "GET",
+   "POST"
+  ],
+  "nombre": "whatsapp-template-list"
+ },
+ {
+  "ruta": "/api/v1/patients/<uuid:pk>/whatsapp-optin/",
+  "vista": "WhatsAppOptInListCreateView",
+  "modulo": "apps.whatsapp.views",
+  "archivo": "django-api/apps/whatsapp/views.py",
+  "linea": 29,
+  "metodos": [
+   "GET",
+   "POST"
+  ],
+  "nombre": "whatsapp-optin-list"
+ },
+ {
+  "ruta": "/api/v1/whatsapp-optin/<uuid:pk>/revoke/",
+  "vista": "WhatsAppOptInRevokeView",
+  "modulo": "apps.whatsapp.views",
+  "archivo": "django-api/apps/whatsapp/views.py",
+  "linea": 66,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "whatsapp-optin-revoke"
+ },
+ {
+  "ruta": "/api/v1/app/cuenta/",
+  "vista": "MiCuentaView",
+  "modulo": "apps.app_paciente.views",
+  "archivo": "django-api/apps/app_paciente/views.py",
+  "linea": 38,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "app-mi-cuenta"
+ },
+ {
+  "ruta": "/api/v1/app/me/",
+  "vista": "MiPerfilView",
+  "modulo": "apps.app_paciente.views",
+  "archivo": "django-api/apps/app_paciente/views.py",
+  "linea": 65,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "app-mi-perfil"
+ },
+ {
+  "ruta": "/api/v1/app/citas/",
+  "vista": "MisCitasView",
+  "modulo": "apps.app_paciente.views",
+  "archivo": "django-api/apps/app_paciente/views.py",
+  "linea": 101,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "app-mis-citas"
+ },
+ {
+  "ruta": "/api/v1/app/citas/<uuid:pk>/confirmar/",
+  "vista": "ConfirmarCitaView",
+  "modulo": "apps.app_paciente.views",
+  "archivo": "django-api/apps/app_paciente/views.py",
+  "linea": 335,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "app-confirmar-cita"
+ },
+ {
+  "ruta": "/api/v1/app/saldo/",
+  "vista": "MiSaldoView",
+  "modulo": "apps.app_paciente.views",
+  "archivo": "django-api/apps/app_paciente/views.py",
+  "linea": 121,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "app-mi-saldo"
+ },
+ {
+  "ruta": "/api/v1/app/indicaciones/",
+  "vista": "MisIndicacionesView",
+  "modulo": "apps.app_paciente.views",
+  "archivo": "django-api/apps/app_paciente/views.py",
+  "linea": 150,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "app-mis-indicaciones"
+ },
+ {
+  "ruta": "/api/v1/app/logros/",
+  "vista": "MisLogrosView",
+  "modulo": "apps.app_paciente.views",
+  "archivo": "django-api/apps/app_paciente/views.py",
+  "linea": 179,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "app-mis-logros"
+ },
+ {
+  "ruta": "/api/v1/app/clinica/",
+  "vista": "MiClinicaView",
+  "modulo": "apps.app_paciente.views",
+  "archivo": "django-api/apps/app_paciente/views.py",
+  "linea": 231,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "app-mi-clinica"
+ },
+ {
+  "ruta": "/api/v1/app/solicitudes-cita/",
+  "vista": "MisSolicitudesCitaView",
+  "modulo": "apps.app_paciente.contacto",
+  "archivo": "django-api/apps/app_paciente/contacto.py",
+  "linea": 97,
+  "metodos": [
+   "GET",
+   "POST"
+  ],
+  "nombre": "app-solicitudes-cita"
+ },
+ {
+  "ruta": "/api/v1/app/mensajes/",
+  "vista": "MisMensajesView",
+  "modulo": "apps.app_paciente.contacto",
+  "archivo": "django-api/apps/app_paciente/contacto.py",
+  "linea": 141,
+  "metodos": [
+   "GET",
+   "POST"
+  ],
+  "nombre": "app-mensajes"
+ },
+ {
+  "ruta": "/api/v1/bandeja-app/resumen/",
+  "vista": "ResumenBandejaView",
+  "modulo": "apps.app_paciente.contacto",
+  "archivo": "django-api/apps/app_paciente/contacto.py",
+  "linea": 168,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "bandeja-resumen"
+ },
+ {
+  "ruta": "/api/v1/bandeja-app/solicitudes/",
+  "vista": "SolicitudesBandejaView",
+  "modulo": "apps.app_paciente.contacto",
+  "archivo": "django-api/apps/app_paciente/contacto.py",
+  "linea": 182,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "bandeja-solicitudes"
+ },
+ {
+  "ruta": "/api/v1/bandeja-app/solicitudes/<uuid:pk>/agendar/",
+  "vista": "AgendarSolicitudView",
+  "modulo": "apps.app_paciente.contacto",
+  "archivo": "django-api/apps/app_paciente/contacto.py",
+  "linea": 205,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "bandeja-agendar"
+ },
+ {
+  "ruta": "/api/v1/bandeja-app/solicitudes/<uuid:pk>/rechazar/",
+  "vista": "RechazarSolicitudView",
+  "modulo": "apps.app_paciente.contacto",
+  "archivo": "django-api/apps/app_paciente/contacto.py",
+  "linea": 264,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "bandeja-rechazar"
+ },
+ {
+  "ruta": "/api/v1/bandeja-app/mensajes/",
+  "vista": "MensajesBandejaView",
+  "modulo": "apps.app_paciente.contacto",
+  "archivo": "django-api/apps/app_paciente/contacto.py",
+  "linea": 284,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "bandeja-mensajes"
+ },
+ {
+  "ruta": "/api/v1/bandeja-app/mensajes/<uuid:pk>/responder/",
+  "vista": "ResponderMensajeView",
+  "modulo": "apps.app_paciente.contacto",
+  "archivo": "django-api/apps/app_paciente/contacto.py",
+  "linea": 296,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "bandeja-responder"
+ },
+ {
+  "ruta": "/api/v1/logros/",
+  "vista": "LogroListCreateView",
+  "modulo": "apps.logros.views",
+  "archivo": "django-api/apps/logros/views.py",
+  "linea": 28,
+  "metodos": [
+   "GET",
+   "POST"
+  ],
+  "nombre": "logro-list"
+ },
+ {
+  "ruta": "/api/v1/logros/<uuid:pk>/",
+  "vista": "LogroDetailView",
+  "modulo": "apps.logros.views",
+  "archivo": "django-api/apps/logros/views.py",
+  "linea": 42,
+  "metodos": [
+   "GET",
+   "PUT",
+   "PATCH",
+   "DELETE"
+  ],
+  "nombre": "logro-detail"
+ },
+ {
+  "ruta": "/api/v1/logros/otorgar/",
+  "vista": "OtorgarLogroView",
+  "modulo": "apps.logros.views",
+  "archivo": "django-api/apps/logros/views.py",
+  "linea": 60,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "logro-otorgar"
+ },
+ {
+  "ruta": "/api/v1/logros/evaluar/",
+  "vista": "EvaluarLogrosView",
+  "modulo": "apps.logros.views",
+  "archivo": "django-api/apps/logros/views.py",
+  "linea": 105,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "logro-evaluar"
+ },
+ {
+  "ruta": "/api/v1/patients/<uuid:pk>/logros/",
+  "vista": "LogrosDelPacienteView",
+  "modulo": "apps.logros.views",
+  "archivo": "django-api/apps/logros/views.py",
+  "linea": 92,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "logros-del-paciente"
+ },
+ {
+  "ruta": "/api/v1/finanzas/resumen/",
+  "vista": "ResumenView",
+  "modulo": "apps.finanzas.views",
+  "archivo": "django-api/apps/finanzas/views.py",
+  "linea": 79,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "finanzas-resumen"
+ },
+ {
+  "ruta": "/api/v1/finanzas/configuracion/",
+  "vista": "ConfiguracionView",
+  "modulo": "apps.finanzas.views",
+  "archivo": "django-api/apps/finanzas/views.py",
+  "linea": 100,
+  "metodos": [
+   "GET",
+   "PATCH"
+  ],
+  "nombre": "finanzas-configuracion"
+ },
+ {
+  "ruta": "/api/v1/finanzas/categorias/",
+  "vista": "CategoriasView",
+  "modulo": "apps.finanzas.views",
+  "archivo": "django-api/apps/finanzas/views.py",
+  "linea": 117,
+  "metodos": [
+   "GET",
+   "POST"
+  ],
+  "nombre": "finanzas-categorias"
+ },
+ {
+  "ruta": "/api/v1/finanzas/categorias/<uuid:pk>/",
+  "vista": "CategoriaView",
+  "modulo": "apps.finanzas.views",
+  "archivo": "django-api/apps/finanzas/views.py",
+  "linea": 129,
+  "metodos": [
+   "PUT",
+   "PATCH"
+  ],
+  "nombre": "finanzas-categoria"
+ },
+ {
+  "ruta": "/api/v1/finanzas/egresos/",
+  "vista": "EgresosView",
+  "modulo": "apps.finanzas.views",
+  "archivo": "django-api/apps/finanzas/views.py",
+  "linea": 139,
+  "metodos": [
+   "GET",
+   "POST"
+  ],
+  "nombre": "finanzas-egresos"
+ },
+ {
+  "ruta": "/api/v1/finanzas/egresos/<uuid:pk>/",
+  "vista": "EgresoView",
+  "modulo": "apps.finanzas.views",
+  "archivo": "django-api/apps/finanzas/views.py",
+  "linea": 202,
+  "metodos": [
+   "GET",
+   "PUT",
+   "PATCH"
+  ],
+  "nombre": "finanzas-egreso"
+ },
+ {
+  "ruta": "/api/v1/finanzas/egresos/<uuid:pk>/anular/",
+  "vista": "AnularEgresoView",
+  "modulo": "apps.finanzas.views",
+  "archivo": "django-api/apps/finanzas/views.py",
+  "linea": 230,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "finanzas-egreso-anular"
+ },
+ {
+  "ruta": "/api/v1/finanzas/egresos/<uuid:pk>/pagar/",
+  "vista": "PagarEgresoView",
+  "modulo": "apps.finanzas.views",
+  "archivo": "django-api/apps/finanzas/views.py",
+  "linea": 252,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "finanzas-egreso-pagar"
+ },
+ {
+  "ruta": "/api/v1/finanzas/egresos/<uuid:pk>/comprobante/",
+  "vista": "ComprobanteEgresoView",
+  "modulo": "apps.finanzas.views",
+  "archivo": "django-api/apps/finanzas/views.py",
+  "linea": 272,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "finanzas-egreso-comprobante"
+ },
+ {
+  "ruta": "/api/v1/finanzas/caja/",
+  "vista": "CajaView",
+  "modulo": "apps.finanzas.views",
+  "archivo": "django-api/apps/finanzas/views.py",
+  "linea": 286,
+  "metodos": [
+   "GET",
+   "POST"
+  ],
+  "nombre": "finanzas-caja"
+ },
+ {
+  "ruta": "/api/v1/finanzas/equipo/",
+  "vista": "EquipoView",
+  "modulo": "apps.finanzas.views",
+  "archivo": "django-api/apps/finanzas/views.py",
+  "linea": 332,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "finanzas-equipo"
+ },
+ {
+  "ruta": "/api/v1/finanzas/equipo/<uuid:pk>/",
+  "vista": "PerfilView",
+  "modulo": "apps.finanzas.views",
+  "archivo": "django-api/apps/finanzas/views.py",
+  "linea": 347,
+  "metodos": [
+   "PATCH"
+  ],
+  "nombre": "finanzas-perfil"
+ },
+ {
+  "ruta": "/api/v1/finanzas/liquidaciones/",
+  "vista": "LiquidacionesView",
+  "modulo": "apps.finanzas.views",
+  "archivo": "django-api/apps/finanzas/views.py",
+  "linea": 387,
+  "metodos": [
+   "GET",
+   "POST"
+  ],
+  "nombre": "finanzas-liquidaciones"
+ },
+ {
+  "ruta": "/api/v1/finanzas/liquidaciones/previa/",
+  "vista": "LiquidacionPreviaView",
+  "modulo": "apps.finanzas.views",
+  "archivo": "django-api/apps/finanzas/views.py",
+  "linea": 376,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "finanzas-liquidacion-previa"
+ },
+ {
+  "ruta": "/api/v1/finanzas/liquidaciones/<uuid:pk>/pagar/",
+  "vista": "PagarLiquidacionView",
+  "modulo": "apps.finanzas.views",
+  "archivo": "django-api/apps/finanzas/views.py",
+  "linea": 418,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "finanzas-liquidacion-pagar"
+ },
+ {
+  "ruta": "/api/v1/finanzas/liquidaciones/<uuid:pk>/anular/",
+  "vista": "AnularLiquidacionView",
+  "modulo": "apps.finanzas.views",
+  "archivo": "django-api/apps/finanzas/views.py",
+  "linea": 443,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "finanzas-liquidacion-anular"
+ },
+ {
+  "ruta": "/api/v1/finanzas/liquidaciones/<uuid:pk>/pdf/",
+  "vista": "LiquidacionPdfView",
+  "modulo": "apps.finanzas.views",
+  "archivo": "django-api/apps/finanzas/views.py",
+  "linea": 462,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "finanzas-liquidacion-pdf"
+ },
+ {
+  "ruta": "/api/v1/finanzas/roles/",
+  "vista": "RolesView",
+  "modulo": "apps.finanzas.views",
+  "archivo": "django-api/apps/finanzas/views.py",
+  "linea": 506,
+  "metodos": [
+   "GET",
+   "POST"
+  ],
+  "nombre": "finanzas-roles"
+ },
+ {
+  "ruta": "/api/v1/finanzas/roles/previa/",
+  "vista": "RolPreviaView",
+  "modulo": "apps.finanzas.views",
+  "archivo": "django-api/apps/finanzas/views.py",
+  "linea": 496,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "finanzas-rol-previa"
+ },
+ {
+  "ruta": "/api/v1/finanzas/roles/generar/",
+  "vista": "GenerarRolesView",
+  "modulo": "apps.finanzas.views",
+  "archivo": "django-api/apps/finanzas/views.py",
+  "linea": 548,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "finanzas-roles-generar"
+ },
+ {
+  "ruta": "/api/v1/finanzas/roles/<uuid:pk>/pagar/",
+  "vista": "PagarRolView",
+  "modulo": "apps.finanzas.views",
+  "archivo": "django-api/apps/finanzas/views.py",
+  "linea": 575,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "finanzas-rol-pagar"
+ },
+ {
+  "ruta": "/api/v1/finanzas/roles/<uuid:pk>/anular/",
+  "vista": "AnularRolView",
+  "modulo": "apps.finanzas.views",
+  "archivo": "django-api/apps/finanzas/views.py",
+  "linea": 601,
+  "metodos": [
+   "POST"
+  ],
+  "nombre": "finanzas-rol-anular"
+ },
+ {
+  "ruta": "/api/v1/finanzas/roles/<uuid:pk>/pdf/",
+  "vista": "RolPdfView",
+  "modulo": "apps.finanzas.views",
+  "archivo": "django-api/apps/finanzas/views.py",
+  "linea": 617,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "finanzas-rol-pdf"
+ },
+ {
+  "ruta": "/api/v1/finanzas/obligaciones/",
+  "vista": "ObligacionesView",
+  "modulo": "apps.finanzas.views",
+  "archivo": "django-api/apps/finanzas/views.py",
+  "linea": 638,
+  "metodos": [
+   "GET",
+   "POST"
+  ],
+  "nombre": "finanzas-obligaciones"
+ },
+ {
+  "ruta": "/api/v1/finanzas/decimos/",
+  "vista": "DecimosView",
+  "modulo": "apps.finanzas.views",
+  "archivo": "django-api/apps/finanzas/views.py",
+  "linea": 676,
+  "metodos": [
+   "GET",
+   "POST"
+  ],
+  "nombre": "finanzas-decimos"
+ },
+ {
+  "ruta": "/api/v1/finanzas/cobros/",
+  "vista": "CobrosView",
+  "modulo": "apps.finanzas.views",
+  "archivo": "django-api/apps/finanzas/views.py",
+  "linea": 748,
+  "metodos": [
+   "GET",
+   "PATCH"
+  ],
+  "nombre": "finanzas-cobros"
+ },
+ {
+  "ruta": "/api/v1/finanzas/cobros/<uuid:pk>/",
+  "vista": "CobrosView",
+  "modulo": "apps.finanzas.views",
+  "archivo": "django-api/apps/finanzas/views.py",
+  "linea": 748,
+  "metodos": [
+   "GET",
+   "PATCH"
+  ],
+  "nombre": "finanzas-cobro"
+ },
+ {
+  "ruta": "/api/v1/finanzas/cobros/<uuid:pk>/comprobante/",
+  "vista": "ComprobanteCobroView",
+  "modulo": "apps.finanzas.views",
+  "archivo": "django-api/apps/finanzas/views.py",
+  "linea": 721,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "finanzas-comprobante-cobro"
+ },
+ {
+  "ruta": "/api/v1/finanzas/exportar/",
+  "vista": "ExportarView",
+  "modulo": "apps.finanzas.views",
+  "archivo": "django-api/apps/finanzas/views.py",
+  "linea": 795,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "finanzas-exportar"
+ },
+ {
+  "ruta": "/api/v1/schema/",
+  "vista": "SpectacularAPIView",
+  "modulo": "drf_spectacular.views",
+  "archivo": ".venv/lib/python3.12/site-packages/drf_spectacular/views.py",
+  "linea": 44,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "schema"
+ },
+ {
+  "ruta": "/api/v1/schema/swagger-ui/",
+  "vista": "SpectacularSwaggerView",
+  "modulo": "drf_spectacular.views",
+  "archivo": ".venv/lib/python3.12/site-packages/drf_spectacular/views.py",
+  "linea": 122,
+  "metodos": [
+   "GET"
+  ],
+  "nombre": "swagger-ui"
+ }
+]

@@ -1,0 +1,4 @@
+# La comprobación de producción tiene que correr antes de que exista el
+# contexto, así que se registra aquí y no como @Bean.
+org.springframework.context.ApplicationListener=\
+com.clinube.configuracion.ComprobacionDeProduccion

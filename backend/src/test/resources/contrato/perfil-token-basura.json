@@ -1,0 +1,19 @@
+{
+ "estado": 401,
+ "cuerpo": {
+  "error": {
+   "code": "token_not_valid",
+   "message": "El token dado no es valido para ningun tipo de token",
+   "details": {
+    "code": "token_not_valid",
+    "messages": [
+     {
+      "token_class": "AccessToken",
+      "token_type": "access",
+      "message": "Token is invalid"
+     }
+    ]
+   }
+  }
+ }
+}

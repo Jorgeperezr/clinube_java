@@ -1,0 +1,8 @@
+# Perfil de producción. Lo que aquí falta no se queda en un valor de
+# ejemplo: `ComprobacionDeProduccion` impide arrancar, igual que
+# `config/produccion.py` en Django.
+clinube:
+  depuracion: false
+logging:
+  level:
+    root: INFO

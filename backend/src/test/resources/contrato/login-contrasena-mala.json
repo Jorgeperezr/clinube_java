@@ -1,0 +1,10 @@
+{
+ "estado": 401,
+ "cuerpo": {
+  "error": {
+   "code": "authentication_failed",
+   "message": "La combinación de credenciales no tiene una cuenta activa",
+   "details": {}
+  }
+ }
+}

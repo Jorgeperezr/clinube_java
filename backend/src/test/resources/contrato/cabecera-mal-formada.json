@@ -1,0 +1,12 @@
+{
+ "estado": 401,
+ "cuerpo": {
+  "error": {
+   "code": "authentication_failed",
+   "message": "El encabezado 'Authorization' debe contener valores delimitados por espacios",
+   "details": {
+    "code": "bad_authorization_header"
+   }
+  }
+ }
+}

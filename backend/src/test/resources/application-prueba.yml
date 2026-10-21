@@ -1,0 +1,11 @@
+# El perfil de las pruebas. La base la pone Testcontainers
+# (`@DynamicPropertySource`), así que aquí solo lo que no depende de ella.
+clinube:
+  secreto: dev-only-insecure-key-change-me-never-use-in-production
+  zona: America/Guayaquil
+  entorno: desarrollo
+  depuracion: true
+logging:
+  level:
+    root: WARN
+    org.flywaydb: INFO

@@ -1,0 +1,70 @@
+{
+ "estado": 200,
+ "cuerpo": {
+  "count": 3,
+  "next": null,
+  "previous": null,
+  "results": [
+   {
+    "id": "a35f7a96-7c8b-4954-8f61-0596bd5118ad",
+    "email": "admin@clinube.local",
+    "phone": null,
+    "full_name": "",
+    "role": "admin",
+    "is_active": true,
+    "funciones": {
+     "agenda": true,
+     "cobros": true,
+     "mensajes_app": true,
+     "logros": true,
+     "inventario": true,
+     "reportes": true,
+     "finanzas": true,
+     "whatsapp": true,
+     "respaldo": true
+    },
+    "created_at": "2026-10-20T23:53:46.378048-05:00"
+   },
+   {
+    "id": "8d494297-cc5a-44fd-852e-7e7498b7ce55",
+    "email": "inactivo@clinube.local",
+    "phone": null,
+    "full_name": "",
+    "role": "doctor",
+    "is_active": false,
+    "funciones": {
+     "agenda": false,
+     "cobros": false,
+     "mensajes_app": true,
+     "logros": false,
+     "inventario": false,
+     "reportes": false,
+     "finanzas": false,
+     "whatsapp": false,
+     "respaldo": true
+    },
+    "created_at": "2026-10-20T23:59:47.903946-05:00"
+   },
+   {
+    "id": "cf2adf14-2921-4f3f-86a2-ae4e1c681284",
+    "email": "temporal@clinube.local",
+    "phone": null,
+    "full_name": "",
+    "role": "doctor",
+    "is_active": true,
+    "funciones": {
+     "agenda": false,
+     "cobros": false,
+     "mensajes_app": true,
+     "logros": false,
+     "inventario": false,
+     "reportes": false,
+     "finanzas": false,
+     "whatsapp": false,
+     "respaldo": true
+    },
+    "created_at": "2026-10-20T23:59:46.600904-05:00"
+   }
+  ]
+ }
+}
