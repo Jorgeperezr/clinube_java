@@ -9,11 +9,11 @@ diferencia entre los dos últimos importa:
 | **hecha** | Implementada y con sus pruebas en verde. **No basta:** las pruebas propias pueden pasar y la respuesta no ser la de Django. |
 | **igual a Django** | Comprobada con `scripts/comparar-contrato`: mismo código HTTP, mismas claves, mismo orden, mismos valores. |
 
-**42 de 202** igual a Django (20 %), y **4 más en parte** (falta un método o una exportación),
-comprobadas con `scripts/comparar-contrato` (270 de 270 peticiones iguales y las 12 tablas tocadas idénticas en las dos bases, informe en `docs/contrato/INFORME-COMPARADOR.md`).
+**48 de 202** igual a Django (23 %), y **5 más en parte** (falta un método o una exportación),
+comprobadas con `scripts/comparar-contrato` (329 de 329 peticiones iguales y las 17 tablas tocadas idénticas en las dos bases, informe en `docs/contrato/INFORME-COMPARADOR.md`).
 
 > **Estado a 2026-10-22:** el servidor compila sin errores ni avisos y la
-> suite pasa entera dos veces (157 pruebas en UTC y 157 en
+> suite pasa entera dos veces (162 pruebas en UTC y 162 en
 > Pacific/Kiritimati), incluidas las de integración contra PostgreSQL 16 con
 > la línea base de Flyway y Hibernate en `validate`.
 >
@@ -22,11 +22,12 @@ comprobadas con `scripts/comparar-contrato` (270 de 270 peticiones iguales y las
 > el panel de `frontend/` sin tocar): alta de un paciente con convenio, su
 > ficha, el registro del aviso de privacidad, el cambio de convenio, los
 > antecedentes médicos y sus alertas clínicas, el formulario 033, los
-> diagnósticos con el buscador CIE-10 y **el odontograma** (marcar una
-> superficie y una pieza entera, ver su historial, borrar un registro
-> equivocado) con **los índices CPO/ceo**; y en la agenda confirmar, marcar la
-> llegada, iniciar y finalizar la atención y crear una cita. De la ficha
-> faltan las evoluciones, el plan de tratamiento, los documentos, los
+> diagnósticos con el buscador CIE-10, el odontograma con los índices CPO/ceo,
+> **las evoluciones** (escribir, editar y borrar una nota) y **el plan de
+> tratamiento** (crear un plan, añadirle una línea, iniciarla y darla por
+> realizada); y en la agenda confirmar, marcar la llegada, iniciar y finalizar
+> la atención y crear una cita. De la ficha faltan las plantillas de plan, el
+> presupuesto desde el plan, la receta en PDF, los documentos, los
 > consentimientos, los cobros, las exportaciones del 033 a PDF y Excel, y
 > WhatsApp (fase 13).
 
@@ -106,7 +107,7 @@ comprobadas con `scripts/comparar-contrato` (270 de 270 peticiones iguales y las
 | POST | `/api/v1/users/<uuid:pk>/invitar/` | pendiente |
 | GET | `/api/v1/users/funciones/` | pendiente |
 
-### Fase 2 · `configuration` — Configuración y catálogos (2/16)
+### Fase 2 · `configuration` — Configuración y catálogos (3/16)
 
 | Métodos | Ruta | Estado |
 |---|---|---|
@@ -124,7 +125,7 @@ comprobadas con `scripts/comparar-contrato` (270 de 270 peticiones iguales y las
 | GET POST | `/api/v1/config/tarifarios/` | pendiente |
 | GET PUT PATCH DELETE | `/api/v1/config/tarifarios/<uuid:pk>/` | pendiente |
 | POST | `/api/v1/config/temas/previsualizar/` | pendiente |
-| GET POST | `/api/v1/config/treatments/` | pendiente |
+| GET POST | `/api/v1/config/treatments/` | GET igual a Django · POST pendiente |
 | GET PUT PATCH DELETE | `/api/v1/config/treatments/<uuid:pk>/` | pendiente |
 
 ### Fase 2 · `specialties` — Configuración y catálogos (0/5)
@@ -170,7 +171,7 @@ comprobadas con `scripts/comparar-contrato` (270 de 270 peticiones iguales y las
 | GET | `/api/v1/doctors/<uuid:pk>/calendar-url/` | igual a Django |
 | GET POST | `/api/v1/doctors/me/signature/` | pendiente |
 
-### Fase 5 · `clinical` — Historia clínica (12/41)
+### Fase 5 · `clinical` — Historia clínica (18/41)
 
 | Métodos | Ruta | Estado |
 |---|---|---|
@@ -184,7 +185,7 @@ comprobadas con `scripts/comparar-contrato` (270 de 270 peticiones iguales y las
 | GET PUT PATCH | `/api/v1/consents/<uuid:pk>/detail/` | pendiente |
 | GET | `/api/v1/consents/<uuid:pk>/pdf/` | pendiente |
 | POST | `/api/v1/consents/<uuid:pk>/sign/` | pendiente |
-| GET PUT PATCH DELETE | `/api/v1/evolutions/<uuid:pk>/` | pendiente |
+| GET PUT PATCH DELETE | `/api/v1/evolutions/<uuid:pk>/` | igual a Django, salvo la cita de otra clínica (diferencia deliberada) |
 | GET | `/api/v1/evolutions/<uuid:pk>/prescription-pdf/` | pendiente |
 | PATCH | `/api/v1/exam-requests/<uuid:pk>/report/` | pendiente |
 | GET PUT PATCH | `/api/v1/form033/<uuid:pk>/` | igual a Django |
@@ -198,7 +199,7 @@ comprobadas con `scripts/comparar-contrato` (270 de 270 peticiones iguales y las
 | GET POST | `/api/v1/patients/<uuid:pk>/consents/` | pendiente |
 | GET | `/api/v1/patients/<uuid:pk>/cpo-ceo/` | igual a Django |
 | GET POST | `/api/v1/patients/<uuid:pk>/diagnoses/` | igual a Django |
-| GET POST | `/api/v1/patients/<uuid:pk>/evolutions/` | pendiente |
+| GET POST | `/api/v1/patients/<uuid:pk>/evolutions/` | igual a Django, salvo la cita de otra clínica (diferencia deliberada) |
 | GET POST | `/api/v1/patients/<uuid:pk>/exam-requests/` | pendiente |
 | GET | `/api/v1/patients/<uuid:pk>/exam-requests/<uuid:exam_id>/pdf/` | pendiente |
 | GET POST | `/api/v1/patients/<uuid:pk>/form033/` | igual a Django |
@@ -208,13 +209,13 @@ comprobadas con `scripts/comparar-contrato` (270 de 270 peticiones iguales y las
 | GET POST | `/api/v1/patients/<uuid:pk>/periodontal-exams/` | pendiente |
 | GET POST | `/api/v1/patients/<uuid:pk>/radiographs/` | pendiente |
 | GET POST | `/api/v1/patients/<uuid:pk>/tooth-records/` | igual a Django, salvo el estado de otra clínica (diferencia deliberada) |
-| GET POST | `/api/v1/patients/<uuid:pk>/treatment-plans/` | pendiente |
+| GET POST | `/api/v1/patients/<uuid:pk>/treatment-plans/` | igual a Django |
 | GET PUT PATCH | `/api/v1/periodontal-teeth/<uuid:pk>/` | pendiente |
 | DELETE | `/api/v1/tooth-records/<uuid:pk>/` | igual a Django |
-| PUT PATCH | `/api/v1/treatment-plan-items/<uuid:pk>/` | pendiente |
-| GET PUT PATCH | `/api/v1/treatment-plans/<uuid:pk>/` | pendiente |
+| PUT PATCH | `/api/v1/treatment-plan-items/<uuid:pk>/` | igual a Django, salvo el tratamiento de otra clínica (diferencia deliberada) |
+| GET PUT PATCH | `/api/v1/treatment-plans/<uuid:pk>/` | igual a Django |
 | POST | `/api/v1/treatment-plans/<uuid:pk>/generate-budget/` | pendiente |
-| POST | `/api/v1/treatment-plans/<uuid:pk>/items/` | pendiente |
+| POST | `/api/v1/treatment-plans/<uuid:pk>/items/` | igual a Django, salvo el tratamiento de otra clínica (diferencia deliberada) |
 
 ### Fase 7 · `billing` — Cobros (3/17)
 

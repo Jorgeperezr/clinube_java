@@ -237,6 +237,65 @@
 | ver un registro | `GET /api/v1/tooth-records/8a5fed60-6c1a-5d2c-8ad8-a5c30fe8f04e/` | igual a Django |
 | odontograma tras borrar | `GET /api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/odontogram/current/` | igual a Django |
 | cpo-ceo tras borrar | `GET /api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/cpo-ceo/` | igual a Django |
+| evoluciones | `GET /api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/evolutions/` | igual a Django |
+| evoluciones, solo recetas | `GET /api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/evolutions/?type=prescription` | igual a Django |
+| evoluciones visibles | `GET /api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/evolutions/?visible_to_patient=TRUE` | igual a Django |
+| evoluciones no visibles | `GET /api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/evolutions/?visible_to_patient=0` | igual a Django |
+| evoluciones con visibilidad rara | `GET /api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/evolutions/?visible_to_patient=si` | igual a Django |
+| evoluciones con tipo malo | `GET /api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/evolutions/?type=receta` | igual a Django |
+| evoluciones, recepción | `GET /api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/evolutions/` | igual a Django |
+| evoluciones de otra clínica | `GET /api/v1/patients/92f3248c-fcd2-5d23-991f-58410f9ce47c/evolutions/` | igual a Django |
+| evolución nueva, doctora | `POST /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/evolutions/` | igual a Django |
+| evolución nueva, admin | `POST /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/evolutions/` | igual a Django |
+| evolución con todo mal | `POST /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/evolutions/` | igual a Django |
+| evolución vacía | `POST /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/evolutions/` | igual a Django |
+| evolución con cita inexistente | `POST /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/evolutions/` | igual a Django |
+| evolución en un paciente de baja | `POST /api/v1/patients/f392b107-da73-5a13-948a-727cbcaa6cb2/evolutions/` | igual a Django |
+| evolución, recepción | `POST /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/evolutions/` | igual a Django |
+| evoluciones tras las altas | `GET /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/evolutions/` | igual a Django |
+| ver una evolución | `GET /api/v1/evolutions/c59e9a25-fced-531c-aaab-4e7ce1805e37/` | igual a Django |
+| ver una evolución sin doctor ni autor | `GET /api/v1/evolutions/e9627638-242b-5476-a356-eb72184748e6/` | igual a Django |
+| ver una evolución de otra clínica | `GET /api/v1/evolutions/5d9394ce-52f9-57f7-a4a3-a0a6dad55456/` | igual a Django |
+| patch de evolución malo | `PATCH /api/v1/evolutions/c59e9a25-fced-531c-aaab-4e7ce1805e37/` | igual a Django |
+| patch de evolución | `PATCH /api/v1/evolutions/c59e9a25-fced-531c-aaab-4e7ce1805e37/` | igual a Django |
+| put de evolución sin fecha | `PUT /api/v1/evolutions/eb8eb993-3b70-5226-bed6-d4bd6d2728ee/` | igual a Django |
+| put de evolución | `PUT /api/v1/evolutions/eb8eb993-3b70-5226-bed6-d4bd6d2728ee/` | igual a Django |
+| borrar una evolución | `DELETE /api/v1/evolutions/e9627638-242b-5476-a356-eb72184748e6/` | igual a Django |
+| borrar la misma otra vez | `DELETE /api/v1/evolutions/e9627638-242b-5476-a356-eb72184748e6/` | igual a Django |
+| borrar una evolución, recepción | `DELETE /api/v1/evolutions/eb8eb993-3b70-5226-bed6-d4bd6d2728ee/` | igual a Django |
+| evoluciones tras editar y borrar | `GET /api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/evolutions/` | igual a Django |
+| tratamientos | `GET /api/v1/config/treatments/` | igual a Django |
+| tratamientos activos | `GET /api/v1/config/treatments/?is_active=true` | igual a Django |
+| tratamientos de una especialidad | `GET /api/v1/config/treatments/?specialty=07bf893d-7e20-56e3-b1e3-97308ad0b4d6` | igual a Django |
+| tratamientos de una especialidad ajena | `GET /api/v1/config/treatments/?specialty=a02e0e01-008b-5ccb-be53-cabfd18c2d79` | igual a Django |
+| tratamientos con especialidad inexistente | `GET /api/v1/config/treatments/?specialty=00000000-0000-4000-8000-000000000000` | igual a Django |
+| tratamientos con especialidad mala | `GET /api/v1/config/treatments/?specialty=abc` | igual a Django |
+| planes | `GET /api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/treatment-plans/` | igual a Django |
+| planes, recepción | `GET /api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/treatment-plans/` | igual a Django |
+| planes de otra clínica | `GET /api/v1/patients/92f3248c-fcd2-5d23-991f-58410f9ce47c/treatment-plans/` | igual a Django |
+| plan nuevo | `POST /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/treatment-plans/` | igual a Django |
+| plan nuevo de admin, activo | `POST /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/treatment-plans/` | igual a Django |
+| plan con estado malo | `POST /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/treatment-plans/` | igual a Django |
+| plan en un paciente de baja | `POST /api/v1/patients/f392b107-da73-5a13-948a-727cbcaa6cb2/treatment-plans/` | igual a Django |
+| ver un plan | `GET /api/v1/treatment-plans/54498eb3-850a-5895-8ace-aa91eaefeabc/` | igual a Django |
+| ver un plan de otra clínica | `GET /api/v1/treatment-plans/46d2e556-a547-5f73-af5b-979bfdc72a96/` | igual a Django |
+| patch de plan | `PATCH /api/v1/treatment-plans/c1782109-70b1-5149-b940-046766785c93/` | igual a Django |
+| put de plan | `PUT /api/v1/treatment-plans/c1782109-70b1-5149-b940-046766785c93/` | igual a Django |
+| línea nueva sin precio | `POST /api/v1/treatment-plans/c1782109-70b1-5149-b940-046766785c93/items/` | igual a Django |
+| línea nueva con precio y hecha | `POST /api/v1/treatment-plans/c1782109-70b1-5149-b940-046766785c93/items/` | igual a Django |
+| línea nueva con tratamiento inactivo | `POST /api/v1/treatment-plans/c1782109-70b1-5149-b940-046766785c93/items/` | igual a Django |
+| línea con todo mal | `POST /api/v1/treatment-plans/c1782109-70b1-5149-b940-046766785c93/items/` | igual a Django |
+| línea en un plan que no existe | `POST /api/v1/treatment-plans/00000000-0000-4000-8000-000000000000/items/` | igual a Django |
+| línea con datos malos en un plan que no existe | `POST /api/v1/treatment-plans/00000000-0000-4000-8000-000000000000/items/` | igual a Django |
+| plan tras las líneas | `GET /api/v1/treatment-plans/c1782109-70b1-5149-b940-046766785c93/` | igual a Django |
+| línea a realizada (descuenta inventario) | `PATCH /api/v1/treatment-plan-items/88df10fd-7580-5e56-9009-5ef28aad8448/` | igual a Django |
+| precio de una línea realizada | `PATCH /api/v1/treatment-plan-items/88df10fd-7580-5e56-9009-5ef28aad8448/` | igual a Django |
+| línea en progreso | `PATCH /api/v1/treatment-plan-items/51aac537-f87e-5fed-a5c6-e8c521c2f902/` | igual a Django |
+| put de línea sin tratamiento | `PUT /api/v1/treatment-plan-items/51aac537-f87e-5fed-a5c6-e8c521c2f902/` | igual a Django |
+| línea de otra clínica | `PATCH /api/v1/treatment-plan-items/e1a5a3eb-f6cc-5549-a202-6999c22bef2a/` | igual a Django |
+| línea, recepción | `PATCH /api/v1/treatment-plan-items/4317e2a7-7343-5f60-b104-81c688f5cdd4/` | igual a Django |
+| plan con su avance | `GET /api/v1/treatment-plans/54498eb3-850a-5895-8ace-aa91eaefeabc/` | igual a Django |
+| ver una línea | `GET /api/v1/treatment-plan-items/4317e2a7-7343-5f60-b104-81c688f5cdd4/` | igual a Django |
 | cita: crear vacía | `POST /api/v1/appointments/` | igual a Django |
 | cita: fin antes del inicio | `POST /api/v1/appointments/` | igual a Django |
 | cita: en el pasado | `POST /api/v1/appointments/` | igual a Django |

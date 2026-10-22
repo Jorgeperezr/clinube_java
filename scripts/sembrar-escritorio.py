@@ -41,7 +41,11 @@ from apps.accounts.models import User  # noqa: E402
 from apps.agenda.models import Appointment, Doctor  # noqa: E402
 from apps.app_paciente.models import MensajeConsultorio, SolicitudCita  # noqa: E402
 from apps.billing.models import Budget, Installment, Payment, PaymentPlan  # noqa: E402
-from apps.clinical.models import Diagnosis, Evolution, Form033Record, OdontogramState, ToothRecord  # noqa: E402
+from apps.clinical.models import (  # noqa: E402
+    Diagnosis, Evolution, Form033Record, OdontogramState, ToothRecord, TreatmentPlan, TreatmentPlanItem,
+)
+from apps.configuration.models import Treatment, TreatmentInventoryItem  # noqa: E402
+from apps.specialties.models import Specialty  # noqa: E402
 from apps.common.models import Tenant  # noqa: E402
 from apps.inventory.models import Batch, Product  # noqa: E402
 from apps.patients.models import MedicalBackground, Patient  # noqa: E402
@@ -250,12 +254,55 @@ def sembrar():
     # ── Seguimientos clínicos ────────────────────────────────────────
     larga = ("Control de la endodoncia en la pieza 36 🦷 con radiografía periapical; revisar la "
              "sensibilidad a la percusión y el estado de la restauración provisional antes de cementar.")
-    for p, dias, notas in [(pacientes[0], -3, "Control en 7 días"), (pacientes[11], 0, larga),
-                           (pacientes[12], 30, "Futuro: no debe salir"), (pacientes[13], -60, "Muy vencido")]:
-        Evolution.objects.create(tenant=demo, patient=p, created_by=admin, type="clinical_note",
-                                 date=hoy - timedelta(days=10), notes=notas, follow_up_date=hoy + timedelta(days=dias))
+    for i, (p, dias, notas) in enumerate([(pacientes[0], -3, "Control en 7 días"), (pacientes[11], 0, larga),
+                                          (pacientes[12], 30, "Futuro: no debe salir"), (pacientes[13], -60, "Muy vencido")]):
+        Evolution.objects.create(id=fijo(f"evolucion-seguimiento-{i}"), tenant=demo, patient=p, created_by=admin,
+                                 type="clinical_note", date=hoy - timedelta(days=10), notes=notas,
+                                 follow_up_date=hoy + timedelta(days=dias))
     Evolution.objects.create(tenant=demo, patient=pacientes[14], created_by=admin, type="clinical_note",
                              date=hoy, notes="Sin seguimiento")
+
+    # ── Evoluciones de paciente-6: de la doctora, de recepción sin doctor, una receta visible ──
+    Evolution.objects.create(id=fijo("evolucion-1"), tenant=demo, patient=pacientes[6], doctor=doctora,
+                             created_by=doctora.user, type="clinical_note", date=hoy - timedelta(days=2),
+                             notes="Dolor en la 36 al masticar.")
+    Evolution.objects.create(id=fijo("evolucion-2"), tenant=demo, patient=pacientes[6], created_by=admin,
+                             type="prescription", date=hoy - timedelta(days=2), notes="Ibuprofeno 400 mg c/8h",
+                             visible_to_patient=True)
+    Evolution.objects.create(id=fijo("evolucion-3"), tenant=demo, patient=pacientes[6], type="care_instruction",
+                             date=hoy - timedelta(days=5), notes="Enjuague con clorhexidina")
+
+    # ── Especialidades, tratamientos y planes ────────────────────────
+    # Las cinco de base vienen de la referencia (las siembra el `bootstrap`); una
+    # más con id fijo, para poder filtrar por ella desde peticiones.json.
+    general = Specialty.objects.get(tenant=demo, name="Clínica general")
+    endo = Specialty.objects.get(tenant=demo, name="Endodoncia")
+    estetica = Specialty.objects.create(id=fijo("especialidad-estetica"), tenant=demo, name="Estética dental")
+    Treatment.objects.create(id=fijo("tratamiento-blanqueamiento"), tenant=demo, specialty=estetica,
+                             name="Blanqueamiento", base_price=Decimal("150"))
+    resina = Treatment.objects.create(id=fijo("tratamiento-resina"), tenant=demo, specialty=general,
+                                      name="Resina compuesta", base_price=Decimal("45.00"), consumes_inventory=True)
+    Treatment.objects.create(id=fijo("tratamiento-endodoncia"), tenant=demo, specialty=endo,
+                             name="Endodoncia unirradicular", base_price=Decimal("180.50"))
+    Treatment.objects.create(id=fijo("tratamiento-antiguo"), tenant=demo, specialty=general,
+                             name="Amalgama", base_price=Decimal("20"), is_active=False)
+    # Los insumos de la resina: la anestesia sale primero del lote que caduca antes.
+    anestesia = Product.objects.create(id=fijo("producto-anestesia"), tenant=demo, name="Anestesia", min_stock=Decimal("1"))
+    for numero, cantidad, caduca in [("L1", "1.50", hoy + timedelta(days=200)), ("L2", "5", hoy + timedelta(days=30)),
+                                     ("L3", "9", None)]:
+        Batch.objects.create(id=fijo(f"lote-{numero}"), tenant=demo, product=anestesia, batch_number=numero,
+                             quantity=Decimal(cantidad), expiration_date=caduca)
+    TreatmentInventoryItem.objects.create(treatment=resina, product=anestesia, quantity_used=Decimal("6.25"))
+
+    plan_activo = TreatmentPlan.objects.create(id=fijo("plan-1"), tenant=demo, patient=pacientes[6], created_by=doctora,
+                                               status="active", notes="Rehabilitación del cuadrante 3")
+    for orden, (tratamiento, pieza, estado, precio) in enumerate([
+        (resina, "36", "done", "45.00"), (resina, "37", "planned", "40.00"),
+        (Treatment.objects.get(id=fijo("tratamiento-endodoncia")), "36", "in_progress", "180.50"),
+    ], start=1):
+        TreatmentPlanItem.objects.create(id=fijo(f"linea-{orden}"), treatment_plan=plan_activo, treatment=tratamiento,
+                                         tooth_fdi_code=pieza, order=orden, status=estado, estimated_price=Decimal(precio))
+    TreatmentPlan.objects.create(id=fijo("plan-2"), tenant=demo, patient=pacientes[6], notes="")
 
     # ── Inventario ───────────────────────────────────────────────────
     agujas = Product.objects.create(tenant=demo, name="Agujas", min_stock=Decimal("50"))
@@ -291,6 +338,13 @@ def sembrar():
     Agreement.objects.create(id=fijo("convenio-vecina"), tenant=vecina, name="Convenio ajeno",
                              discount_percentage=Decimal("50"))
     Form033Record.objects.create(id=fijo("form033-vecina"), tenant=vecina, patient=pv, date=hoy, motivo_consulta="Ajeno")
+    ajena = Specialty.objects.create(id=fijo("especialidad-vecina"), tenant=vecina, name="Ajena")
+    tratamiento_ajeno = Treatment.objects.create(id=fijo("tratamiento-vecina"), tenant=vecina, specialty=ajena,
+                                                 name="Tratamiento ajeno", base_price=Decimal("1"))
+    plan_ajeno = TreatmentPlan.objects.create(id=fijo("plan-vecina"), tenant=vecina, patient=pv)
+    TreatmentPlanItem.objects.create(id=fijo("linea-vecina"), treatment_plan=plan_ajeno, treatment=tratamiento_ajeno)
+    Evolution.objects.create(id=fijo("evolucion-vecina"), tenant=vecina, patient=pv, type="clinical_note", date=hoy,
+                             notes="Ajena")
     Diagnosis.objects.create(tenant=vecina, patient=pv, description="Ajeno", date=hoy)
     ajeno = OdontogramState.objects.create(id=fijo("estado-vecina"), tenant=vecina, code="CARIES", label="Caries ajena",
                                            color="#123456", order=1)

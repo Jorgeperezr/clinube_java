@@ -2007,6 +2007,505 @@
       "usuario": "admin"
     },
     {
+      "nombre": "evoluciones",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/evolutions/",
+      "usuario": "doctora"
+    },
+    {
+      "nombre": "evoluciones, solo recetas",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/evolutions/?type=prescription",
+      "usuario": "auxiliar"
+    },
+    {
+      "nombre": "evoluciones visibles",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/evolutions/?visible_to_patient=TRUE",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "evoluciones no visibles",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/evolutions/?visible_to_patient=0",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "evoluciones con visibilidad rara",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/evolutions/?visible_to_patient=si",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "evoluciones con tipo malo",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/evolutions/?type=receta",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "evoluciones, recepción",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/evolutions/",
+      "usuario": "recepcion"
+    },
+    {
+      "nombre": "evoluciones de otra clínica",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/92f3248c-fcd2-5d23-991f-58410f9ce47c/evolutions/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "evolución nueva, doctora",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/evolutions/",
+      "usuario": "doctora",
+      "cuerpo": {
+        "type": "prescription",
+        "date": "2026-10-20",
+        "notes": "  Amoxicilina 500 mg  ",
+        "visible_to_patient": "true",
+        "follow_up_date": "2026-10-27"
+      },
+      "volatiles": [
+        "id",
+        "created_at"
+      ]
+    },
+    {
+      "nombre": "evolución nueva, admin",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/evolutions/",
+      "usuario": "admin",
+      "cuerpo": {
+        "date": "2026-10-21",
+        "notes": "Nota"
+      },
+      "volatiles": [
+        "id",
+        "created_at"
+      ]
+    },
+    {
+      "nombre": "evolución con todo mal",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/evolutions/",
+      "usuario": "doctora",
+      "cuerpo": {
+        "appointment": "no-uuid",
+        "type": "nota",
+        "date": "ayer",
+        "notes": "   ",
+        "visible_to_patient": "quizá",
+        "follow_up_date": "x"
+      }
+    },
+    {
+      "nombre": "evolución vacía",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/evolutions/",
+      "usuario": "doctora",
+      "cuerpo": {}
+    },
+    {
+      "nombre": "evolución con cita inexistente",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/evolutions/",
+      "usuario": "doctora",
+      "cuerpo": {
+        "appointment": "00000000-0000-4000-8000-000000000000",
+        "date": "2026-10-20",
+        "notes": "x"
+      }
+    },
+    {
+      "nombre": "evolución en un paciente de baja",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/f392b107-da73-5a13-948a-727cbcaa6cb2/evolutions/",
+      "usuario": "doctora",
+      "cuerpo": {
+        "date": "2026-10-20",
+        "notes": "x"
+      }
+    },
+    {
+      "nombre": "evolución, recepción",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/evolutions/",
+      "usuario": "recepcion",
+      "cuerpo": {
+        "date": "2026-10-20",
+        "notes": "x"
+      }
+    },
+    {
+      "nombre": "evoluciones tras las altas",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/evolutions/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at"
+      ]
+    },
+    {
+      "nombre": "ver una evolución",
+      "metodo": "GET",
+      "ruta": "/api/v1/evolutions/c59e9a25-fced-531c-aaab-4e7ce1805e37/",
+      "usuario": "auxiliar"
+    },
+    {
+      "nombre": "ver una evolución sin doctor ni autor",
+      "metodo": "GET",
+      "ruta": "/api/v1/evolutions/e9627638-242b-5476-a356-eb72184748e6/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "ver una evolución de otra clínica",
+      "metodo": "GET",
+      "ruta": "/api/v1/evolutions/5d9394ce-52f9-57f7-a4a3-a0a6dad55456/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "patch de evolución malo",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/evolutions/c59e9a25-fced-531c-aaab-4e7ce1805e37/",
+      "usuario": "doctora",
+      "cuerpo": {
+        "notes": ""
+      }
+    },
+    {
+      "nombre": "patch de evolución",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/evolutions/c59e9a25-fced-531c-aaab-4e7ce1805e37/",
+      "usuario": "doctora",
+      "cuerpo": {
+        "notes": "Dolor que cede con analgésicos",
+        "visible_to_patient": true
+      }
+    },
+    {
+      "nombre": "put de evolución sin fecha",
+      "metodo": "PUT",
+      "ruta": "/api/v1/evolutions/eb8eb993-3b70-5226-bed6-d4bd6d2728ee/",
+      "usuario": "admin",
+      "cuerpo": {
+        "notes": "x"
+      }
+    },
+    {
+      "nombre": "put de evolución",
+      "metodo": "PUT",
+      "ruta": "/api/v1/evolutions/eb8eb993-3b70-5226-bed6-d4bd6d2728ee/",
+      "usuario": "admin",
+      "cuerpo": {
+        "date": "2026-10-19",
+        "notes": "Paracetamol 1 g",
+        "type": "prescription",
+        "follow_up_date": null
+      }
+    },
+    {
+      "nombre": "borrar una evolución",
+      "metodo": "DELETE",
+      "ruta": "/api/v1/evolutions/e9627638-242b-5476-a356-eb72184748e6/",
+      "usuario": "auxiliar"
+    },
+    {
+      "nombre": "borrar la misma otra vez",
+      "metodo": "DELETE",
+      "ruta": "/api/v1/evolutions/e9627638-242b-5476-a356-eb72184748e6/",
+      "usuario": "auxiliar"
+    },
+    {
+      "nombre": "borrar una evolución, recepción",
+      "metodo": "DELETE",
+      "ruta": "/api/v1/evolutions/eb8eb993-3b70-5226-bed6-d4bd6d2728ee/",
+      "usuario": "recepcion"
+    },
+    {
+      "nombre": "evoluciones tras editar y borrar",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/evolutions/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "tratamientos",
+      "metodo": "GET",
+      "ruta": "/api/v1/config/treatments/",
+      "usuario": "recepcion"
+    },
+    {
+      "nombre": "tratamientos activos",
+      "metodo": "GET",
+      "ruta": "/api/v1/config/treatments/?is_active=true",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "tratamientos de una especialidad",
+      "metodo": "GET",
+      "ruta": "/api/v1/config/treatments/?specialty=07bf893d-7e20-56e3-b1e3-97308ad0b4d6",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "tratamientos de una especialidad ajena",
+      "metodo": "GET",
+      "ruta": "/api/v1/config/treatments/?specialty=a02e0e01-008b-5ccb-be53-cabfd18c2d79",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "tratamientos con especialidad inexistente",
+      "metodo": "GET",
+      "ruta": "/api/v1/config/treatments/?specialty=00000000-0000-4000-8000-000000000000",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "tratamientos con especialidad mala",
+      "metodo": "GET",
+      "ruta": "/api/v1/config/treatments/?specialty=abc",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "planes",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/treatment-plans/",
+      "usuario": "doctora"
+    },
+    {
+      "nombre": "planes, recepción",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/treatment-plans/",
+      "usuario": "recepcion"
+    },
+    {
+      "nombre": "planes de otra clínica",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/92f3248c-fcd2-5d23-991f-58410f9ce47c/treatment-plans/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "plan nuevo",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/treatment-plans/",
+      "usuario": "doctora",
+      "cuerpo": {
+        "notes": "  Plan de prueba "
+      },
+      "volatiles": [
+        "id",
+        "created_at"
+      ]
+    },
+    {
+      "nombre": "plan nuevo de admin, activo",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/treatment-plans/",
+      "usuario": "admin",
+      "cuerpo": {
+        "status": "active"
+      },
+      "volatiles": [
+        "id",
+        "created_at"
+      ]
+    },
+    {
+      "nombre": "plan con estado malo",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/treatment-plans/",
+      "usuario": "admin",
+      "cuerpo": {
+        "status": "hecho",
+        "notes": [
+          "x"
+        ]
+      }
+    },
+    {
+      "nombre": "plan en un paciente de baja",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/f392b107-da73-5a13-948a-727cbcaa6cb2/treatment-plans/",
+      "usuario": "admin",
+      "cuerpo": {}
+    },
+    {
+      "nombre": "ver un plan",
+      "metodo": "GET",
+      "ruta": "/api/v1/treatment-plans/54498eb3-850a-5895-8ace-aa91eaefeabc/",
+      "usuario": "auxiliar"
+    },
+    {
+      "nombre": "ver un plan de otra clínica",
+      "metodo": "GET",
+      "ruta": "/api/v1/treatment-plans/46d2e556-a547-5f73-af5b-979bfdc72a96/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "patch de plan",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/treatment-plans/c1782109-70b1-5149-b940-046766785c93/",
+      "usuario": "doctora",
+      "cuerpo": {
+        "status": "completed"
+      }
+    },
+    {
+      "nombre": "put de plan",
+      "metodo": "PUT",
+      "ruta": "/api/v1/treatment-plans/c1782109-70b1-5149-b940-046766785c93/",
+      "usuario": "doctora",
+      "cuerpo": {
+        "notes": "Revisado"
+      }
+    },
+    {
+      "nombre": "línea nueva sin precio",
+      "metodo": "POST",
+      "ruta": "/api/v1/treatment-plans/c1782109-70b1-5149-b940-046766785c93/items/",
+      "usuario": "doctora",
+      "cuerpo": {
+        "treatment": "6b8b10d6-82e5-5bff-902e-d16d8e99cb08",
+        "tooth_fdi_code": " 26 ",
+        "order": 1
+      },
+      "volatiles": [
+        "id"
+      ]
+    },
+    {
+      "nombre": "línea nueva con precio y hecha",
+      "metodo": "POST",
+      "ruta": "/api/v1/treatment-plans/c1782109-70b1-5149-b940-046766785c93/items/",
+      "usuario": "doctora",
+      "cuerpo": {
+        "treatment": "6b8b10d6-82e5-5bff-902e-d16d8e99cb08",
+        "estimated_price": "-0",
+        "status": "done",
+        "order": "2"
+      },
+      "volatiles": [
+        "id"
+      ]
+    },
+    {
+      "nombre": "línea nueva con tratamiento inactivo",
+      "metodo": "POST",
+      "ruta": "/api/v1/treatment-plans/c1782109-70b1-5149-b940-046766785c93/items/",
+      "usuario": "admin",
+      "cuerpo": {
+        "treatment": "1eed0be4-3405-5cba-bfed-acb2b1370231",
+        "estimated_price": 12.5
+      },
+      "volatiles": [
+        "id"
+      ]
+    },
+    {
+      "nombre": "línea con todo mal",
+      "metodo": "POST",
+      "ruta": "/api/v1/treatment-plans/c1782109-70b1-5149-b940-046766785c93/items/",
+      "usuario": "admin",
+      "cuerpo": {
+        "treatment": "00000000-0000-4000-8000-000000000000",
+        "tooth_fdi_code": "123",
+        "order": -1,
+        "status": "x",
+        "estimated_price": "1.234"
+      }
+    },
+    {
+      "nombre": "línea en un plan que no existe",
+      "metodo": "POST",
+      "ruta": "/api/v1/treatment-plans/00000000-0000-4000-8000-000000000000/items/",
+      "usuario": "admin",
+      "cuerpo": {
+        "treatment": "6b8b10d6-82e5-5bff-902e-d16d8e99cb08"
+      }
+    },
+    {
+      "nombre": "línea con datos malos en un plan que no existe",
+      "metodo": "POST",
+      "ruta": "/api/v1/treatment-plans/00000000-0000-4000-8000-000000000000/items/",
+      "usuario": "admin",
+      "cuerpo": {}
+    },
+    {
+      "nombre": "plan tras las líneas",
+      "metodo": "GET",
+      "ruta": "/api/v1/treatment-plans/c1782109-70b1-5149-b940-046766785c93/",
+      "usuario": "admin",
+      "volatiles": [
+        "id"
+      ]
+    },
+    {
+      "nombre": "línea a realizada (descuenta inventario)",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/treatment-plan-items/88df10fd-7580-5e56-9009-5ef28aad8448/",
+      "usuario": "doctora",
+      "cuerpo": {
+        "status": "done"
+      }
+    },
+    {
+      "nombre": "precio de una línea realizada",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/treatment-plan-items/88df10fd-7580-5e56-9009-5ef28aad8448/",
+      "usuario": "doctora",
+      "cuerpo": {
+        "estimated_price": "38.5"
+      }
+    },
+    {
+      "nombre": "línea en progreso",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/treatment-plan-items/51aac537-f87e-5fed-a5c6-e8c521c2f902/",
+      "usuario": "auxiliar",
+      "cuerpo": {
+        "status": "planned",
+        "order": 7
+      }
+    },
+    {
+      "nombre": "put de línea sin tratamiento",
+      "metodo": "PUT",
+      "ruta": "/api/v1/treatment-plan-items/51aac537-f87e-5fed-a5c6-e8c521c2f902/",
+      "usuario": "admin",
+      "cuerpo": {
+        "status": "done"
+      }
+    },
+    {
+      "nombre": "línea de otra clínica",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/treatment-plan-items/e1a5a3eb-f6cc-5549-a202-6999c22bef2a/",
+      "usuario": "admin",
+      "cuerpo": {
+        "status": "done"
+      }
+    },
+    {
+      "nombre": "línea, recepción",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/treatment-plan-items/4317e2a7-7343-5f60-b104-81c688f5cdd4/",
+      "usuario": "recepcion",
+      "cuerpo": {
+        "status": "done"
+      }
+    },
+    {
+      "nombre": "plan con su avance",
+      "metodo": "GET",
+      "ruta": "/api/v1/treatment-plans/54498eb3-850a-5895-8ace-aa91eaefeabc/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "ver una línea",
+      "metodo": "GET",
+      "ruta": "/api/v1/treatment-plan-items/4317e2a7-7343-5f60-b104-81c688f5cdd4/",
+      "usuario": "admin"
+    },
+    {
       "nombre": "cita: crear vacía",
       "metodo": "POST",
       "ruta": "/api/v1/appointments/",

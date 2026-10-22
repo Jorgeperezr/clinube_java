@@ -54,6 +54,18 @@ RESUMENES = {
                   mobility, recession, tenant_id
                   from clinical_toothrecord
                   order by patient_id, tooth_fdi_code, surface, date, state_id, notes, mobility, recession""",
+    "evoluciones": """select patient_id, doctor_id, appointment_id, type, date, notes, visible_to_patient, follow_up_date,
+                      created_by_id, tenant_id from clinical_evolution
+                      order by patient_id, date, type, notes""",
+    "planes": """select patient_id, created_by_id, status, notes, tenant_id from clinical_treatmentplan
+                 order by patient_id, status, notes""",
+    "líneas de plan": """select p.patient_id, i.treatment_id, i.tooth_fdi_code, i."order", i.status, i.estimated_price::text,
+                         i.price_is_manual from clinical_treatmentplanitem i join clinical_treatmentplan p on p.id = i.treatment_plan_id
+                         order by p.patient_id, i."order", i.tooth_fdi_code, i.status, i.estimated_price""",
+    "lotes": "select product_id, batch_number, quantity::text, expiration_date from inventory_batch order by product_id, batch_number",
+    "movimientos": """select product_id, batch_id, movement_type, quantity::text, reason,
+                      related_treatment_plan_item_id is not null as de_tratamiento, tenant_id, count(*) as filas
+                      from inventory_inventorymovement group by 1, 2, 3, 4, 5, 6, 7 order by 1, 2, 3, 4, 5, 6, 7""",
     "marca": "select tenant_id, theme, paleta, temas, display_name from configuration_clinicbranding order by tenant_id",
     "configuración": """select platform_name, canal_codigo_paciente, funciones_publicadas, google_client_id
                         from common_platformconfiguration""",

@@ -267,3 +267,29 @@ Además, como en el formulario 033: `GET /patients/{id}/cpo-ceo/` de un
 paciente que no existe o es de otra clínica da un 500 en Django
 (`Patient.DoesNotExist`) y aquí el 404 «No Patient matches the given query.».
 Con un paciente dado de baja responde en los dos.
+
+## 17. Evoluciones y planes: lo ajeno, aquí no (diferencia DELIBERADA)
+
+El mismo fallo de aislamiento que en las citas (§10) y el odontograma (§16):
+
+- **Una línea de plan con el tratamiento de otra clínica**: Django la acepta
+  (`Treatment.objects.all()`); comprobado contra Django: 201 con «Tratamiento
+  ajeno» en `treatment_name`. Aquí, «Clave primaria "…" inválida - objeto no
+  existe.».
+- **Una evolución con la cita de otra clínica**: el serializador de Django
+  usa `Appointment.objects.all()`. Aquí la cita tiene que ser de la clínica.
+
+**Conviene corregirlo también en Django.**
+
+## 18. El inventario se descuenta otra vez al editar una línea ya realizada (fallo de Django, COPIADO)
+
+Al guardar una línea de plan que queda «realizada», Django descuenta del
+inventario los insumos del tratamiento. Lo hace cada vez que se guarda y la
+línea ESTÁ realizada, no solo cuando PASA a realizada: cambiar el precio o la
+pieza de una línea ya realizada vuelve a descontar. Y al crear una línea ya
+realizada no descuenta nada.
+
+Aquí se hace exactamente igual, a propósito: mientras los dos servidores
+compartan la base, el stock no puede depender de cuál atendió la petición.
+`EvolucionesYPlanesTest` lo deja escrito. **Conviene corregirlo en los dos a
+la vez** (descontar solo en el paso a «realizada», también al crear).
