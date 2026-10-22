@@ -81,6 +81,9 @@ object MensajesDeDjango {
     /** Login con credenciales que no corresponden a ninguna cuenta activa. Sin punto final, como en Django. */
     const val SIN_CUENTA_ACTIVA = "La combinación de credenciales no tiene una cuenta activa"
 
+    /** La renovación de SimpleJWT con el usuario desactivado. Sin traducir en la versión de clinube. */
+    const val SIN_CUENTA_ACTIVA_PARA_EL_TOKEN = "No active account found for the given token."
+
     /** El mensaje de fuera cuando la autenticación rechaza un token. Sin tildes, como en Django. */
     const val TOKEN_NO_VALIDO_PARA_NINGUN_TIPO = "El token dado no es valido para ningun tipo de token"
 

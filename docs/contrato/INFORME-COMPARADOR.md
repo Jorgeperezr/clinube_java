@@ -11,6 +11,8 @@
 | login método GET | `GET /api/v1/auth/login/` | igual a Django |
 | refresco sin campo | `POST /api/v1/auth/token/refresh/` | igual a Django |
 | refresco con basura | `POST /api/v1/auth/token/refresh/` | igual a Django |
+| renovar | `POST /api/v1/auth/token/refresh/` | igual a Django |
+| renovar otra vez con el mismo | `POST /api/v1/auth/token/refresh/` | igual a Django |
 | perfil | `GET /api/v1/auth/me/` | igual a Django |
 | perfil sin token | `GET /api/v1/auth/me/` | igual a Django |
 | perfil token basura | `GET /api/v1/auth/me/` | igual a Django |

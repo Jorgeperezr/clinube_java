@@ -2,13 +2,14 @@ package com.clinube.comun.jwt
 
 import com.clinube.comun.errores.MensajesDeDjango
 import com.clinube.configuracion.Ajustes
-import com.clinube.cuentas.dominio.TokenEnListaNegra
 import com.clinube.cuentas.dominio.TokenVigente
 import com.clinube.cuentas.dominio.Usuario
 import com.clinube.cuentas.repositorio.RepositorioDeTokensEnListaNegra
 import com.clinube.cuentas.repositorio.RepositorioDeTokensVigentes
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.sql.Timestamp
 import java.time.Instant
 import java.util.UUID
 
@@ -25,6 +26,7 @@ class ServicioDeTokens(
     private val ajustes: Ajustes,
     private val vigentes: RepositorioDeTokensVigentes,
     private val listaNegra: RepositorioDeTokensEnListaNegra,
+    private val jdbc: NamedParameterJdbcTemplate,
 ) {
 
     companion object {
@@ -84,31 +86,43 @@ class ServicioDeTokens(
         }
 
         val usuarioId = UUID.fromString(claims["user_id"] as String)
-        // `blacklist()` de SimpleJWT: si el refresco no estaba apuntado
-        // (porque salió de una rotación anterior), se apunta ahora y
-        // después se invalida.
-        val fila = vigentes.findByJti(jti) ?: vigentes.save(
-            TokenVigente(
-                usuarioId = usuarioId,
-                jti = jti,
-                token = tokenDeRefresco,
-                creadoEn = (claims["iat"] as? Number)?.let { Instant.ofEpochSecond(it.toLong()) },
-                caducaEn = Instant.ofEpochSecond((claims["exp"] as Number).toLong()),
-            ),
-        )
-        if (!listaNegra.existsByTokenId(fila.id!!)) {
-            listaNegra.save(TokenEnListaNegra(tokenId = fila.id!!, invalidadoEn = Instant.now()))
+        // `TokenRefreshSerializer` de SimpleJWT 5.5: el usuario tiene que
+        // seguir activo, o el refresco no sirve (y NO se invalida). Sin esto,
+        // a una cuenta desactivada le quedaban días de sesión renovándose.
+        // Django da un 500 si el usuario ya no existe; aquí, el mismo 401.
+        val activo = jdbc.query("select is_active from accounts_user where id = :id", mapOf("id" to usuarioId)) { f, _ ->
+            f.getBoolean("is_active")
+        }.firstOrNull()
+        if (activo != true) {
+            throw com.clinube.comun.errores.ExcepcionApi
+                .autenticacionFallida(MensajesDeDjango.SIN_CUENTA_ACTIVA_PARA_EL_TOKEN)
         }
 
-        val ahora = Instant.now().epochSecond
+        val ahora = Instant.now()
+        // `blacklist()`: el refresco presentado queda apuntado (si salió de
+        // otra rotación y no lo estaba) e invalidado. Las dos cosas son
+        // `get_or_create` en Django, que no falla si dos renovaciones con el
+        // mismo token llegan a la vez —el panel lanza varias cuando caduca el
+        // acceso—; aquí, `on conflict do nothing`. Antes, la segunda chocaba
+        // con la restricción única y respondía 500.
+        apuntar(jti, tokenDeRefresco, usuarioId, (claims["iat"] as? Number)?.let { Instant.ofEpochSecond(it.toLong()) },
+            Instant.ofEpochSecond((claims["exp"] as Number).toLong()))
+        jdbc.update(
+            """insert into token_blacklist_blacklistedtoken (blacklisted_at, token_id)
+               select :ahora, id from token_blacklist_outstandingtoken where jti = :jti
+               on conflict (token_id) do nothing""",
+            mapOf("ahora" to Timestamp.from(ahora), "jti" to jti),
+        )
+
+        val segundos = ahora.epochSecond
         // La rotación reutiliza los claims del token presentado y le
         // cambia `jti`, `exp` e `iat`: el rol y la clínica son los que
         // llevaba. Igual que `set_jti/set_exp/set_iat` en SimpleJWT, que
         // tampoco vuelve a leer el usuario de la base.
         val nuevoRefresco = LinkedHashMap<String, Any?>().apply {
             put("token_type", REFRESCO)
-            put("exp", ahora + ajustes.jwt.vidaRefresco.seconds)
-            put("iat", ahora)
+            put("exp", segundos + ajustes.jwt.vidaRefresco.seconds)
+            put("iat", segundos)
             put("jti", nuevoJti())
             put("user_id", claims["user_id"])
             put("role", claims["role"])
@@ -116,16 +130,28 @@ class ServicioDeTokens(
         }
         val nuevoAcceso = LinkedHashMap<String, Any?>().apply {
             put("token_type", ACCESO)
-            put("exp", ahora + ajustes.jwt.vidaAcceso.seconds)
-            put("iat", ahora)
+            put("exp", segundos + ajustes.jwt.vidaAcceso.seconds)
+            put("iat", segundos)
             put("jti", nuevoJti())
             put("user_id", claims["user_id"])
             put("role", claims["role"])
             put("tenant_id", claims["tenant_id"])
         }
-        return Pareja(
-            refresh = Jwt.firmar(nuevoRefresco, ajustes.secreto),
-            access = Jwt.firmar(nuevoAcceso, ajustes.secreto),
+        val refrescoFirmado = Jwt.firmar(nuevoRefresco, ajustes.secreto)
+        // `outstand()`: el refresco nuevo queda apuntado ya, como en Django,
+        // y no la primera vez que se use.
+        apuntar(nuevoRefresco["jti"] as String, refrescoFirmado, usuarioId, ahora,
+            Instant.ofEpochSecond(nuevoRefresco["exp"] as Long))
+        return Pareja(refresh = refrescoFirmado, access = Jwt.firmar(nuevoAcceso, ajustes.secreto))
+    }
+
+    /** `OutstandingToken.objects.get_or_create(jti=…)`. */
+    private fun apuntar(jti: String, token: String, usuarioId: UUID, creadoEn: Instant?, caducaEn: Instant) {
+        jdbc.update(
+            """insert into token_blacklist_outstandingtoken (token, created_at, expires_at, user_id, jti)
+               values (:token, :creado, :caduca, :usuario, :jti) on conflict (jti) do nothing""",
+            mapOf("token" to token, "creado" to creadoEn?.let(Timestamp::from), "caduca" to Timestamp.from(caducaEn),
+                "usuario" to usuarioId, "jti" to jti),
         )
     }
 

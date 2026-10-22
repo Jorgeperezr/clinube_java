@@ -54,6 +54,29 @@ def pedir(base, peticion, token):
         return estado, texto[:200] if texto.lstrip().startswith("<") else texto
 
 
+def refresco(base, credenciales):
+    """El token de refresco de un login nuevo en ese servidor."""
+    estado, cuerpo = pedir(base, {"metodo": "POST", "ruta": "/api/v1/auth/login/",
+                                  "cuerpo": credenciales}, None)
+    return cuerpo.get("refresh") if estado == 200 and isinstance(cuerpo, dict) else None
+
+
+def con_refrescos(valor, servidor, base, usuarios, guardados):
+    """
+    Sustituye "{refresco:usuario#clave}" por un refresco de ESE servidor:
+    cada uno firma los suyos, así que no se puede escribir uno fijo. La
+    misma clave da el mismo token, para pedir dos veces con el mismo.
+    """
+    if isinstance(valor, dict):
+        return {k: con_refrescos(v, servidor, base, usuarios, guardados) for k, v in valor.items()}
+    if isinstance(valor, str) and valor.startswith("{refresco:") and valor.endswith("}"):
+        clave = valor[len("{refresco:"):-1]
+        if (servidor, clave) not in guardados:
+            guardados[(servidor, clave)] = refresco(base, usuarios[clave.split("#")[0]])
+        return guardados[(servidor, clave)]
+    return valor
+
+
 def entrar(base, credenciales):
     estado, cuerpo = pedir(base, {"metodo": "POST", "ruta": "/api/v1/auth/login/",
                                   "cuerpo": credenciales}, None)
@@ -142,12 +165,17 @@ def main():
             if tokens[nombre][servidor] is None:
                 print(f"{AMARILLO}! no se pudo entrar como «{nombre}» en {servidor}{FIN}")
 
+    refrescos = {}
     iguales, distintas, filas = 0, 0, []
     for peticion in config["peticiones"]:
         volatiles = set(peticion.get("volatiles", [])) | {"access", "refresh", "jti"}
         usuario = peticion.get("usuario")
-        eD, cD = pedir(args.django, peticion, tokens.get(usuario, {}).get("django") if usuario else None)
-        eK, cK = pedir(args.kotlin, peticion, tokens.get(usuario, {}).get("kotlin") if usuario else None)
+        enD, enK = peticion, peticion
+        if "cuerpo" in peticion:
+            enD = {**peticion, "cuerpo": con_refrescos(peticion["cuerpo"], "django", args.django, config["usuarios"], refrescos)}
+            enK = {**peticion, "cuerpo": con_refrescos(peticion["cuerpo"], "kotlin", args.kotlin, config["usuarios"], refrescos)}
+        eD, cD = pedir(args.django, enD, tokens.get(usuario, {}).get("django") if usuario else None)
+        eK, cK = pedir(args.kotlin, enK, tokens.get(usuario, {}).get("kotlin") if usuario else None)
 
         problemas = []
         if eD != eK:

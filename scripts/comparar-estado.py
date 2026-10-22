@@ -39,6 +39,15 @@ RESUMENES = {
                                    indicadores_salud_bucal::text, examen_estomatognatico::text, temperatura""",
     "diagnósticos": """select patient_id, doctor_id, tooth_fdi_code, code, description, diagnosis_kind, date, tenant_id
                        from clinical_diagnosis order by patient_id, date, description, code, tooth_fdi_code""",
+    # Sin los pacientes: Django apunta un refresco al rechazar su login por
+    # el panel (lo crea `super().validate()` antes de mirar el rol) y Kotlin
+    # no, a propósito (docs/DIFERENCIAS.md). Cuando se porte su entrada por
+    # código, sus tokens tendrán que entrar aquí.
+    "tokens": """select v.user_id, count(*) as apuntados, count(n.id) as invalidados
+                 from token_blacklist_outstandingtoken v
+                 join accounts_user u on u.id = v.user_id and u.role <> 'patient'
+                 left join token_blacklist_blacklistedtoken n on n.token_id = v.id
+                 group by v.user_id order by v.user_id""",
     "marca": "select tenant_id, theme, paleta, temas, display_name from configuration_clinicbranding order by tenant_id",
     "configuración": """select platform_name, canal_codigo_paciente, funciones_publicadas, google_client_id
                         from common_platformconfiguration""",

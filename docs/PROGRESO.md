@@ -10,10 +10,10 @@ diferencia entre los dos últimos importa:
 | **igual a Django** | Comprobada con `scripts/comparar-contrato`: mismo código HTTP, mismas claves, mismo orden, mismos valores. |
 
 **37 de 202** igual a Django (18 %), y **4 más en parte** (falta un método o una exportación),
-comprobadas con `scripts/comparar-contrato` (229 de 229 peticiones iguales y las 10 tablas tocadas idénticas en las dos bases, informe en `docs/contrato/INFORME-COMPARADOR.md`).
+comprobadas con `scripts/comparar-contrato` (231 de 231 peticiones iguales y las 11 tablas tocadas idénticas en las dos bases, informe en `docs/contrato/INFORME-COMPARADOR.md`).
 
 > **Estado a 2026-10-22:** el servidor compila sin errores ni avisos y la
-> suite pasa entera dos veces (147 pruebas en UTC y 147 en
+> suite pasa entera dos veces (151 pruebas en UTC y 151 en
 > Pacific/Kiritimati), incluidas las de integración contra PostgreSQL 16 con
 > la línea base de Flyway y Hibernate en `validate`.
 >

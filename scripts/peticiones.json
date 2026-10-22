@@ -124,6 +124,24 @@
       }
     },
     {
+      "nombre": "renovar",
+      "metodo": "POST",
+      "ruta": "/api/v1/auth/token/refresh/",
+      "usuario": null,
+      "cuerpo": {
+        "refresh": "{refresco:doctora#a}"
+      }
+    },
+    {
+      "nombre": "renovar otra vez con el mismo",
+      "metodo": "POST",
+      "ruta": "/api/v1/auth/token/refresh/",
+      "usuario": null,
+      "cuerpo": {
+        "refresh": "{refresco:doctora#a}"
+      }
+    },
+    {
       "nombre": "perfil",
       "metodo": "GET",
       "ruta": "/api/v1/auth/me/",

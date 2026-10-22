@@ -229,3 +229,23 @@ DRF escribe `\u001f` y Jackson `\u001F`: el mismo carácter para cualquier
 cliente que lea JSON, pero no los mismos bytes. Solo afecta a textos con
 caracteres de control (del 0x00 al 0x1F que no tienen escape corto), que el
 panel no produce. Viene de antes de esta ronda y vale para todas las rutas.
+
+## 15. Renovar la sesión
+
+`POST /auth/token/refresh/` hace lo mismo que la `TokenRefreshView` de
+SimpleJWT 5.5.1: rota el refresco, invalida el presentado, apunta el nuevo
+en `OutstandingToken` y exige que el usuario siga activo (si no, 401 «No
+active account found for the given token.», sin invalidar el token). Varias
+renovaciones a la vez con el mismo token tampoco fallan: las que llegan
+después de invalidarlo reciben el 401 de token en lista negra, como en Django.
+
+Dos cosas distintas:
+
+- **Un refresco de un usuario que ya no existe:** Django da un 500
+  (`User.DoesNotExist` sin capturar); aquí, el mismo 401 que para una cuenta
+  desactivada.
+- **El login de un paciente por el panel** (rechazado con 400 en los dos):
+  Django deja apuntado en `OutstandingToken` un refresco válido que nunca
+  entrega, porque lo crea antes de mirar el rol. Aquí no se crea: es un
+  token vivo guardado sin motivo. Por eso la comparación del estado de las
+  bases cuenta los tokens del personal y no los de los pacientes.

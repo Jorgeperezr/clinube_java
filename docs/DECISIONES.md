@@ -224,3 +224,15 @@ una instalación desde cero) faltarían. El catálogo CIE-10 va ahora en la V2
 alguna crea filas que una base nueva necesite: `accounts/0009`, `agenda/0002`,
 `billing/0002`, `clinical/0011` y `0013`, `common/0005`, `0007`, `0008`,
 `0009` y `0011`.
+
+## 17. Las carreras se prueban forzando el orden, no con hilos
+
+El 500 al renovar la sesión solo salía cuando dos renovaciones con el mismo
+token se cruzaban en un momento concreto. Doce hilos a la vez no lo
+reprodujeron. `RenovacionDeSesionTest` lo fuerza: otra transacción mete el
+token en la lista negra sin confirmar, la renovación pasa la comprobación y
+se queda esperando en su `insert`, y la prueba confirma la otra transacción.
+Sin la corrección falla siempre con el 500; con ella pasa siempre.
+
+En Django esas altas son `get_or_create`, que no falla si otro proceso crea la
+fila a la vez. Aquí, `insert … on conflict do nothing`.
