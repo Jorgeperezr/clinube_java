@@ -1703,6 +1703,310 @@
       "usuario": null
     },
     {
+      "nombre": "estados del odontograma",
+      "metodo": "GET",
+      "ruta": "/api/v1/odontogram-states/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "estados, recepción",
+      "metodo": "GET",
+      "ruta": "/api/v1/odontogram-states/",
+      "usuario": "recepcion"
+    },
+    {
+      "nombre": "estados sin sesión",
+      "metodo": "GET",
+      "ruta": "/api/v1/odontogram-states/",
+      "usuario": null
+    },
+    {
+      "nombre": "historial de piezas",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/tooth-records/",
+      "usuario": "doctora"
+    },
+    {
+      "nombre": "historial, página 2",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/tooth-records/?page=2",
+      "usuario": "doctora"
+    },
+    {
+      "nombre": "historial de una pieza",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/tooth-records/?tooth_fdi_code=16",
+      "usuario": "auxiliar"
+    },
+    {
+      "nombre": "historial de una pieza con espacios",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/tooth-records/?tooth_fdi_code=+21+",
+      "usuario": "auxiliar"
+    },
+    {
+      "nombre": "historial por superficie",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/tooth-records/?surface=occlusal",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "historial con superficie mala",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/tooth-records/?surface=arriba",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "historial con pieza y superficie",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/tooth-records/?surface=whole&tooth_fdi_code=48",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "historial repetido",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/tooth-records/?tooth_fdi_code=11&tooth_fdi_code=26",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "historial, recepción",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/tooth-records/",
+      "usuario": "recepcion"
+    },
+    {
+      "nombre": "historial de otra clínica",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/92f3248c-fcd2-5d23-991f-58410f9ce47c/tooth-records/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "odontograma actual",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/odontogram/current/",
+      "usuario": "doctora"
+    },
+    {
+      "nombre": "odontograma actual, recepción",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/odontogram/current/",
+      "usuario": "recepcion"
+    },
+    {
+      "nombre": "odontograma de un paciente de baja",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/f392b107-da73-5a13-948a-727cbcaa6cb2/odontogram/current/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "odontograma de otra clínica",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/92f3248c-fcd2-5d23-991f-58410f9ce47c/odontogram/current/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "cpo-ceo",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/cpo-ceo/",
+      "usuario": "recepcion"
+    },
+    {
+      "nombre": "cpo-ceo sin registros",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/90ccff49-5d1a-5058-bc43-f5c67cde4a51/cpo-ceo/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "cpo-ceo de un paciente de baja",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/f392b107-da73-5a13-948a-727cbcaa6cb2/cpo-ceo/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "cpo-ceo sin sesión",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/cpo-ceo/",
+      "usuario": null
+    },
+    {
+      "nombre": "registrar una superficie",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/tooth-records/",
+      "usuario": "doctora",
+      "cuerpo": {
+        "tooth_fdi_code": "17",
+        "surface": "mesial",
+        "state": "{estado:CARIES}",
+        "date": "2026-10-20",
+        "notes": " Dolor al frío "
+      },
+      "volatiles": [
+        "id",
+        "created_at"
+      ]
+    },
+    {
+      "nombre": "registrar movilidad como el panel",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/tooth-records/",
+      "usuario": "admin",
+      "cuerpo": {
+        "tooth_fdi_code": "17",
+        "surface": "whole",
+        "state": "{estado:SANO}",
+        "mobility": 3,
+        "date": "2026-10-21",
+        "notes": "Registro de movilidad: 3"
+      },
+      "volatiles": [
+        "id",
+        "created_at"
+      ]
+    },
+    {
+      "nombre": "registrar con un estado inactivo",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/tooth-records/",
+      "usuario": "auxiliar",
+      "cuerpo": {
+        "tooth_fdi_code": "55",
+        "state": "97205b50-1672-5b92-8f3b-44b251670913",
+        "date": "20261019",
+        "recession": "2"
+      },
+      "volatiles": [
+        "id",
+        "created_at"
+      ]
+    },
+    {
+      "nombre": "registrar con todo mal",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/tooth-records/",
+      "usuario": "doctora",
+      "cuerpo": {
+        "tooth_fdi_code": "123",
+        "surface": "arriba",
+        "state": "no-es-uuid",
+        "mobility": -1,
+        "recession": "x",
+        "treatment_plan_item": "00000000-0000-4000-8000-000000000000",
+        "date": "ayer",
+        "notes": [
+          "x"
+        ]
+      }
+    },
+    {
+      "nombre": "registrar vacío",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/tooth-records/",
+      "usuario": "doctora",
+      "cuerpo": {}
+    },
+    {
+      "nombre": "registrar con estado numérico",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/tooth-records/",
+      "usuario": "doctora",
+      "cuerpo": {
+        "tooth_fdi_code": "17",
+        "state": 5,
+        "date": "2026-10-20"
+      }
+    },
+    {
+      "nombre": "registrar, recepción",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/tooth-records/",
+      "usuario": "recepcion",
+      "cuerpo": {
+        "tooth_fdi_code": "17",
+        "state": "{estado:SANO}",
+        "date": "2026-10-20"
+      }
+    },
+    {
+      "nombre": "registrar en un paciente de baja",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/f392b107-da73-5a13-948a-727cbcaa6cb2/tooth-records/",
+      "usuario": "doctora",
+      "cuerpo": {
+        "tooth_fdi_code": "17",
+        "state": "{estado:SANO}",
+        "date": "2026-10-20"
+      }
+    },
+    {
+      "nombre": "registrar en un paciente que no existe",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/00000000-0000-4000-8000-000000000000/tooth-records/",
+      "usuario": "doctora",
+      "cuerpo": {
+        "tooth_fdi_code": "17",
+        "state": "{estado:SANO}",
+        "date": "2026-10-20"
+      }
+    },
+    {
+      "nombre": "odontograma tras registrar",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/odontogram/current/",
+      "usuario": "doctora",
+      "volatiles": [
+        "id",
+        "created_at"
+      ]
+    },
+    {
+      "nombre": "cpo-ceo tras registrar",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/cpo-ceo/",
+      "usuario": "doctora"
+    },
+    {
+      "nombre": "borrar un registro",
+      "metodo": "DELETE",
+      "ruta": "/api/v1/tooth-records/ddf86b06-4049-501f-99e0-c48b6a76f13f/",
+      "usuario": "doctora"
+    },
+    {
+      "nombre": "borrar el mismo otra vez",
+      "metodo": "DELETE",
+      "ruta": "/api/v1/tooth-records/ddf86b06-4049-501f-99e0-c48b6a76f13f/",
+      "usuario": "doctora"
+    },
+    {
+      "nombre": "borrar, recepción",
+      "metodo": "DELETE",
+      "ruta": "/api/v1/tooth-records/8a5fed60-6c1a-5d2c-8ad8-a5c30fe8f04e/",
+      "usuario": "recepcion"
+    },
+    {
+      "nombre": "borrar uno de otra clínica",
+      "metodo": "DELETE",
+      "ruta": "/api/v1/tooth-records/90ee5bac-4db3-55d8-89a0-7d02c21c3c68/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "ver un registro",
+      "metodo": "GET",
+      "ruta": "/api/v1/tooth-records/8a5fed60-6c1a-5d2c-8ad8-a5c30fe8f04e/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "odontograma tras borrar",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/odontogram/current/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "cpo-ceo tras borrar",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/cpo-ceo/",
+      "usuario": "admin"
+    },
+    {
       "nombre": "cita: crear vacía",
       "metodo": "POST",
       "ruta": "/api/v1/appointments/",

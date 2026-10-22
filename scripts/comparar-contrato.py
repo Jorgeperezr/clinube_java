@@ -77,6 +77,25 @@ def con_refrescos(valor, servidor, base, usuarios, guardados):
     return valor
 
 
+ESTADOS = {}   # {código: id} del catálogo del odontograma, leído de Django
+
+
+def con_estados(valor, base, token):
+    """
+    Sustituye "{estado:CARIES}" por el id de ese estado del odontograma. Los
+    estados vienen de la base de referencia con ids que no se conocen de
+    antemano; las dos copias tienen los mismos.
+    """
+    if isinstance(valor, dict):
+        return {k: con_estados(v, base, token) for k, v in valor.items()}
+    if isinstance(valor, str) and valor.startswith("{estado:") and valor.endswith("}"):
+        if not ESTADOS:
+            _, lista = pedir(base, {"metodo": "GET", "ruta": "/api/v1/odontogram-states/"}, token)
+            ESTADOS.update({e["code"]: e["id"] for e in lista or []})
+        return ESTADOS.get(valor[len("{estado:"):-1], valor)
+    return valor
+
+
 def entrar(base, credenciales):
     estado, cuerpo = pedir(base, {"metodo": "POST", "ruta": "/api/v1/auth/login/",
                                   "cuerpo": credenciales}, None)
@@ -172,6 +191,7 @@ def main():
         usuario = peticion.get("usuario")
         enD, enK = peticion, peticion
         if "cuerpo" in peticion:
+            peticion = {**peticion, "cuerpo": con_estados(peticion["cuerpo"], args.django, tokens["admin"]["django"])}
             enD = {**peticion, "cuerpo": con_refrescos(peticion["cuerpo"], "django", args.django, config["usuarios"], refrescos)}
             enK = {**peticion, "cuerpo": con_refrescos(peticion["cuerpo"], "kotlin", args.kotlin, config["usuarios"], refrescos)}
         eD, cD = pedir(args.django, enD, tokens.get(usuario, {}).get("django") if usuario else None)

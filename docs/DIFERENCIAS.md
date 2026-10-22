@@ -249,3 +249,21 @@ Dos cosas distintas:
   entrega, porque lo crea antes de mirar el rol. Aquí no se crea: es un
   token vivo guardado sin motivo. Por eso la comparación del estado de las
   bases cuenta los tokens del personal y no los de los pacientes.
+
+## 16. Odontograma: el estado de otra clínica, aquí no (diferencia DELIBERADA)
+
+En Django, `POST /patients/{id}/tooth-records/` busca el estado y el ítem del
+plan de tratamiento en TODAS las clínicas (`objects.all()`), así que acepta
+el estado de otra clínica y la respuesta trae su nombre y su color. Es el
+mismo fallo de aislamiento que el doctor de otra clínica en las citas (§10). Comprobado contra Django: 201 con «Caries ajena» y el color de la vecina.
+Aquí el estado y el ítem tienen que ser de la clínica de la petición; uno
+ajeno da «Clave primaria "…" inválida - objeto no existe.». Un estado
+INACTIVO de la propia clínica sí se acepta, como en Django.
+
+**Conviene corregirlo también en Django** (filtrar los dos `queryset` por
+`request.tenant`).
+
+Además, como en el formulario 033: `GET /patients/{id}/cpo-ceo/` de un
+paciente que no existe o es de otra clínica da un 500 en Django
+(`Patient.DoesNotExist`) y aquí el 404 «No Patient matches the given query.».
+Con un paciente dado de baja responde en los dos.

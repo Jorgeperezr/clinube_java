@@ -29,7 +29,9 @@ RESUMENES = {
     "auditoria": """select action, entity_type,
                     case when action in ('accept_terms') then 'id generado' else entity_id end as entity_id,
                     ip_address is null as sin_ip, metadata, user_id, tenant_id, count(*) as filas
-                    from accounts_auditlog group by 1, 2, 3, 4, 5, 6, 7 order by 1, 2, 3, 4, 5::text, 6, 7""",
+                    from accounts_auditlog group by 1, 2, 3, 4, 5, 6, 7
+                    -- `5::text` ordenaría por la constante «5»: hay que nombrar la columna.
+                    order by 1, 2, 3, 4, metadata::text, 6, 7""",
     "formularios 033": """select patient_id, date, motivo_consulta, embarazada, enfermedad_actual,
                           antecedentes_personales, antecedentes_familiares, temperatura::text, pulso,
                           frecuencia_respiratoria, presion_arterial, examen_estomatognatico, indicadores_salud_bucal,
@@ -48,6 +50,10 @@ RESUMENES = {
                  join accounts_user u on u.id = v.user_id and u.role <> 'patient'
                  left join token_blacklist_blacklistedtoken n on n.token_id = v.id
                  group by v.user_id order by v.user_id""",
+    "dientes": """select patient_id, tooth_fdi_code, surface, state_id, doctor_id, treatment_plan_item_id, date, notes,
+                  mobility, recession, tenant_id
+                  from clinical_toothrecord
+                  order by patient_id, tooth_fdi_code, surface, date, state_id, notes, mobility, recession""",
     "marca": "select tenant_id, theme, paleta, temas, display_name from configuration_clinicbranding order by tenant_id",
     "configuración": """select platform_name, canal_codigo_paciente, funciones_publicadas, google_client_id
                         from common_platformconfiguration""",

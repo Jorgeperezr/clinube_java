@@ -41,7 +41,7 @@ from apps.accounts.models import User  # noqa: E402
 from apps.agenda.models import Appointment, Doctor  # noqa: E402
 from apps.app_paciente.models import MensajeConsultorio, SolicitudCita  # noqa: E402
 from apps.billing.models import Budget, Installment, Payment, PaymentPlan  # noqa: E402
-from apps.clinical.models import Diagnosis, Evolution, Form033Record  # noqa: E402
+from apps.clinical.models import Diagnosis, Evolution, Form033Record, OdontogramState, ToothRecord  # noqa: E402
 from apps.common.models import Tenant  # noqa: E402
 from apps.inventory.models import Batch, Product  # noqa: E402
 from apps.patients.models import MedicalBackground, Patient  # noqa: E402
@@ -165,6 +165,36 @@ def sembrar():
                                  description=f"Diagnóstico {i}", diagnosis_kind="def" if i % 2 else "pre",
                                  date=hoy - timedelta(days=i * 3))
 
+    # ── Odontograma de paciente-6 ────────────────────────────────────
+    # Los 22 estados de la clínica demo vienen de la base de referencia
+    # (los siembra el `bootstrap` de Django). Uno inactivo, para ver que no
+    # sale en el catálogo pero se puede registrar.
+    estado = {e.code: e for e in OdontogramState.objects.filter(tenant=demo)}
+    OdontogramState.objects.create(id=fijo("estado-obsoleto"), tenant=demo, code="OBSOLETO", label="Obsoleto",
+                                   color="#999999", order=99, is_active=False)
+    n_diente = iter(range(100))
+
+    def diente(pieza, codigo, dias, superficie="whole", **extra):
+        return ToothRecord.objects.create(id=fijo(f"diente-{next(n_diente)}"), tenant=demo, patient=pacientes[6],
+                                          tooth_fdi_code=pieza, surface=superficie, state=estado[codigo],
+                                          date=hoy - timedelta(days=dias), **extra)
+
+    diente("16", "CARIES", 20)
+    diente("16", "OBTURADO", 10, "occlusal", doctor=doctora, notes="Resina")
+    diente("26", "INDICADA_EXTRACCION", 15)
+    diente("36", "CORONA", 12, mobility=2, recession=1)
+    diente("46", "SANO", 30)
+    diente("55", "CARIES", 5)
+    diente("64", "PERDIDA_CARIES", 5)
+    diente("75", "OBTURADO", 5)
+    diente("11", "FRACTURA", 3, "vestibular")
+    # El último CREADO es SANO, pero el de fecha más reciente es CARIES: el
+    # odontograma actual pinta SANO y el CPO cuenta una caries.
+    diente("21", "CARIES", 30)
+    diente("21", "SANO", 40)
+    for _ in range(11):
+        diente("48", "SANO", 50)
+
     # ── Citas: hoy en varios estados, y los bordes del día ───────────
     numero = iter(range(1000))
 
@@ -262,6 +292,9 @@ def sembrar():
                              discount_percentage=Decimal("50"))
     Form033Record.objects.create(id=fijo("form033-vecina"), tenant=vecina, patient=pv, date=hoy, motivo_consulta="Ajeno")
     Diagnosis.objects.create(tenant=vecina, patient=pv, description="Ajeno", date=hoy)
+    ajeno = OdontogramState.objects.create(id=fijo("estado-vecina"), tenant=vecina, code="CARIES", label="Caries ajena",
+                                           color="#123456", order=1)
+    ToothRecord.objects.create(id=fijo("diente-vecina"), tenant=vecina, patient=pv, tooth_fdi_code="16", state=ajeno, date=hoy)
 
     print(f"Sembrado en {BASE}: {Patient.objects.filter(tenant=demo).count()} pacientes, "
           f"{Appointment.objects.filter(tenant=demo).count()} citas, hoy {hoy} en {zona}.")

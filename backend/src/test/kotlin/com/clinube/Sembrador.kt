@@ -64,6 +64,29 @@ class Sembrador(private val jdbc: JdbcTemplate, private val ahora: () -> Instant
         return id
     }
 
+    /** Un estado del catálogo del odontograma de una clínica. */
+    fun estado(clinica: String, codigo: String, orden: Int, activo: Boolean = true, etiqueta: String = codigo): UUID {
+        val id = UUID.randomUUID()
+        jdbc.update(
+            """insert into clinical_odontogramstate (id, created_at, updated_at, code, label, color, "order", is_active, tenant_id)
+               values (?, ?, ?, ?, ?, '#c62828', ?, ?, ?::uuid)""",
+            id, t(ahora()), t(ahora()), codigo, etiqueta, orden, activo, clinica,
+        )
+        return id
+    }
+
+    /** Un registro de una pieza, creado en el instante que se diga (el orden del historial). */
+    fun diente(clinica: String, paciente: UUID, pieza: String, estado: UUID, dia: LocalDate,
+               superficie: String = "whole", creado: Instant = ahora()): UUID {
+        val id = UUID.randomUUID()
+        jdbc.update(
+            """insert into clinical_toothrecord (id, updated_at, tooth_fdi_code, surface, date, notes, created_at, patient_id,
+               state_id, tenant_id) values (?, ?, ?, ?, ?, '', ?, ?, ?, ?::uuid)""",
+            id, t(creado), pieza, superficie, dia, t(creado), paciente, estado, clinica,
+        )
+        return id
+    }
+
     fun cita(
         clinica: String, paciente: UUID, doctor: UUID, inicio: Instant, estado: String = "confirmed",
         llegada: Instant? = null, atencion: Instant? = null,

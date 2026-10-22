@@ -198,6 +198,45 @@
 | cie10 guion bajo | `GET /api/v1/cie10/?q=K_` | igual a Django |
 | cie10 repetida | `GET /api/v1/cie10/?q=xx&q=pulpa` | igual a Django |
 | cie10 sin sesión | `GET /api/v1/cie10/?q=caries` | igual a Django |
+| estados del odontograma | `GET /api/v1/odontogram-states/` | igual a Django |
+| estados, recepción | `GET /api/v1/odontogram-states/` | igual a Django |
+| estados sin sesión | `GET /api/v1/odontogram-states/` | igual a Django |
+| historial de piezas | `GET /api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/tooth-records/` | igual a Django |
+| historial, página 2 | `GET /api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/tooth-records/?page=2` | igual a Django |
+| historial de una pieza | `GET /api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/tooth-records/?tooth_fdi_code=16` | igual a Django |
+| historial de una pieza con espacios | `GET /api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/tooth-records/?tooth_fdi_code=+21+` | igual a Django |
+| historial por superficie | `GET /api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/tooth-records/?surface=occlusal` | igual a Django |
+| historial con superficie mala | `GET /api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/tooth-records/?surface=arriba` | igual a Django |
+| historial con pieza y superficie | `GET /api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/tooth-records/?surface=whole&tooth_fdi_code=48` | igual a Django |
+| historial repetido | `GET /api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/tooth-records/?tooth_fdi_code=11&tooth_fdi_code=26` | igual a Django |
+| historial, recepción | `GET /api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/tooth-records/` | igual a Django |
+| historial de otra clínica | `GET /api/v1/patients/92f3248c-fcd2-5d23-991f-58410f9ce47c/tooth-records/` | igual a Django |
+| odontograma actual | `GET /api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/odontogram/current/` | igual a Django |
+| odontograma actual, recepción | `GET /api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/odontogram/current/` | igual a Django |
+| odontograma de un paciente de baja | `GET /api/v1/patients/f392b107-da73-5a13-948a-727cbcaa6cb2/odontogram/current/` | igual a Django |
+| odontograma de otra clínica | `GET /api/v1/patients/92f3248c-fcd2-5d23-991f-58410f9ce47c/odontogram/current/` | igual a Django |
+| cpo-ceo | `GET /api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/cpo-ceo/` | igual a Django |
+| cpo-ceo sin registros | `GET /api/v1/patients/90ccff49-5d1a-5058-bc43-f5c67cde4a51/cpo-ceo/` | igual a Django |
+| cpo-ceo de un paciente de baja | `GET /api/v1/patients/f392b107-da73-5a13-948a-727cbcaa6cb2/cpo-ceo/` | igual a Django |
+| cpo-ceo sin sesión | `GET /api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/cpo-ceo/` | igual a Django |
+| registrar una superficie | `POST /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/tooth-records/` | igual a Django |
+| registrar movilidad como el panel | `POST /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/tooth-records/` | igual a Django |
+| registrar con un estado inactivo | `POST /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/tooth-records/` | igual a Django |
+| registrar con todo mal | `POST /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/tooth-records/` | igual a Django |
+| registrar vacío | `POST /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/tooth-records/` | igual a Django |
+| registrar con estado numérico | `POST /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/tooth-records/` | igual a Django |
+| registrar, recepción | `POST /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/tooth-records/` | igual a Django |
+| registrar en un paciente de baja | `POST /api/v1/patients/f392b107-da73-5a13-948a-727cbcaa6cb2/tooth-records/` | igual a Django |
+| registrar en un paciente que no existe | `POST /api/v1/patients/00000000-0000-4000-8000-000000000000/tooth-records/` | igual a Django |
+| odontograma tras registrar | `GET /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/odontogram/current/` | igual a Django |
+| cpo-ceo tras registrar | `GET /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/cpo-ceo/` | igual a Django |
+| borrar un registro | `DELETE /api/v1/tooth-records/ddf86b06-4049-501f-99e0-c48b6a76f13f/` | igual a Django |
+| borrar el mismo otra vez | `DELETE /api/v1/tooth-records/ddf86b06-4049-501f-99e0-c48b6a76f13f/` | igual a Django |
+| borrar, recepción | `DELETE /api/v1/tooth-records/8a5fed60-6c1a-5d2c-8ad8-a5c30fe8f04e/` | igual a Django |
+| borrar uno de otra clínica | `DELETE /api/v1/tooth-records/90ee5bac-4db3-55d8-89a0-7d02c21c3c68/` | igual a Django |
+| ver un registro | `GET /api/v1/tooth-records/8a5fed60-6c1a-5d2c-8ad8-a5c30fe8f04e/` | igual a Django |
+| odontograma tras borrar | `GET /api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/odontogram/current/` | igual a Django |
+| cpo-ceo tras borrar | `GET /api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/cpo-ceo/` | igual a Django |
 | cita: crear vacía | `POST /api/v1/appointments/` | igual a Django |
 | cita: fin antes del inicio | `POST /api/v1/appointments/` | igual a Django |
 | cita: en el pasado | `POST /api/v1/appointments/` | igual a Django |
