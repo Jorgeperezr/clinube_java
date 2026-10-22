@@ -14,7 +14,16 @@ else echo "No hay ni ./gradlew ni gradle. Mira: ./scripts/comprobar-entorno.sh" 
 fi
 
 pids=()
-limpiar() { for p in "${pids[@]:-}"; do kill "$p" 2>/dev/null; done; }
+registros="$(mktemp -d)"
+# `bootRun` arranca la aplicación en otra JVM, hija del demonio de Gradle:
+# matar el proceso lanzado no basta. Se para también lo que siga escuchando
+# en los dos puertos, para no dejar un servidor huérfano ocupando el 8000.
+limpiar() {
+  for p in "${pids[@]:-}"; do kill "$p" 2>/dev/null; done
+  for puerto in 8000 8010; do
+    lsof -ti "tcp:$puerto" -sTCP:LISTEN 2>/dev/null | xargs kill 2>/dev/null
+  done
+}
 trap limpiar EXIT
 
 esperar() {
@@ -34,17 +43,18 @@ echo "→ Django en el 8010"
 ( cd "$clinube/django-api" && \
   POSTGRES_HOST=localhost POSTGRES_DB="$base_django" POSTGRES_USER=clinica POSTGRES_PASSWORD=clinica \
   DJANGO_DEBUG=True DJANGO_LOG_LEVEL=WARNING \
-  "$clinube/.venv/bin/python" manage.py runserver 127.0.0.1:8010 --noreload >/tmp/clinube-django.log 2>&1 ) &
+  exec "$clinube/.venv/bin/python" manage.py runserver 127.0.0.1:8010 --noreload >"$registros/django.log" 2>&1 ) &
 pids+=($!)
 
 echo "→ Kotlin en el 8000"
 ( cd "$raiz" && POSTGRES_HOST=localhost POSTGRES_DB="$base_kotlin" POSTGRES_USER=clinica \
-  POSTGRES_PASSWORD=clinica "$GRADLE" --quiet :backend:bootRun >/tmp/clinube-kotlin.log 2>&1 ) &
+  POSTGRES_PASSWORD=clinica exec "$GRADLE" --quiet :backend:bootRun >"$registros/kotlin.log" 2>&1 ) &
 pids+=($!)
 
-esperar http://127.0.0.1:8010 || { tail -20 /tmp/clinube-django.log; exit 1; }
-esperar http://127.0.0.1:8000 || { tail -30 /tmp/clinube-kotlin.log; exit 1; }
+esperar http://127.0.0.1:8010 || { tail -20 "$registros/django.log"; exit 1; }
+esperar http://127.0.0.1:8000 || { tail -30 "$registros/kotlin.log"; exit 1; }
 
+echo "  (registros de los dos servidores en $registros)"
 echo
 python3 "$raiz/scripts/comparar-contrato.py" \
   --markdown "$raiz/docs/contrato/INFORME-COMPARADOR.md" "$@"

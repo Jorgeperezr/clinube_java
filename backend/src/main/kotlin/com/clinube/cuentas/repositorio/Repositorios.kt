@@ -31,12 +31,19 @@ interface RepositorioDeTokensEnListaNegra : JpaRepository<TokenEnListaNegra, Lon
 
     fun existsByTokenId(tokenId: Long): Boolean
 
-    /** Lo mismo que `BlacklistedToken.objects.filter(token__jti=jti).exists()`. */
+    /**
+     * Cuántas veces está en la lista negra el token con ese `jti`: cero o
+     * una. Es `BlacklistedToken.objects.filter(token__jti=jti).exists()`.
+     *
+     * Devuelve un número y no un booleano porque `select count(n) > 0` no
+     * es HQL portable entre versiones de Hibernate; comparar en Kotlin sí
+     * lo es.
+     */
     @Query(
         """
-        select count(n) > 0 from TokenEnListaNegra n, TokenVigente v
+        select count(n) from TokenEnListaNegra n, TokenVigente v
         where n.tokenId = v.id and v.jti = :jti
         """,
     )
-    fun estaEnListaNegra(@Param("jti") jti: String): Boolean
+    fun contarEnListaNegra(@Param("jti") jti: String): Long
 }

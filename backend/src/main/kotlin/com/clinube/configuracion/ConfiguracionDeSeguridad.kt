@@ -3,13 +3,14 @@ package com.clinube.configuracion
 import com.clinube.comun.errores.CuerpoDeError
 import com.clinube.comun.errores.ExcepcionApi
 import com.clinube.comun.seguridad.FiltroDeAutenticacionJwt
+import com.clinube.comun.seguridad.RutasPublicas
 import com.fasterxml.jackson.databind.ObjectMapper
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.context.annotation.Bean
+import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
@@ -45,25 +46,12 @@ class ConfiguracionDeSeguridad(
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .authorizeHttpRequests { rutas ->
                 rutas
-                    // Las sondas de salud: quien las consulta (Docker, un
-                    // balanceador, un monitor) no tiene credenciales.
-                    .requestMatchers("/api/v1/health/", "/api/v1/ready/").permitAll()
-                    // Entrar, renovar y los flujos de acceso del paciente.
-                    // Sin método: a un GET en /auth/login/ Django responde 405,
-                    // no 401, porque la vista no exige autenticación.
-                    .requestMatchers(
-                        "/api/v1/auth/login/",
-                        "/api/v1/auth/token/refresh/",
-                        "/api/v1/auth/google/",
-                        "/api/v1/auth/otp/request/",
-                        "/api/v1/auth/otp/verify/",
-                        "/api/v1/auth/recovery/request/",
-                        "/api/v1/auth/recovery/confirm/",
-                    ).permitAll()
-                    .requestMatchers(
-                        "/api/v1/auth/google/config/",
-                        "/api/v1/auth/otp/canal/",
-                    ).permitAll()
+                    // Las rutas abiertas, sin método: a un GET en
+                    // /auth/login/ Django responde 405, no 401, porque la
+                    // vista no exige autenticación. La lista es la misma
+                    // que usa el filtro, para que no se desincronicen.
+                    .requestMatchers(*RutasPublicas.SIN_AUTENTICACION.toTypedArray()).permitAll()
+                    .requestMatchers(*RutasPublicas.ABIERTAS_CON_AUTENTICACION.toTypedArray()).permitAll()
                     // Los logotipos de cada clínica son públicos a propósito:
                     // salen en los documentos y en la pantalla de acceso.
                     .requestMatchers("/media/branding/**").permitAll()
@@ -88,7 +76,7 @@ class ConfiguracionDeSeguridad(
      */
     @Bean
     fun noRegistrarElFiltroDosVeces(filtro: FiltroDeAutenticacionJwt) =
-        org.springframework.boot.web.servlet.FilterRegistrationBean(filtro).apply { isEnabled = false }
+        FilterRegistrationBean(filtro).apply { isEnabled = false }
 
     /**
      * En producción el panel y la API comparten origen tras el proxy, pero
@@ -113,7 +101,7 @@ class ConfiguracionDeSeguridad(
         return UrlBasedCorsConfigurationSource().apply { registerCorsConfiguration("/**", configuracion) }
     }
 
-    private fun escribir(respuesta: jakarta.servlet.http.HttpServletResponse, e: ExcepcionApi) {
+    private fun escribir(respuesta: HttpServletResponse, e: ExcepcionApi) {
         respuesta.status = e.estado.value()
         respuesta.contentType = MediaType.APPLICATION_JSON_VALUE
         respuesta.characterEncoding = "UTF-8"

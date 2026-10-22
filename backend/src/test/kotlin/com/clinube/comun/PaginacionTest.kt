@@ -42,14 +42,39 @@ class PaginacionTest {
     }
 
     @Test
-    fun `los enlaces conservan los demas filtros`() {
+    fun `los enlaces conservan los demas filtros, ordenados como DRF`() {
         // Si se perdiera el filtro al pasar de página, la página 2
-        // enseñaría otra lista. Ha pasado en otros sitios.
+        // enseñaría otra lista. Y DRF ORDENA los parámetros por nombre:
+        // `page` va delante de `search`.
         val p = Pagina.de(45, (1..20).map { "x" }, 2, peticion("search=P%C3%A9rez&page=2"))
-        val siguiente = p.next!!
-        assert(siguiente.contains("search=P%C3%A9rez")) { "se perdió el filtro: $siguiente" }
-        assert(siguiente.contains("page=3")) { "no avanzó de página: $siguiente" }
+        assertEquals("http://127.0.0.1:8000/api/v1/users/?page=3&search=P%C3%A9rez", p.next)
         assertEquals("http://127.0.0.1:8000/api/v1/users/?search=P%C3%A9rez", p.previous)
+    }
+
+    @Test
+    fun `la consulta se reconstruye exactamente como replace_query_param de DRF`() {
+        // Cada esperado salió de ejecutar `replace_query_param` de DRF
+        // 3.17 con la misma entrada.
+        val base = "http://127.0.0.1:8000/api/v1/users/"
+        val casos = listOf(
+            "zona=a&nombre=Ana%20P%C3%A9rez" to "?nombre=Ana+P%C3%A9rez&page=2&zona=a",
+            "q=a+b" to "?page=2&q=a+b",
+            "q=~x*y/z:w" to "?page=2&q=~x%2Ay%2Fz%3Aw",
+            "estado=a&estado=b" to "?estado=a&estado=b&page=2",
+            "solo&page=1" to "?page=2&solo=",
+            "q=100%zz" to "?page=2&q=100%25zz",
+            "a=1&&b=2" to "?a=1&b=2&page=2",
+        )
+        casos.forEach { (entrada, esperado) ->
+            val p = Pagina.de(45, (1..20).map { "x" }, 1, peticion(entrada))
+            assertEquals(base + esperado, p.next, "con la consulta «$entrada»")
+        }
+    }
+
+    @Test
+    fun `al quitar page sin mas parametros no queda interrogacion`() {
+        val p = Pagina.de(45, (1..20).map { "x" }, 2, peticion("page=2"))
+        assertEquals("http://127.0.0.1:8000/api/v1/users/", p.previous)
     }
 
     @Test

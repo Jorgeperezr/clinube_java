@@ -4,8 +4,8 @@ import com.clinube.configuracion.Ajustes
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.databind.JsonSerializer
 import com.fasterxml.jackson.databind.PropertyNamingStrategies
+import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.databind.SerializerProvider
-import com.fasterxml.jackson.databind.module.SimpleModule
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -39,22 +39,22 @@ import java.time.format.DateTimeFormatterBuilder
 @Configuration
 class ConfiguracionJackson(private val ajustes: Ajustes) {
 
+    /**
+     * Con `serializerByType` y no con un `Module` aparte: Spring registra
+     * estos serializadores DESPUÉS de los módulos que detecta
+     * (JavaTimeModule entre ellos), y en Jackson el último registrado
+     * gana. Con un módulo propio, el orden dependería de cómo se
+     * descubren los módulos, y el día que cambiara volverían a salir las
+     * fechas en UTC sin que nada fallara al compilar.
+     */
     @Bean
     fun comoDrf(): Jackson2ObjectMapperBuilderCustomizer =
         Jackson2ObjectMapperBuilderCustomizer { constructor ->
             constructor.propertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
-            constructor.featuresToDisable(
-                com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS,
-            )
-            constructor.modulesToInstall({ modulos ->
-                modulos.add(
-                    SimpleModule("drf").apply {
-                        addSerializer(BigDecimal::class.java, DecimalComoTexto())
-                        addSerializer(OffsetDateTime::class.java, FechaDeDrf(ajustes))
-                        addSerializer(Instant::class.java, InstanteDeDrf(ajustes))
-                    },
-                )
-            })
+            constructor.featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+            constructor.serializerByType(BigDecimal::class.java, DecimalComoTexto())
+            constructor.serializerByType(OffsetDateTime::class.java, FechaDeDrf(ajustes))
+            constructor.serializerByType(Instant::class.java, InstanteDeDrf(ajustes))
         }
 }
 

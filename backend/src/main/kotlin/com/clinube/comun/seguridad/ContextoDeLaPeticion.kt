@@ -1,12 +1,10 @@
 package com.clinube.comun.seguridad
 
 import com.clinube.clinicas.Clinica
-import com.clinube.clinicas.RepositorioDeClinicas
 import com.clinube.comun.errores.ExcepcionApi
 import com.clinube.cuentas.dominio.Usuario
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
-import org.springframework.web.context.annotation.RequestScope
 
 /**
  * Quién hace la petición y en qué clínica. El equivalente de `request.user`
@@ -18,32 +16,24 @@ import org.springframework.web.context.annotation.RequestScope
  * filtrara— para leer los datos de otra clínica. Tomándola de la base, un
  * cambio de clínica surte efecto en la siguiente petición.
  *
- * Es de ámbito de petición y memoriza la clínica: una vista que la lea diez
- * veces hace UNA consulta, no diez.
+ * El filtro de autenticación lee el usuario y su clínica UNA vez por
+ * petición y los deja en el contexto de seguridad; aquí solo se leen de
+ * ahí. Una vista que pida la clínica diez veces no hace ninguna consulta.
  */
 @Component
-@RequestScope
-class ContextoDeLaPeticion(private val clinicas: RepositorioDeClinicas) {
+class ContextoDeLaPeticion {
 
-    private var resuelta = false
-    private var clinicaMemorizada: Clinica? = null
+    private val autenticacion: AutenticacionDeClinube?
+        get() = SecurityContextHolder.getContext().authentication as? AutenticacionDeClinube
 
     /** El usuario autenticado, o nulo si la petición es anónima. */
-    val usuario: Usuario?
-        get() = (SecurityContextHolder.getContext().authentication as? AutenticacionDeClinube)?.usuario
+    val usuario: Usuario? get() = autenticacion?.usuario
 
     /** El usuario autenticado; 401 con el texto de Django si no hay ninguno. */
     fun exigirUsuario(): Usuario = usuario ?: throw ExcepcionApi.noAutenticado()
 
     /** La clínica del usuario. Nula para el Super Administrador, que no tiene. */
-    val clinica: Clinica?
-        get() {
-            if (!resuelta) {
-                clinicaMemorizada = usuario?.clinicaId?.let { clinicas.findById(it).orElse(null) }
-                resuelta = true
-            }
-            return clinicaMemorizada
-        }
+    val clinica: Clinica? get() = autenticacion?.clinica
 
     /**
      * La clínica de la petición, exigida. Toda consulta de datos de

@@ -39,11 +39,16 @@ tres cosas que una biblioteca decide por su cuenta:
 
 ## 3. PBKDF2 se calcula con `Mac`, no con `SecretKeyFactory`
 
-El proveedor de la JVM rechaza la contraseña vacía y convierte los
-caracteres por su cuenta. Las dos cosas son diferencias de comportamiento
-frente a `hashlib.pbkdf2_hmac`, que recibe los bytes UTF-8 tal cual. Con
-`Mac` el resultado es el mismo byte a byte, también en los casos raros.
+`SecretKeyFactory` convierte los caracteres por su cuenta, y eso es una
+diferencia de comportamiento frente a `hashlib.pbkdf2_hmac`, que recibe
+los bytes UTF-8 tal cual. Con `Mac` el resultado es el mismo byte a byte.
 El coste es el mismo: las dos implementaciones son Java puro.
+
+La contraseña vacía necesita un detalle más: `SecretKeySpec` tampoco
+admite una clave vacía («Empty key»). Como HMAC rellena la clave con ceros
+hasta 64 bytes, la clave vacía y la de un solo byte cero dan el mismo
+resultado, y eso es lo que se usa. Lo comprueba una prueba con un hash de
+contraseña vacía calculado con `hashlib`.
 
 ## 4. `Usuario` no tiene una relación perezosa con `Clinica`
 

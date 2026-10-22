@@ -1,0 +1,10 @@
+{
+ "estado": 415,
+ "cuerpo": {
+  "error": {
+   "code": "unsupported_media_type",
+   "message": "Tipo de medio \"text/plain\" incompatible en la solicitud.",
+   "details": {}
+  }
+ }
+}

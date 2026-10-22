@@ -1,5 +1,6 @@
 package com.clinube.comun.seguridad
 
+import com.clinube.clinicas.RepositorioDeClinicas
 import com.clinube.comun.errores.CuerpoDeError
 import com.clinube.comun.errores.ExcepcionApi
 import com.clinube.comun.errores.MensajesDeDjango
@@ -8,7 +9,6 @@ import com.clinube.comun.jwt.ErrorDeToken
 import com.clinube.comun.jwt.Jwt
 import com.clinube.comun.jwt.ServicioDeTokens
 import com.clinube.configuracion.Ajustes
-import com.clinube.clinicas.RepositorioDeClinicas
 import com.clinube.cuentas.repositorio.RepositorioDeUsuarios
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.servlet.FilterChain
@@ -27,8 +27,10 @@ import java.util.UUID
  * El orden de las comprobaciones es el de SimpleJWT y se nota en la
  * respuesta, así que no se reordena:
  *
+ *   0. si la vista de Django no autentica, no se mira la cabecera (ver
+ *      `RutasPublicas`);
  *   1. sin cabecera, o con otro esquema que no sea `Bearer` → anónimo (no
- *      es un error: puede ser una ruta pública);
+ *      es un error: puede ser una ruta abierta);
  *   2. cabecera que no tenga exactamente dos partes → `bad_authorization_header`;
  *   3. firma y caducidad del token;
  *   4. tipo de token (`access`);
@@ -67,18 +69,22 @@ class FiltroDeAutenticacionJwt(
         respuesta: HttpServletResponse,
         cadena: FilterChain,
     ) {
-        try {
-            autenticar(peticion)
-        } catch (e: ExcepcionApi) {
-            responderError(respuesta, e)
-            return
+        if (!RutasPublicas.sinAutenticacion(peticion.requestURI)) {
+            try {
+                autenticar(peticion)
+            } catch (e: ExcepcionApi) {
+                responderError(respuesta, e)
+                return
+            }
         }
         cadena.doFilter(peticion, respuesta)
     }
 
     private fun autenticar(peticion: HttpServletRequest) {
         val cabecera = peticion.getHeader("Authorization") ?: return
-        val partes = cabecera.split(" ", "\t").filter { it.isNotEmpty() }
+        // Como `header.split()` de Python: cualquier espacio en blanco
+        // separa, y los huecos repetidos no cuentan como partes.
+        val partes = cabecera.trim().split(Regex("\\s+")).filter { it.isNotEmpty() }
         if (partes.isEmpty() || partes[0] != "Bearer") return
         if (partes.size != 2) {
             throw ExcepcionApi.autenticacionFallidaConCodigo(
@@ -110,11 +116,9 @@ class FiltroDeAutenticacionJwt(
 
         // Sin esto, un usuario con un token vigente seguiría trabajando
         // después de que su clínica fuera dada de baja.
-        usuario.clinicaId?.let { clinicaId ->
-            val clinica = clinicas.findById(clinicaId).orElse(null)
-            if (clinica == null || !clinica.activa) {
-                throw ExcepcionApi.autenticacionFallida(MensajesDeDjango.CLINICA_DESACTIVADA)
-            }
+        val clinica = usuario.clinicaId?.let { clinicas.findById(it).orElse(null) }
+        if (usuario.clinicaId != null && (clinica == null || !clinica.activa)) {
+            throw ExcepcionApi.autenticacionFallida(MensajesDeDjango.CLINICA_DESACTIVADA)
         }
 
         // Contraseña puesta por otra persona: mientras no se cambie, esa
@@ -127,7 +131,7 @@ class FiltroDeAutenticacionJwt(
             throw cambioDeContrasenaRequerido()
         }
 
-        SecurityContextHolder.getContext().authentication = AutenticacionDeClinube(usuario)
+        SecurityContextHolder.getContext().authentication = AutenticacionDeClinube(usuario, clinica)
     }
 
     private fun responderError(respuesta: HttpServletResponse, e: ExcepcionApi) {

@@ -75,6 +75,24 @@ guardar perfil-sin-token "$base/api/v1/auth/me/"
 guardar perfil-token-basura "$base/api/v1/auth/me/" -H 'Authorization: Bearer basura'
 guardar cabecera-mal-formada "$base/api/v1/auth/me/" -H 'Authorization: Bearer'
 
+# Cómo lee DRF el cuerpo: cada caso tiene su respuesta (ver CuerpoDrf.kt).
+guardar login-cuerpo-null -X POST "$base/api/v1/auth/login/" -H "$J" -d 'null'
+guardar login-cuerpo-texto -X POST "$base/api/v1/auth/login/" -H "$J" -d '"hola"'
+guardar login-cuerpo-lista -X POST "$base/api/v1/auth/login/" -H "$J" -d '[1,2]'
+guardar login-campos-nulos -X POST "$base/api/v1/auth/login/" -H "$J" -d '{"email":null,"password":null}'
+guardar login-campos-no-texto -X POST "$base/api/v1/auth/login/" -H "$J" -d '{"email":{"a":1},"password":true}'
+guardar login-solo-espacios -X POST "$base/api/v1/auth/login/" -H "$J" -d '{"email":"   ","password":"   "}'
+guardar login-texto-plano -X POST "$base/api/v1/auth/login/" -H 'Content-Type: text/plain' -d 'hola'
+guardar refresco-nulo -X POST "$base/api/v1/auth/token/refresh/" -H "$J" -d '{"refresh":null}'
+
+# Vistas que en Django no autentican: el token, si llega, se ignora.
+guardar salud-con-token-basura "$base/api/v1/health/" -H 'Authorization: Bearer basura'
+guardar login-con-cabecera-mal-formada -X POST "$base/api/v1/auth/login/" -H "$J" \
+  -H 'Authorization: Bearer' -d '{}'
+# Vista abierta pero que SÍ autentica: un token que no vale da 401.
+guardar otp-con-token-basura -X POST "$base/api/v1/auth/otp/request/" -H "$J" \
+  -H 'Authorization: Bearer basura' -d '{}'
+
 echo
 echo "Fixtures en $destino"
 echo "Las pruebas de contrato las leen de ahí: si Django cambia, se recapturan"

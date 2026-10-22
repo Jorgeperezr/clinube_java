@@ -20,11 +20,10 @@ import javax.crypto.spec.SecretKeySpec
  * creado hace dos años puede tener 390.000.
  *
  * PBKDF2 se calcula aquí a mano, con `Mac`, en vez de con
- * `SecretKeyFactory`. No es por gusto: el proveedor de la JVM rechaza la
- * contraseña vacía y convierte los caracteres por su cuenta, y las dos
- * cosas son diferencias de comportamiento frente a
- * `hashlib.pbkdf2_hmac`, que recibe los bytes UTF-8 tal cual. Con `Mac` el
- * resultado es el mismo byte a byte, incluidos los casos raros.
+ * `SecretKeyFactory`, que convierte los caracteres por su cuenta: eso es
+ * una diferencia frente a `hashlib.pbkdf2_hmac`, que recibe los bytes
+ * UTF-8 tal cual. Con `Mac` el resultado es el mismo byte a byte; la
+ * contraseña vacía lleva un ajuste más, explicado en `pbkdf2`.
  */
 @Component
 class HashDeContrasenaDjango {
@@ -83,7 +82,12 @@ class HashDeContrasenaDjango {
 
     private fun pbkdf2(contrasena: String, sal: String, iteraciones: Int): ByteArray {
         val mac = Mac.getInstance(HMAC)
-        mac.init(SecretKeySpec(contrasena.toByteArray(StandardCharsets.UTF_8), HMAC))
+        // `SecretKeySpec` no admite una clave vacía («Empty key»), y Python
+        // sí: la contraseña vacía es una contraseña más. HMAC rellena la
+        // clave con ceros hasta 64 bytes, así que la clave vacía y la de un
+        // solo byte cero dan exactamente el mismo resultado.
+        val clave = contrasena.toByteArray(StandardCharsets.UTF_8).takeIf { it.isNotEmpty() } ?: byteArrayOf(0)
+        mac.init(SecretKeySpec(clave, HMAC))
         val salBytes = sal.toByteArray(StandardCharsets.UTF_8)
         val resultado = ByteArray(LARGO_CLAVE)
         var escritos = 0

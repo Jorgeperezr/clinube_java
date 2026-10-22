@@ -1,7 +1,7 @@
 package com.clinube.cuentas.web
 
-import com.clinube.comun.errores.ExcepcionApi
-import com.clinube.comun.errores.MensajesDeDjango
+import com.clinube.comun.json.CamposDrf
+import com.clinube.comun.json.CuerpoDrf
 import com.clinube.comun.jwt.ServicioDeTokens
 import com.clinube.comun.seguridad.ContextoDeLaPeticion
 import com.clinube.cuentas.dominio.Funciones
@@ -10,6 +10,7 @@ import com.clinube.cuentas.servicio.ServicioDeAutenticacion
 import com.clinube.legal.Condiciones
 import com.clinube.plataforma.Funcionalidades
 import com.clinube.plataforma.ServicioDeFuncionalidades
+import com.fasterxml.jackson.databind.JsonNode
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -33,34 +34,22 @@ class ControladorDeAutenticacion(
 
     /** POST /api/v1/auth/login/ — RF-USR-01 */
     @PostMapping("/login/")
-    fun entrar(@RequestBody(required = false) peticion: PeticionDeLogin?): RespuestaDeLogin {
-        val datos = peticion ?: PeticionDeLogin()
-        // Django valida los dos campos y devuelve los DOS que faltan en la
-        // misma respuesta, no el primero que encuentra.
-        // Un campo AUSENTE y un campo VACÍO no dan el mismo error en
-        // Django («es requerido» frente a «no puede estar en blanco»), y
-        // el panel enseña el texto que recibe.
-        val faltan = LinkedHashMap<String, List<String>>()
-        motivo(datos.email)?.let { faltan["email"] = listOf(it) }
-        motivo(datos.password)?.let { faltan["password"] = listOf(it) }
-        if (faltan.isNotEmpty()) throw ExcepcionApi.validacion(faltan)
-
-        return autenticacion.entrar(datos.email!!, datos.password!!)
-    }
-
-    private fun motivo(valor: String?): String? = when {
-        valor == null -> MensajesDeDjango.CAMPO_REQUERIDO
-        valor.isEmpty() -> MensajesDeDjango.CAMPO_EN_BLANCO
-        else -> null
+    fun entrar(@RequestBody(required = false) cuerpo: JsonNode?): RespuestaDeLogin {
+        // Los dos campos se validan antes de responder: Django devuelve los
+        // errores de los DOS en la misma respuesta, no el primero.
+        val campos = CamposDrf(CuerpoDrf.objeto(cuerpo))
+        val correo = campos.texto("email")
+        val contrasena = campos.texto("password")
+        campos.validar()
+        return autenticacion.entrar(correo!!, contrasena!!)
     }
 
     /** POST /api/v1/auth/token/refresh/ — refresco rotatorio, como SimpleJWT. */
     @PostMapping("/token/refresh/")
-    fun renovar(@RequestBody(required = false) peticion: PeticionDeRefresco?): RespuestaDeRefresco {
-        val token = peticion?.refresh
-        motivo(token)?.let {
-            throw ExcepcionApi.validacion(mapOf("refresh" to listOf(it)))
-        }
+    fun renovar(@RequestBody(required = false) cuerpo: JsonNode?): RespuestaDeRefresco {
+        val campos = CamposDrf(CuerpoDrf.objeto(cuerpo))
+        val token = campos.texto("refresh")
+        campos.validar()
         val pareja = tokens.renovar(token!!)
         return RespuestaDeRefresco(access = pareja.access, refresh = pareja.refresh)
     }

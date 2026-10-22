@@ -1,0 +1,14 @@
+{
+ "estado": 400,
+ "cuerpo": {
+  "error": {
+   "code": "invalid",
+   "message": "Ocurrió un error al procesar la solicitud.",
+   "details": {
+    "non_field_errors": [
+     "Datos inválidos. Se esperaba un diccionario pero es un list."
+    ]
+   }
+  }
+ }
+}

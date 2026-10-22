@@ -45,7 +45,17 @@ tasks.withType<Test> {
     // casualidad. Con UTC la suite distingue las dos cosas, y la segunda
     // pasada (scripts/probar.sh) la repite en Pacific/Kiritimati (UTC+14),
     // al otro lado de la línea de fecha.
-    systemProperty("user.timezone", System.getProperty("user.timezone") ?: "UTC")
+    //
+    // Es una propiedad de Gradle (-PzonaPruebas=…) y no `-Duser.timezone`:
+    // `System.getProperty("user.timezone")` se lee en el demonio de Gradle,
+    // donde siempre vale la zona de la máquina, y la Mac de desarrollo está
+    // justo en America/Guayaquil. Las pruebas habrían corrido en la zona de
+    // la clínica sin que nada lo dijera. `ZonaDeLaJvmTest` lo comprueba.
+    val zona = providers.gradleProperty("zonaPruebas").getOrElse("UTC")
+    systemProperty("user.timezone", zona)
+    systemProperty("clinube.zonaPruebas", zona)
+    // Cambiar de zona vuelve a ejecutar las pruebas, sin --rerun-tasks.
+    inputs.property("zonaPruebas", zona)
     testLogging {
         events("passed", "skipped", "failed")
         exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL

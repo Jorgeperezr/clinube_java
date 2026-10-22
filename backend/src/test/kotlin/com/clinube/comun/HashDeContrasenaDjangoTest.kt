@@ -38,6 +38,17 @@ class HashDeContrasenaDjangoTest {
     }
 
     @Test
+    fun `la contrasena vacia se calcula como en Python, sin reventar`() {
+        // `SecretKeySpec` de Java rechaza una clave vacía, y esta prueba
+        // reventaba con «Empty key». El hash es de `hashlib.pbkdf2_hmac`
+        // con contraseña vacía: tiene que verificar, no fallar.
+        val deContrasenaVacia =
+            "pbkdf2_sha256\$1000\$salDePrueba0123456789a\$y6nuYAOxmwA37d5qMJOfH8lOLqQ82n6Puu3saPvEqcM="
+        assertTrue(hash.verificar("", deContrasenaVacia))
+        assertFalse(hash.verificar("x", deContrasenaVacia))
+    }
+
+    @Test
     fun `lo que genera lo vuelve a verificar`() {
         val generado = hash.generar("otra contraseña larga")
         assertTrue(hash.verificar("otra contraseña larga", generado))

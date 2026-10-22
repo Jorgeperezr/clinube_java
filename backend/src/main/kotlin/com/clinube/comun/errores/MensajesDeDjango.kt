@@ -17,6 +17,24 @@ object MensajesDeDjango {
     const val CREDENCIALES_NO_PROVISTAS = "Las credenciales de autenticación no se proveyeron."
     const val CAMPO_REQUERIDO = "Este campo es requerido."
     const val CAMPO_EN_BLANCO = "Este campo no puede estar en blanco."
+    const val CAMPO_NULO = "Este campo no puede ser nulo."
+    const val CADENA_INVALIDA = "No es una cadena válida."
+
+    /** Cuerpo `null`. Sin traducir en DRF, y así se deja. */
+    const val SIN_DATOS = "No data provided"
+
+    /** El cuerpo no es un objeto JSON. `tipo` es el nombre del tipo en Python: list, str, int… */
+    fun noEsUnDiccionario(tipo: String) = "Datos inválidos. Se esperaba un diccionario pero es un $tipo."
+
+    fun tipoDeMedioIncompatible(tipo: String) = "Tipo de medio \"$tipo\" incompatible en la solicitud."
+
+    /**
+     * JSON ilegible. Django pone detrás el texto de la excepción de Python
+     * («Expecting property name enclosed in double quotes: line 1 column 2
+     * (char 1)»), que no se puede reproducir: aquí va el de Jackson. Ver
+     * docs/DIFERENCIAS.md.
+     */
+    fun errorDeJson(detalle: String) = "JSON parse error - $detalle"
     const val ERROR_GENERICO = "Ocurrió un error al procesar la solicitud."
     const val NO_ENCONTRADO = "No encontrado."
     const val PAGINA_INVALIDA = "Página inválida."

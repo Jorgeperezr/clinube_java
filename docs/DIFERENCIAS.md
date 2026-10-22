@@ -75,32 +75,48 @@ Aquí tampoco se escribe. Parece un error de Clinube y puede que lo sea,
 pero arreglarlo sería escribir en una columna que el otro servidor deja
 en paz.
 
-## 5. Revisión a mano pendiente de aplicar (sin compilar todavía)
+## 5. Revisión a mano del código, antes de poder compilar
 
-Repasando el código sin JVM salieron estos fallos. Los cinco primeros ya
-están corregidos; los demás quedan para la próxima sesión, **antes** de dar
-nada por terminado:
+Repasando el código sin JVM salieron estos fallos. Todos están corregidos;
+los marcados con «capturado» se comprobaron contra un Django en marcha y
+tienen su fixture en `backend/src/test/resources/contrato/`.
 
 - [x] El filtro JWT se registraba dos veces (como @Component y en la cadena).
 - [x] `GET /auth/login/` sin token daba 401; Django da 405.
 - [x] `Boolean::class.java` es el primitivo: la comprobación de producción no convertía.
 - [x] `PostgreSQLContainer` sin subclase no compila en Kotlin.
 - [x] Se quitó `.anonymous(...)` (referencia a método dudosa en Kotlin).
-- [ ] **Paginación:** DRF ORDENA los parámetros de `next`/`previous`
-      (`urlencode(sorted(...))`) y vuelve a codificar (espacio → `+`). Aquí se
-      conserva el orden original. Corregir y ajustar `PaginacionTest`.
-- [ ] **Rutas sin autenticación en Django** (`authentication_classes = ()`):
-      login, refresco, health, ready, legal/privacidad, legal/condiciones,
-      otp/canal, google/config, google/, publico/solicitudes. El filtro no debe
-      leer el token en ellas (un token caducado en /health/ hoy daría 401).
-- [ ] `estaEnListaNegra`: `select count(n) > 0` puede no valer en HQL; devolver
-      `Long` y comparar en el servicio.
-- [ ] Jackson: registrar los serializadores con `serializerByType` en el
-      customizer, para que ganen siempre a los de JavaTimeModule.
-- [ ] `NoResourceFoundException` (ruta desconocida en Spring Boot 3.2+) cae en
-      el manejador genérico y daría 500: mapearla a 404, y respetar el estado
-      de las excepciones `ErrorResponse` de Spring.
-- [ ] El filtro y `ContextoDeLaPeticion` consultan la clínica dos veces por
-      petición: que el filtro la deje en un atributo y el contexto la reutilice.
-- [ ] JSON malformado: DRF responde `JSON parse error - <texto de Python>`;
-      no se puede copiar exacto. Documentar o aproximar.
+- [x] **Paginación:** DRF ORDENA los parámetros de `next`/`previous` y los
+      vuelve a codificar con `quote_plus`. Ahora igual; los diez casos de la
+      prueba salen de ejecutar `replace_query_param` de DRF 3.17.
+- [x] **Rutas sin autenticación** (capturado): en las vistas que en Django
+      no autentican, el token se ignora (`/health/` con un token basura da
+      200). En las abiertas que sí autentican (`otp/request`), un token que
+      no vale da 401. Las dos listas están en `RutasPublicas.kt` y las usan
+      el filtro y la configuración de seguridad.
+- [x] Lista negra: `count(...) > 0` en HQL cambiado por un recuento.
+- [x] Jackson: los serializadores van con `serializerByType`, que gana
+      siempre a los de JavaTimeModule.
+- [x] Ruta desconocida: `NoResourceFoundException` daba 500; ahora 404. Las
+      demás excepciones de Spring con estado 4xx lo conservan.
+- [x] La clínica se consultaba dos veces por petición; ahora el filtro la
+      lee una vez y la deja en la identidad de la petición.
+- [x] **Lectura del cuerpo** (capturado): cuerpo `null`, cuerpo que no es un
+      objeto, campos nulos, campos que no son texto y campos con solo
+      espacios responden cada uno como en DRF. El correo y la contraseña se
+      recortan, como hace DRF: `" OdontoDemo2026 "` entra.
+- [x] `text/plain` da 415 con el texto de Django (capturado).
+
+## 6. El texto de un JSON ilegible no es el mismo
+
+Con `{` como cuerpo, Django responde 400 `parse_error` con
+
+```
+JSON parse error - Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+```
+
+La parte de detrás del guion es el mensaje de la excepción de Python. Aquí
+va el de Jackson, que dice lo mismo con otras palabras. El código HTTP, el
+`code` y el principio del mensaje coinciden; el resto no se puede copiar sin
+reimplementar el analizador de JSON de Python, y ni el panel ni la app
+envían JSON roto.

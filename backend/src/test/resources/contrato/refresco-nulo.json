@@ -1,0 +1,14 @@
+{
+ "estado": 400,
+ "cuerpo": {
+  "error": {
+   "code": "invalid",
+   "message": "Ocurrió un error al procesar la solicitud.",
+   "details": {
+    "refresh": [
+     "Este campo no puede ser nulo."
+    ]
+   }
+  }
+ }
+}

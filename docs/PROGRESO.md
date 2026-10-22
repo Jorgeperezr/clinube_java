@@ -9,20 +9,14 @@ diferencia entre los dos últimos importa:
 | **hecha** | Implementada y con sus pruebas en verde. **No basta:** las pruebas propias pueden pasar y la respuesta no ser la de Django. |
 | **igual a Django** | Comprobada con `scripts/comparar-contrato`: mismo código HTTP, mismas claves, mismo orden, mismos valores. |
 
-Y uno más, provisional, mientras no haya JVM en la máquina de desarrollo:
+**5 de 202** igual a Django (2 %), comprobadas con `scripts/comparar-contrato`
+(15 de 15 peticiones iguales, informe en `docs/contrato/INFORME-COMPARADOR.md`).
 
-| Estado | Qué significa |
-|---|---|
-| **escrita, sin compilar** | El código está escrito contra respuestas capturadas de Django, pero todavía no se ha compilado ni probado. Puede no compilar. |
-
-**0 de 202** igual a Django. **5** escritas, sin compilar.
-
-> **Estado a 2026-10-21:** en la Mac no hay Java ni Gradle, y Docker está
-> parado, así que el código Kotlin **no se ha compilado ni se han pasado
-> las pruebas**. Lo único verificado de punta a punta es lo que no
-> necesita la JVM: la línea base de Flyway (esquema idéntico al de
-> Django), la lógica de PBKDF2 (replicada y comparada con los hashes
-> reales de Django) y las respuestas de Django capturadas como fixtures.
+> **Estado a 2026-10-21:** el servidor compila sin errores ni avisos y la
+> suite pasa entera dos veces (84 pruebas en UTC y 84 en
+> Pacific/Kiritimati), incluidas las de integración contra PostgreSQL 16 con
+> la línea base de Flyway y Hibernate en `validate`. **Falta** recorrer el
+> panel en el navegador contra este servidor.
 
 > Este archivo dice la verdad. Si una ruta no responde igual que Django, lo
 > dice aunque las pruebas propias pasen.
@@ -31,23 +25,23 @@ Y uno más, provisional, mientras no haya JVM en la máquina de desarrollo:
 
 | Pieza | Estado |
 |---|---|
-| Proyecto Gradle con el módulo `backend` | escrita, sin compilar; falta el wrapper (`gradle wrapper`) |
+| Proyecto Gradle con el módulo `backend` | hecha (Gradle 8.14.3 con wrapper) |
 | `CLAUDE.md` con las convenciones | hecha |
 | `docker-compose.yml` (PostgreSQL 16, Redis 7, Mailpit) | hecha |
 | `scripts/comprobar-entorno.sh` | hecha |
 | `scripts/start-local.sh` y `stop-local.sh` | hecha |
 | Copia de `frontend/` y `movil/` desde clinube | hecha |
 | Línea base de Flyway desde el esquema de Django (78 tablas) | **verificada**: reproduce el esquema byte a byte |
-| Jackson como DRF (snake_case, decimales como texto, fechas en la zona de la clínica con microsegundos) | escrita, sin compilar |
-| Formato de errores en las dos formas de Django | escrita, sin compilar |
-| Paginación `{count, next, previous, results}` | escrita, sin compilar |
-| Zona de la clínica y filtros por intervalos de instantes | escrita, sin compilar |
-| Clínica por usuario, desde la base y no desde el token | escrita, sin compilar |
-| Contraseñas `pbkdf2_sha256` de Django | escrita, sin compilar; **la lógica, verificada** contra hashes reales de Django (1.000, 390.000 y 1.000.000 iteraciones, contraseña vacía y con acentos) |
-| JWT compatible con SimpleJWT, con las tablas `token_blacklist_*` | escrita, sin compilar |
-| Comprobación de producción (no arranca con claves de ejemplo) | escrita, sin compilar |
-| Comparador de contrato | escrito, sin ejecutar contra Kotlin |
-| Respuestas de Django capturadas como fixtures (14) | hecha |
+| Jackson como DRF (snake_case, decimales como texto, fechas en la zona de la clínica con microsegundos) | hecha |
+| Formato de errores en las dos formas de Django | hecha |
+| Paginación `{count, next, previous, results}` | hecha |
+| Zona de la clínica y filtros por intervalos de instantes | hecha |
+| Clínica por usuario, desde la base y no desde el token | hecha |
+| Contraseñas `pbkdf2_sha256` de Django | hecha; probada contra hashes reales de Django (1.000, 390.000 y 1.000.000 iteraciones, y contraseña vacía) |
+| JWT compatible con SimpleJWT, con las tablas `token_blacklist_*` | hecha |
+| Comprobación de producción (no arranca con claves de ejemplo) | hecha |
+| Comparador de contrato | hecha: 15 de 15 iguales |
+| Respuestas de Django capturadas como fixtures (25) | hecha |
 | Límites de intentos en Redis (600/min, 20/min, 5/min, 10/hora) | **pendiente** |
 
 ## Rutas
@@ -56,7 +50,7 @@ Y uno más, provisional, mientras no haya JVM en la máquina de desarrollo:
 
 | Métodos | Ruta | Estado |
 |---|---|---|
-| GET | `/api/v1/health/` | escrita, sin compilar |
+| GET | `/api/v1/health/` | igual a Django |
 | GET | `/api/v1/legal/condiciones/` | pendiente |
 | POST | `/api/v1/legal/condiciones/aceptar/` | pendiente |
 | GET | `/api/v1/legal/privacidad/` | pendiente |
@@ -75,7 +69,7 @@ Y uno más, provisional, mientras no haya JVM en la máquina de desarrollo:
 | PUT PATCH | `/api/v1/platform/solicitudes/<uuid:pk>/` | pendiente |
 | POST | `/api/v1/publico/solicitudes/` | pendiente |
 | POST | `/api/v1/publico/solicitudes/<uuid:pk>/confirmar/` | pendiente |
-| GET | `/api/v1/ready/` | escrita, sin compilar |
+| GET | `/api/v1/ready/` | igual a Django |
 
 ### Fase 1 · `accounts` — Cuentas (2/17)
 
@@ -85,8 +79,8 @@ Y uno más, provisional, mientras no haya JVM en la máquina de desarrollo:
 | POST | `/api/v1/auth/change-password/` | pendiente |
 | POST | `/api/v1/auth/google/` | pendiente |
 | GET | `/api/v1/auth/google/config/` | pendiente |
-| POST | `/api/v1/auth/login/` | escrita, sin compilar |
-| GET | `/api/v1/auth/me/` | escrita, sin compilar |
+| POST | `/api/v1/auth/login/` | igual a Django |
+| GET | `/api/v1/auth/me/` | igual a Django |
 | GET PATCH | `/api/v1/auth/me/preferencias/` | pendiente |
 | GET | `/api/v1/auth/otp/canal/` | pendiente |
 | POST | `/api/v1/auth/otp/request/` | pendiente |
@@ -320,7 +314,7 @@ Y uno más, provisional, mientras no haya JVM en la máquina de desarrollo:
 
 | Métodos | Ruta | Estado |
 |---|---|---|
-| POST | `/api/v1/auth/token/refresh/` | escrita, sin compilar |
+| POST | `/api/v1/auth/token/refresh/` | igual a Django |
 | GET | `/api/v1/schema/` | pendiente |
 | GET | `/api/v1/schema/swagger-ui/` | pendiente |
 

@@ -19,11 +19,11 @@ else
 fi
 
 echo "══ Pasada 1: UTC"
-"$GRADLE" test -Duser.timezone=UTC "$@"
+"$GRADLE" test -PzonaPruebas=UTC "$@"
 
 echo
 echo "══ Pasada 2: Pacific/Kiritimati (UTC+14)"
-"$GRADLE" test -Duser.timezone=Pacific/Kiritimati --rerun-tasks "$@"
+"$GRADLE" test -PzonaPruebas=Pacific/Kiritimati "$@"
 
 echo
 echo "Las dos pasadas en verde."

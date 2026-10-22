@@ -349,6 +349,84 @@ class ContratoDeAutenticacionTest : PruebaDeIntegracion() {
         assertEquals("password_change_required", json.readTree(cuerpo)["error"]["code"].asText())
     }
 
+    // ── Cómo se lee el cuerpo y quién mira el token ──────────────────
+
+    /** Una petición con el cuerpo EN CRUDO, tal como la mandó curl al capturar. */
+    private fun pedirCrudo(
+        ruta: String,
+        cuerpo: String?,
+        tipo: String = "application/json",
+        autorizacion: String? = null,
+        metodo: HttpMethod = HttpMethod.POST,
+    ): Pair<Int, String> {
+        val cabeceras = HttpHeaders().apply {
+            if (cuerpo != null) set("Content-Type", tipo)
+            autorizacion?.let { set("Authorization", it) }
+        }
+        val r = rest.exchange(ruta, metodo, HttpEntity(cuerpo, cabeceras), String::class.java)
+        return r.statusCode.value() to (r.body ?: "")
+    }
+
+    /**
+     * Cada fila es una respuesta capturada de Django con
+     * `scripts/capturar-contrato.sh`, y la misma petición contra Kotlin.
+     */
+    @Test
+    fun `el cuerpo y la cabecera se leen como en Django, caso por caso`() {
+        data class Caso(
+            val fixture: String,
+            val ruta: String,
+            val cuerpo: String?,
+            val tipo: String = "application/json",
+            val autorizacion: String? = null,
+            val metodo: HttpMethod = HttpMethod.POST,
+        )
+        val login = "/api/v1/auth/login/"
+        val casos = listOf(
+            Caso("login-cuerpo-null", login, "null"),
+            Caso("login-cuerpo-texto", login, "\"hola\""),
+            Caso("login-cuerpo-lista", login, "[1,2]"),
+            Caso("login-campos-nulos", login, """{"email":null,"password":null}"""),
+            Caso("login-campos-no-texto", login, """{"email":{"a":1},"password":true}"""),
+            Caso("login-solo-espacios", login, """{"email":"   ","password":"   "}"""),
+            Caso("login-texto-plano", login, "hola", tipo = "text/plain"),
+            Caso("refresco-nulo", "/api/v1/auth/token/refresh/", """{"refresh":null}"""),
+            // Django no autentica en estas dos: el token se ignora.
+            Caso("salud-con-token-basura", "/api/v1/health/", null,
+                 autorizacion = "Bearer basura", metodo = HttpMethod.GET),
+            Caso("login-con-cabecera-mal-formada", login, "{}", autorizacion = "Bearer"),
+            // Abierta, pero SÍ autentica: un token que no vale es un 401.
+            Caso("otp-con-token-basura", "/api/v1/auth/otp/request/", "{}", autorizacion = "Bearer basura"),
+        )
+        val fallos = mutableListOf<String>()
+        casos.forEach { caso ->
+            val (esperado, cuerpoDjango) = deDjango(caso.fixture)
+            val (estado, cuerpo) = pedirCrudo(caso.ruta, caso.cuerpo, caso.tipo, caso.autorizacion, caso.metodo)
+            if (estado != esperado) {
+                fallos += "${caso.fixture}: Django $esperado, Kotlin $estado ($cuerpo)"
+                return@forEach
+            }
+            try {
+                igual(cuerpoDjango, cuerpo, caso.fixture)
+            } catch (e: AssertionError) {
+                fallos += e.message ?: caso.fixture
+            }
+        }
+        assertTrue(fallos.isEmpty(), "Casos distintos de Django:\n" + fallos.joinToString("\n"))
+    }
+
+    @Test
+    fun `el correo y la contrasena se recortan, como en DRF`() {
+        // `CharField` de DRF recorta por defecto, y `PasswordField` de
+        // SimpleJWT no lo desactiva: comprobado contra Django, este login
+        // entra.
+        val (estado, _) = pedir(
+            HttpMethod.POST, "/api/v1/auth/login/",
+            mapOf("email" to "  $CORREO_ADMIN  ", "password" to " $CLAVE "),
+        )
+        assertEquals(200, estado)
+    }
+
     // ── Salud ────────────────────────────────────────────────────────
 
     @Test

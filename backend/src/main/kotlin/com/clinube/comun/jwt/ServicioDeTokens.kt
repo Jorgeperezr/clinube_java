@@ -74,7 +74,7 @@ class ServicioDeTokens(
 
         // El orden importa y es el de SimpleJWT: caducidad (ya hecha en
         // `Jwt.leer`), después lista negra, y el tipo al final.
-        if (listaNegra.estaEnListaNegra(jti)) {
+        if (listaNegra.contarEnListaNegra(jti) > 0) {
             throw com.clinube.comun.errores.ExcepcionApi
                 .tokenDeRefrescoRechazado(MensajesDeDjango.TOKEN_EN_LISTA_NEGRA)
         }

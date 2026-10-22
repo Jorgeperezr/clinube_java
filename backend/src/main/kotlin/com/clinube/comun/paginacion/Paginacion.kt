@@ -6,7 +6,6 @@ import jakarta.servlet.http.HttpServletRequest
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
-import org.springframework.web.util.UriComponentsBuilder
 
 /**
  * La paginación de DRF: `{count, next, previous, results}`, 20 por página
@@ -70,16 +69,76 @@ data class Pagina<T>(
         private fun paginaInvalida() =
             ExcepcionApi.noEncontrado(MensajesDeDjango.PAGINA_INVALIDA)
 
+        /**
+         * El enlace a otra página, construido como lo construye DRF
+         * (`replace_query_param` y `remove_query_param`): decodifica la
+         * consulta, cambia o quita `page`, **ordena los parámetros por
+         * nombre** y la vuelve a codificar con `quote_plus`. Por eso
+         * `?search=Pérez&page=2` da `?page=3&search=P%C3%A9rez`, con `page`
+         * delante, y un espacio sale como `+`.
+         */
         private fun enlace(peticion: HttpServletRequest, pagina: Int?): String {
-            val base = StringBuilder(peticion.requestURL)
-            peticion.queryString?.let { base.append('?').append(it) }
-            val constructor = UriComponentsBuilder.fromUriString(base.toString())
-            if (pagina == null) {
-                constructor.replaceQueryParam("page")
-            } else {
-                constructor.replaceQueryParam("page", pagina)
+            val base = peticion.requestURL.toString()
+            val parametros = leerConsulta(peticion.queryString)
+            if (pagina == null) parametros.remove("page") else parametros["page"] = mutableListOf(pagina.toString())
+            val consulta = parametros.entries
+                .sortedBy { it.key }
+                .flatMap { (clave, valores) -> valores.map { "${codificar(clave)}=${codificar(it)}" } }
+                .joinToString("&")
+            return if (consulta.isEmpty()) base else "$base?$consulta"
+        }
+
+        /** `parse_qs(consulta, keep_blank_values=True)` de Python. */
+        private fun leerConsulta(consulta: String?): LinkedHashMap<String, MutableList<String>> {
+            val parametros = LinkedHashMap<String, MutableList<String>>()
+            consulta?.split("&")?.filter { it.isNotEmpty() }?.forEach { campo ->
+                val partes = campo.split("=", limit = 2)
+                val clave = decodificar(partes[0])
+                val valor = if (partes.size == 2) decodificar(partes[1]) else ""
+                parametros.getOrPut(clave) { mutableListOf() }.add(valor)
             }
-            return constructor.build().toUriString()
+            return parametros
+        }
+
+        /**
+         * `unquote_plus` de Python: `+` es un espacio y `%XX` un byte. Un `%`
+         * que no va seguido de dos cifras hexadecimales se deja tal cual, en
+         * vez de fallar como `URLDecoder`.
+         */
+        private fun decodificar(texto: String): String {
+            val bytes = java.io.ByteArrayOutputStream()
+            var i = 0
+            while (i < texto.length) {
+                val c = texto[i]
+                when {
+                    c == '+' -> { bytes.write(' '.code); i++ }
+                    c == '%' && i + 2 < texto.length &&
+                        texto[i + 1].digitToIntOrNull(16) != null && texto[i + 2].digitToIntOrNull(16) != null -> {
+                        bytes.write(texto.substring(i + 1, i + 3).toInt(16)); i += 3
+                    }
+                    else -> { bytes.write(c.toString().toByteArray(Charsets.UTF_8)); i++ }
+                }
+            }
+            return String(bytes.toByteArray(), Charsets.UTF_8)
+        }
+
+        /**
+         * `quote_plus` de Python: se dejan letras, cifras y `_.-~`; el
+         * espacio es `+`; todo lo demás, `%XX` en mayúsculas sobre los bytes
+         * UTF-8. No es `URLEncoder`, que deja `*` y codifica `~`.
+         */
+        private fun codificar(texto: String): String {
+            val salida = StringBuilder()
+            texto.toByteArray(Charsets.UTF_8).forEach { b ->
+                val c = b.toInt() and 0xFF
+                when {
+                    c in 'a'.code..'z'.code || c in 'A'.code..'Z'.code || c in '0'.code..'9'.code ||
+                        c == '_'.code || c == '.'.code || c == '-'.code || c == '~'.code -> salida.append(c.toChar())
+                    c == ' '.code -> salida.append('+')
+                    else -> salida.append('%').append("%02X".format(c))
+                }
+            }
+            return salida.toString()
         }
     }
 }

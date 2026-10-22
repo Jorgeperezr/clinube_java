@@ -1,0 +1,17 @@
+{
+ "estado": 400,
+ "cuerpo": {
+  "error": {
+   "code": "invalid",
+   "message": "Ocurrió un error al procesar la solicitud.",
+   "details": {
+    "email": [
+     "No es una cadena válida."
+    ],
+    "password": [
+     "No es una cadena válida."
+    ]
+   }
+  }
+ }
+}

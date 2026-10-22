@@ -6,3 +6,9 @@ clinube:
 logging:
   level:
     root: INFO
+server:
+  # Detrás del proxy (Nginx o Cloudflare), los enlaces absolutos —los
+  # `next`/`previous` de la paginación— tienen que llevar el dominio y el
+  # esquema públicos, no los internos. Es lo que en Django hacen
+  # SECURE_PROXY_SSL_HEADER y USE_X_FORWARDED_HOST.
+  forward-headers-strategy: framework
