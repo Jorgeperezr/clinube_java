@@ -27,7 +27,8 @@ RESUMENES = {
     "avisos": """select patient_id, version, medio, registrado_por_id, tenant_id
                  from patients_avisoprivacidadentregado order by patient_id, version""",
     "auditoria": """select action, entity_type,
-                    case when action in ('accept_terms') then 'id generado' else entity_id end as entity_id,
+                    case when action in ('accept_terms', 'apply_plan_template', 'generate_budget_from_plan') then 'id generado'
+                         else entity_id end as entity_id,
                     ip_address is null as sin_ip, metadata, user_id, tenant_id, count(*) as filas
                     from accounts_auditlog group by 1, 2, 3, 4, 5, 6, 7
                     -- `5::text` ordenaría por la constante «5»: hay que nombrar la columna.
@@ -66,6 +67,13 @@ RESUMENES = {
     "movimientos": """select product_id, batch_id, movement_type, quantity::text, reason,
                       related_treatment_plan_item_id is not null as de_tratamiento, tenant_id, count(*) as filas
                       from inventory_inventorymovement group by 1, 2, 3, 4, 5, 6, 7 order by 1, 2, 3, 4, 5, 6, 7""",
+    "plantillas": """select t.name, t.description, t.is_active, t.tenant_id, i.treatment_id, i."order", i.notes
+                     from clinical_treatmentplantemplate t left join clinical_treatmentplantemplateitem i on i.template_id = t.id
+                     order by t.tenant_id, t.name, i."order", i.notes, i.treatment_id""",
+    "presupuestos": """select b.patient_id, b.status, b.total_amount::text, b.notes, b.created_by_id, b.tenant_id,
+                       i.treatment_id, i.tooth_fdi_code, i.quantity, i.unit_price::text
+                       from billing_budget b left join billing_budgetitem i on i.budget_id = b.id
+                       order by b.patient_id, b.total_amount, b.notes, i.treatment_id, i.tooth_fdi_code, i.unit_price""",
     "marca": "select tenant_id, theme, paleta, temas, display_name from configuration_clinicbranding order by tenant_id",
     "configuración": """select platform_name, canal_codigo_paciente, funciones_publicadas, google_client_id
                         from common_platformconfiguration""",

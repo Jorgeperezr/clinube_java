@@ -59,6 +59,9 @@ class ExcepcionApi(
         fun http404(modelo: String) =
             ExcepcionApi(HttpStatus.NOT_FOUND, "http404", MensajesDeDjango.noHayCoincidencia(modelo))
 
+        /** Un `raise Http404` a secas en una vista: «No encontrado.», con el código «http404». */
+        fun http404SinModelo() = ExcepcionApi(HttpStatus.NOT_FOUND, "http404", MensajesDeDjango.NO_ENCONTRADO)
+
         /**
          * Error de validación de campos. Django no pone el motivo en
          * `message` —ahí va un texto genérico— sino en `details`, campo a

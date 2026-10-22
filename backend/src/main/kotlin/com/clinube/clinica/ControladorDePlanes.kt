@@ -12,8 +12,10 @@ import com.clinube.comun.sql.Filas.instante
 import com.clinube.comun.sql.Filas.uuid
 import com.clinube.comun.sql.Filas.uuidONulo
 import com.clinube.comun.tiempo.ZonaDeLaClinica
+import com.clinube.configuracion.tarifas.Tarifas
 import com.clinube.pacientes.ControladorDeFichas
 import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.servlet.http.HttpServletRequest
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
@@ -48,6 +50,8 @@ class ControladorDePlanes(
     private val contexto: ContextoDeLaPeticion,
     private val jdbc: NamedParameterJdbcTemplate,
     private val zona: ZonaDeLaClinica,
+    private val tarifas: Tarifas,
+    private val mapeador: ObjectMapper,
 ) {
 
     companion object {
@@ -222,6 +226,88 @@ class ControladorDePlanes(
         return LinkedHashMap(linea).apply { put("estimated_price", precio.texto) }
     }
 
+    // ── Presupuesto ──────────────────────────────────────────────────
+
+    /**
+     * POST /api/v1/treatment-plans/{id}/generate-budget/ — un presupuesto en
+     * borrador con una línea por cada una del plan, al precio que toca con el
+     * convenio del paciente; salvo que el precio lo escribiera una persona
+     * (`price_is_manual`) y no sea cero, que se respeta. Administración,
+     * recepción y doctores; los auxiliares no.
+     */
+    @PostMapping("/api/v1/treatment-plans/$ID/generate-budget/")
+    fun presupuesto(@PathVariable id: UUID): ResponseEntity<Map<String, Any?>> {
+        val usuario = permisos.exigir(Permisos.rol("admin", "reception", "doctor"))
+        val paciente = jdbc.query(
+            "select patient_id from clinical_treatmentplan where id = :id and tenant_id = :clinica",
+            mapOf("id" to id, "clinica" to clinica),
+        ) { f, _ -> f.uuid("patient_id") }.firstOrNull()
+            ?: return ResponseEntity.status(HttpStatus.NOT_FOUND).body(mapOf("detail" to "Plan no encontrado."))
+        data class Linea(val tratamiento: UUID, val nombre: String, val pieza: String, val manual: Boolean,
+                         val estimado: BigDecimal, val base: BigDecimal)
+        val lineas = jdbc.query(
+            """select i.treatment_id, t.name, i.tooth_fdi_code, i.price_is_manual, i.estimated_price, t.base_price
+               from clinical_treatmentplanitem i join configuration_treatment t on t.id = i.treatment_id
+               where i.treatment_plan_id = :id order by i."order"""",
+            mapOf("id" to id),
+        ) { f, _ ->
+            Linea(f.uuid("treatment_id"), f.getString("name"), f.getString("tooth_fdi_code"), f.getBoolean("price_is_manual"),
+                f.getBigDecimal("estimated_price"), f.getBigDecimal("base_price"))
+        }
+        if (lineas.isEmpty()) return ResponseEntity.badRequest().body(mapOf("detail" to "El plan no tiene ítems."))
+
+        val convenio = tarifas.convenioDelPaciente(paciente)
+        val precios = tarifas.precios(clinica, convenio)
+        val presupuesto = UUID.randomUUID()
+        val creado = zona.ahora()
+        jdbc.update(
+            """insert into billing_budget (id, updated_at, status, total_amount, notes, created_at, created_by_id, patient_id, tenant_id)
+               values (:id, :actualizado, 'draft', 0, :notas, :creado, null, :paciente, :clinica)""",
+            mapOf(
+                "id" to presupuesto, "creado" to Timestamp.from(creado), "actualizado" to Timestamp.from(zona.ahora()),
+                "notas" to "Generado automáticamente desde el plan de tratamiento.", "paciente" to paciente, "clinica" to clinica,
+            ),
+        )
+        var total = BigDecimal.ZERO
+        val items = lineas.map { l ->
+            // `_item_price`: el precio pactado a mano manda, si no es cero.
+            val precio = if (l.manual && l.estimado.signum() != 0) l.estimado else precios.de(l.tratamiento, l.base)
+            val itemId = UUID.randomUUID()
+            jdbc.update(
+                """insert into billing_budgetitem (id, tooth_fdi_code, quantity, unit_price, budget_id, treatment_id)
+                   values (:id, :pieza, 1, :precio, :presupuesto, :tratamiento)""",
+                mapOf("id" to itemId, "pieza" to l.pieza, "precio" to precio, "presupuesto" to presupuesto, "tratamiento" to l.tratamiento),
+            )
+            total += precio
+            val dosDecimales = precio.setScale(2).toPlainString()
+            linkedMapOf<String, Any?>(
+                "id" to itemId.toString(), "treatment" to l.tratamiento.toString(), "treatment_name" to l.nombre,
+                "tooth_fdi_code" to l.pieza, "quantity" to 1, "unit_price" to dosDecimales, "subtotal" to dosDecimales,
+            )
+        }
+        // `save(update_fields=["total_amount"])`: no toca `updated_at`.
+        jdbc.update("update billing_budget set total_amount = :total where id = :id", mapOf("total" to total, "id" to presupuesto))
+        jdbc.update(
+            """insert into accounts_auditlog (id, action, entity_type, entity_id, ip_address, metadata, created_at, tenant_id,
+               user_id) values (:aid, 'generate_budget_from_plan', 'Budget', :eid, null, :metadatos::jsonb, :ahora, :clinica, :usuario)""",
+            mapOf(
+                "aid" to UUID.randomUUID(), "eid" to presupuesto.toString(), "ahora" to Timestamp.from(zona.ahora()),
+                "metadatos" to mapeador.writeValueAsString(linkedMapOf(
+                    "plan_id" to id.toString(), "total" to total.toPlainString(), "agreement" to convenio?.nombre,
+                )),
+                "clinica" to clinica, "usuario" to usuario.id,
+            ),
+        )
+        // `BudgetSerializer`.
+        return ResponseEntity.status(HttpStatus.CREATED).body(linkedMapOf(
+            "id" to presupuesto.toString(), "patient" to paciente.toString(), "status" to "draft", "status_display" to "Borrador",
+            "total_amount" to total.setScale(2).toPlainString(),
+            "notes" to "Generado automáticamente desde el plan de tratamiento.",
+            "items" to items, "payment_plan_id" to null,
+            "created_at" to FormatoDeDrf.deDrf(creado, zona.zona),
+        ))
+    }
+
     // ── Inventario ───────────────────────────────────────────────────
 
     /**
@@ -298,7 +384,8 @@ class ControladorDePlanes(
         return leidos
     }
 
-    private fun planDeEstaClinica(id: UUID): Map<String, Any?> = jdbc.query(
+    /** El plan como lo escribe `TreatmentPlanSerializer`, o el 404 de Django. */
+    fun planDeEstaClinica(id: UUID): Map<String, Any?> = jdbc.query(
         "select * from clinical_treatmentplan where id = :id and tenant_id = :clinica", mapOf("id" to id, "clinica" to clinica),
     ) { f, _ -> plan(f) }.firstOrNull() ?: throw ExcepcionApi.http404("TreatmentPlan")
 

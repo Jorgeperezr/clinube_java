@@ -296,6 +296,39 @@
 | línea, recepción | `PATCH /api/v1/treatment-plan-items/4317e2a7-7343-5f60-b104-81c688f5cdd4/` | igual a Django |
 | plan con su avance | `GET /api/v1/treatment-plans/54498eb3-850a-5895-8ace-aa91eaefeabc/` | igual a Django |
 | ver una línea | `GET /api/v1/treatment-plan-items/4317e2a7-7343-5f60-b104-81c688f5cdd4/` | igual a Django |
+| plantillas | `GET /api/v1/clinical/plan-templates/` | igual a Django |
+| plantillas sin sesión | `GET /api/v1/clinical/plan-templates/` | igual a Django |
+| plantilla nueva con líneas | `POST /api/v1/clinical/plan-templates/` | igual a Django |
+| plantilla nueva sin líneas | `POST /api/v1/clinical/plan-templates/` | igual a Django |
+| plantilla sin nombre | `POST /api/v1/clinical/plan-templates/` | igual a Django |
+| plantilla, auxiliar | `POST /api/v1/clinical/plan-templates/` | igual a Django |
+| plantillas tras las altas | `GET /api/v1/clinical/plan-templates/` | igual a Django |
+| línea de plantilla | `POST /api/v1/clinical/plan-templates/5bd6ac98-53d6-50ac-b48c-b4afa69aa7b3/items/` | igual a Django |
+| línea de plantilla con orden | `POST /api/v1/clinical/plan-templates/5bd6ac98-53d6-50ac-b48c-b4afa69aa7b3/items/` | igual a Django |
+| línea de plantilla con orden cero | `POST /api/v1/clinical/plan-templates/5bd6ac98-53d6-50ac-b48c-b4afa69aa7b3/items/` | igual a Django |
+| línea de plantilla sin tratamiento | `POST /api/v1/clinical/plan-templates/5bd6ac98-53d6-50ac-b48c-b4afa69aa7b3/items/` | igual a Django |
+| línea de plantilla con tratamiento ajeno | `POST /api/v1/clinical/plan-templates/5bd6ac98-53d6-50ac-b48c-b4afa69aa7b3/items/` | igual a Django |
+| línea en plantilla ajena | `POST /api/v1/clinical/plan-templates/9742dff4-734e-51b1-b152-0330072e088e/items/` | igual a Django |
+| línea de plantilla, auxiliar | `POST /api/v1/clinical/plan-templates/5bd6ac98-53d6-50ac-b48c-b4afa69aa7b3/items/` | igual a Django |
+| borrar línea de plantilla | `DELETE /api/v1/clinical/plan-template-items/9703814f-62de-5e14-ae12-9724d1e797b8/` | igual a Django |
+| borrar la misma otra vez | `DELETE /api/v1/clinical/plan-template-items/9703814f-62de-5e14-ae12-9724d1e797b8/` | igual a Django |
+| borrar línea de plantilla ajena | `DELETE /api/v1/clinical/plan-template-items/cac131cf-841e-5a56-8360-6d23e91cfc1f/` | igual a Django |
+| aplicar a paciente con convenio | `POST /api/v1/patients/e7dfdf4c-2811-5220-a173-a52a739f812d/apply-plan-template/` | igual a Django |
+| aplicar a paciente particular | `POST /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/apply-plan-template/` | igual a Django |
+| aplicar plantilla inactiva | `POST /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/apply-plan-template/` | igual a Django |
+| aplicar plantilla que no existe | `POST /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/apply-plan-template/` | igual a Django |
+| aplicar sin plantilla | `POST /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/apply-plan-template/` | igual a Django |
+| aplicar plantilla numérica | `POST /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/apply-plan-template/` | igual a Django |
+| aplicar plantilla ajena | `POST /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/apply-plan-template/` | igual a Django |
+| aplicar a paciente de baja | `POST /api/v1/patients/f392b107-da73-5a13-948a-727cbcaa6cb2/apply-plan-template/` | igual a Django |
+| aplicar, recepción | `POST /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/apply-plan-template/` | igual a Django |
+| planes tras aplicar | `GET /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/treatment-plans/` | igual a Django |
+| presupuesto desde el plan | `POST /api/v1/treatment-plans/54498eb3-850a-5895-8ace-aa91eaefeabc/generate-budget/` | igual a Django |
+| presupuesto con convenio y precios a mano | `POST /api/v1/treatment-plans/d8ebfd41-99da-56c9-b1ae-e198446d681a/generate-budget/` | igual a Django |
+| presupuesto de un plan vacío | `POST /api/v1/treatment-plans/c49e336c-c0e5-5820-b023-145eff2f3dfb/generate-budget/` | igual a Django |
+| presupuesto de un plan ajeno | `POST /api/v1/treatment-plans/46d2e556-a547-5f73-af5b-979bfdc72a96/generate-budget/` | igual a Django |
+| presupuesto, auxiliar | `POST /api/v1/treatment-plans/54498eb3-850a-5895-8ace-aa91eaefeabc/generate-budget/` | igual a Django |
+| presupuesto con GET | `GET /api/v1/treatment-plans/54498eb3-850a-5895-8ace-aa91eaefeabc/generate-budget/` | igual a Django |
 | cita: crear vacía | `POST /api/v1/appointments/` | igual a Django |
 | cita: fin antes del inicio | `POST /api/v1/appointments/` | igual a Django |
 | cita: en el pasado | `POST /api/v1/appointments/` | igual a Django |

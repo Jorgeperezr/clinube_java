@@ -2506,6 +2506,334 @@
       "usuario": "admin"
     },
     {
+      "nombre": "plantillas",
+      "metodo": "GET",
+      "ruta": "/api/v1/clinical/plan-templates/",
+      "usuario": "recepcion"
+    },
+    {
+      "nombre": "plantillas sin sesión",
+      "metodo": "GET",
+      "ruta": "/api/v1/clinical/plan-templates/",
+      "usuario": null
+    },
+    {
+      "nombre": "plantilla nueva con líneas",
+      "metodo": "POST",
+      "ruta": "/api/v1/clinical/plan-templates/",
+      "usuario": "doctora",
+      "cuerpo": {
+        "name": "  Prótesis  ",
+        "description": "Fija",
+        "is_active": false,
+        "items": [
+          {
+            "treatment": "6b8b10d6-82e5-5bff-902e-d16d8e99cb08",
+            "order": "3",
+            "notes": "Al final"
+          },
+          {
+            "treatment": "d4fe3e13-6604-5bd6-8514-67b39cd915ca",
+            "order": 2.9,
+            "notes": null
+          },
+          {
+            "treatment": "5b37fbdb-6e68-596c-a99e-8d742867b35d"
+          },
+          {
+            "treatment": null
+          },
+          {
+            "treatment": 5
+          },
+          {
+            "treatment": true
+          }
+        ]
+      },
+      "volatiles": [
+        "id",
+        "created_at"
+      ]
+    },
+    {
+      "nombre": "plantilla nueva sin líneas",
+      "metodo": "POST",
+      "ruta": "/api/v1/clinical/plan-templates/",
+      "usuario": "admin",
+      "cuerpo": {
+        "name": "Blanqueamiento"
+      },
+      "volatiles": [
+        "id",
+        "created_at"
+      ]
+    },
+    {
+      "nombre": "plantilla sin nombre",
+      "metodo": "POST",
+      "ruta": "/api/v1/clinical/plan-templates/",
+      "usuario": "admin",
+      "cuerpo": {
+        "description": "x"
+      }
+    },
+    {
+      "nombre": "plantilla, auxiliar",
+      "metodo": "POST",
+      "ruta": "/api/v1/clinical/plan-templates/",
+      "usuario": "auxiliar",
+      "cuerpo": {
+        "name": "X"
+      }
+    },
+    {
+      "nombre": "plantillas tras las altas",
+      "metodo": "GET",
+      "ruta": "/api/v1/clinical/plan-templates/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at"
+      ]
+    },
+    {
+      "nombre": "línea de plantilla",
+      "metodo": "POST",
+      "ruta": "/api/v1/clinical/plan-templates/5bd6ac98-53d6-50ac-b48c-b4afa69aa7b3/items/",
+      "usuario": "doctora",
+      "cuerpo": {
+        "treatment": "6b8b10d6-82e5-5bff-902e-d16d8e99cb08",
+        "notes": 7
+      },
+      "volatiles": [
+        "id"
+      ]
+    },
+    {
+      "nombre": "línea de plantilla con orden",
+      "metodo": "POST",
+      "ruta": "/api/v1/clinical/plan-templates/5bd6ac98-53d6-50ac-b48c-b4afa69aa7b3/items/",
+      "usuario": "doctora",
+      "cuerpo": {
+        "treatment": "d4fe3e13-6604-5bd6-8514-67b39cd915ca",
+        "order": "9"
+      },
+      "volatiles": [
+        "id"
+      ]
+    },
+    {
+      "nombre": "línea de plantilla con orden cero",
+      "metodo": "POST",
+      "ruta": "/api/v1/clinical/plan-templates/5bd6ac98-53d6-50ac-b48c-b4afa69aa7b3/items/",
+      "usuario": "admin",
+      "cuerpo": {
+        "treatment": "6b8b10d6-82e5-5bff-902e-d16d8e99cb08",
+        "order": 0
+      },
+      "volatiles": [
+        "id"
+      ]
+    },
+    {
+      "nombre": "línea de plantilla sin tratamiento",
+      "metodo": "POST",
+      "ruta": "/api/v1/clinical/plan-templates/5bd6ac98-53d6-50ac-b48c-b4afa69aa7b3/items/",
+      "usuario": "admin",
+      "cuerpo": {}
+    },
+    {
+      "nombre": "línea de plantilla con tratamiento ajeno",
+      "metodo": "POST",
+      "ruta": "/api/v1/clinical/plan-templates/5bd6ac98-53d6-50ac-b48c-b4afa69aa7b3/items/",
+      "usuario": "admin",
+      "cuerpo": {
+        "treatment": "5b37fbdb-6e68-596c-a99e-8d742867b35d"
+      }
+    },
+    {
+      "nombre": "línea en plantilla ajena",
+      "metodo": "POST",
+      "ruta": "/api/v1/clinical/plan-templates/9742dff4-734e-51b1-b152-0330072e088e/items/",
+      "usuario": "admin",
+      "cuerpo": {
+        "treatment": "6b8b10d6-82e5-5bff-902e-d16d8e99cb08"
+      }
+    },
+    {
+      "nombre": "línea de plantilla, auxiliar",
+      "metodo": "POST",
+      "ruta": "/api/v1/clinical/plan-templates/5bd6ac98-53d6-50ac-b48c-b4afa69aa7b3/items/",
+      "usuario": "auxiliar",
+      "cuerpo": {
+        "treatment": "6b8b10d6-82e5-5bff-902e-d16d8e99cb08"
+      }
+    },
+    {
+      "nombre": "borrar línea de plantilla",
+      "metodo": "DELETE",
+      "ruta": "/api/v1/clinical/plan-template-items/9703814f-62de-5e14-ae12-9724d1e797b8/",
+      "usuario": "doctora"
+    },
+    {
+      "nombre": "borrar la misma otra vez",
+      "metodo": "DELETE",
+      "ruta": "/api/v1/clinical/plan-template-items/9703814f-62de-5e14-ae12-9724d1e797b8/",
+      "usuario": "doctora"
+    },
+    {
+      "nombre": "borrar línea de plantilla ajena",
+      "metodo": "DELETE",
+      "ruta": "/api/v1/clinical/plan-template-items/cac131cf-841e-5a56-8360-6d23e91cfc1f/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "aplicar a paciente con convenio",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/e7dfdf4c-2811-5220-a173-a52a739f812d/apply-plan-template/",
+      "usuario": "doctora",
+      "cuerpo": {
+        "template_id": "95b65dfd-13a8-55af-8f23-eb4386ca661d"
+      },
+      "volatiles": [
+        "id",
+        "created_at"
+      ]
+    },
+    {
+      "nombre": "aplicar a paciente particular",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/apply-plan-template/",
+      "usuario": "auxiliar",
+      "cuerpo": {
+        "template_id": "95b65dfd-13a8-55af-8f23-eb4386ca661d"
+      },
+      "volatiles": [
+        "id",
+        "created_at"
+      ]
+    },
+    {
+      "nombre": "aplicar plantilla inactiva",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/apply-plan-template/",
+      "usuario": "admin",
+      "cuerpo": {
+        "template_id": "45360d87-d5ff-50cd-8d4a-8806118120d9"
+      },
+      "volatiles": [
+        "id",
+        "created_at"
+      ]
+    },
+    {
+      "nombre": "aplicar plantilla que no existe",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/apply-plan-template/",
+      "usuario": "admin",
+      "cuerpo": {
+        "template_id": "00000000-0000-4000-8000-000000000000"
+      }
+    },
+    {
+      "nombre": "aplicar sin plantilla",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/apply-plan-template/",
+      "usuario": "admin",
+      "cuerpo": {}
+    },
+    {
+      "nombre": "aplicar plantilla numérica",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/apply-plan-template/",
+      "usuario": "admin",
+      "cuerpo": {
+        "template_id": 7
+      }
+    },
+    {
+      "nombre": "aplicar plantilla ajena",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/apply-plan-template/",
+      "usuario": "admin",
+      "cuerpo": {
+        "template_id": "9742dff4-734e-51b1-b152-0330072e088e"
+      }
+    },
+    {
+      "nombre": "aplicar a paciente de baja",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/f392b107-da73-5a13-948a-727cbcaa6cb2/apply-plan-template/",
+      "usuario": "admin",
+      "cuerpo": {
+        "template_id": "95b65dfd-13a8-55af-8f23-eb4386ca661d"
+      }
+    },
+    {
+      "nombre": "aplicar, recepción",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/apply-plan-template/",
+      "usuario": "recepcion",
+      "cuerpo": {
+        "template_id": "95b65dfd-13a8-55af-8f23-eb4386ca661d"
+      }
+    },
+    {
+      "nombre": "planes tras aplicar",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/treatment-plans/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at"
+      ]
+    },
+    {
+      "nombre": "presupuesto desde el plan",
+      "metodo": "POST",
+      "ruta": "/api/v1/treatment-plans/54498eb3-850a-5895-8ace-aa91eaefeabc/generate-budget/",
+      "usuario": "recepcion",
+      "volatiles": [
+        "id",
+        "created_at"
+      ]
+    },
+    {
+      "nombre": "presupuesto con convenio y precios a mano",
+      "metodo": "POST",
+      "ruta": "/api/v1/treatment-plans/d8ebfd41-99da-56c9-b1ae-e198446d681a/generate-budget/",
+      "usuario": "doctora",
+      "volatiles": [
+        "id",
+        "created_at"
+      ]
+    },
+    {
+      "nombre": "presupuesto de un plan vacío",
+      "metodo": "POST",
+      "ruta": "/api/v1/treatment-plans/c49e336c-c0e5-5820-b023-145eff2f3dfb/generate-budget/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "presupuesto de un plan ajeno",
+      "metodo": "POST",
+      "ruta": "/api/v1/treatment-plans/46d2e556-a547-5f73-af5b-979bfdc72a96/generate-budget/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "presupuesto, auxiliar",
+      "metodo": "POST",
+      "ruta": "/api/v1/treatment-plans/54498eb3-850a-5895-8ace-aa91eaefeabc/generate-budget/",
+      "usuario": "auxiliar"
+    },
+    {
+      "nombre": "presupuesto con GET",
+      "metodo": "GET",
+      "ruta": "/api/v1/treatment-plans/54498eb3-850a-5895-8ace-aa91eaefeabc/generate-budget/",
+      "usuario": "admin"
+    },
+    {
       "nombre": "cita: crear vacía",
       "metodo": "POST",
       "ruta": "/api/v1/appointments/",

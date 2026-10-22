@@ -67,7 +67,12 @@ class JwtTest {
     @Test
     fun `una firma cambiada no pasa`() {
         val token = Jwt.firmar(claims(), secreto)
-        val tocado = token.dropLast(1) + if (token.last() == 'A') 'B' else 'A'
+        // No el ÚLTIMO carácter: en una firma de 32 bytes sus 2 bits bajos son
+        // relleno, y «A»→«B» decodifica igual (la prueba fallaba 1 de cada 16
+        // veces, cuando la firma acababa en «A»). El quinto por el final es
+        // todo datos.
+        val i = token.length - 5
+        val tocado = token.substring(0, i) + (if (token[i] == 'A') 'B' else 'A') + token.substring(i + 1)
         val e = assertFailsWith<ErrorDeToken> { Jwt.leer(tocado, secreto) }
         assertEquals(MensajesDeDjango.TOKEN_INVALIDO, e.motivo)
     }

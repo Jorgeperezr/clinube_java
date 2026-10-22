@@ -293,3 +293,24 @@ Aquí se hace exactamente igual, a propósito: mientras los dos servidores
 compartan la base, el stock no puede depender de cuál atendió la petición.
 `EvolucionesYPlanesTest` lo deja escrito. **Conviene corregirlo en los dos a
 la vez** (descontar solo en el paso a «realizada», también al crear).
+
+## 19. Plantillas de plan: los 500 de Django no se copian
+
+Las respuestas y el estado de la base son iguales a Django en el comparador
+(plantillas, aplicarlas con el precio del convenio, presupuesto desde el
+plan). Cambian los casos en que Django se cae con un 500:
+
+- **Crear una plantilla con líneas mal formadas** (una línea que no es un
+  objeto, un `treatment` que no es un UUID, un `order` que no es un número o
+  es negativo, `items` que no es una lista): Django deja la plantilla creada
+  a medias y responde 500. Aquí se valida antes: 400 con
+  `{"items": ["Ítems de plantilla inválidos."]}` y no se crea nada. Las
+  líneas que Django ignora sin error (un tratamiento de otra clínica o que no
+  existe, `null`, un número) también se ignoran aquí.
+- **Crear una plantilla con un nombre repetido**: los dos fallan con 500 (la
+  restricción única de la base), pero el de Django es una página HTML.
+- **Añadir una línea a una plantilla** con un `treatment` que no es un UUID:
+  Django 500, aquí el 400 «Tratamiento inválido.»; con un `order` que no es
+  un número o es negativo, Django 500, aquí 400 «Orden inválido.».
+- **Aplicar una plantilla con un `template_id` que no es un UUID**: Django
+  500, aquí el 404 «Plantilla no encontrada.».

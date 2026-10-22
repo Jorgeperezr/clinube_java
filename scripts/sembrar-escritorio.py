@@ -43,8 +43,9 @@ from apps.app_paciente.models import MensajeConsultorio, SolicitudCita  # noqa: 
 from apps.billing.models import Budget, Installment, Payment, PaymentPlan  # noqa: E402
 from apps.clinical.models import (  # noqa: E402
     Diagnosis, Evolution, Form033Record, OdontogramState, ToothRecord, TreatmentPlan, TreatmentPlanItem,
+    TreatmentPlanTemplate, TreatmentPlanTemplateItem,
 )
-from apps.configuration.models import Treatment, TreatmentInventoryItem  # noqa: E402
+from apps.configuration.models import Tariff, Treatment, TreatmentInventoryItem  # noqa: E402
 from apps.specialties.models import Specialty  # noqa: E402
 from apps.common.models import Tenant  # noqa: E402
 from apps.inventory.models import Batch, Product  # noqa: E402
@@ -303,6 +304,31 @@ def sembrar():
         TreatmentPlanItem.objects.create(id=fijo(f"linea-{orden}"), treatment_plan=plan_activo, treatment=tratamiento,
                                          tooth_fdi_code=pieza, order=orden, status=estado, estimated_price=Decimal(precio))
     TreatmentPlan.objects.create(id=fijo("plan-2"), tenant=demo, patient=pacientes[6], notes="")
+    TreatmentPlan.objects.create(id=fijo("plan-vacio"), tenant=demo, patient=pacientes[6], notes="Sin líneas")
+
+    # ── Tarifas, plantillas y un plan con precios a mano ─────────────
+    endodoncia = Treatment.objects.get(id=fijo("tratamiento-endodoncia"))
+    Tariff.objects.create(tenant=demo, treatment=resina, price=Decimal("50.00"))                       # general
+    Tariff.objects.create(tenant=demo, treatment=endodoncia, agreement=seguro, price=Decimal("150.00"))  # del convenio
+    Tariff.objects.create(tenant=demo, treatment=endodoncia, agreement=Agreement.objects.get(id=fijo("convenio-empresa")),
+                          price=Decimal("-5"))   # mal cargada: nunca un precio negativo
+    rehabilitacion = TreatmentPlanTemplate.objects.create(id=fijo("plantilla-1"), tenant=demo, name="Rehabilitación",
+                                                          description="Endodoncia y resina")
+    TreatmentPlanTemplateItem.objects.create(id=fijo("linea-plantilla-1"), template=rehabilitacion, treatment=resina,
+                                             order=2, notes="Después de la endodoncia")
+    TreatmentPlanTemplateItem.objects.create(id=fijo("linea-plantilla-2"), template=rehabilitacion, treatment=endodoncia,
+                                             order=1)
+    TreatmentPlanTemplate.objects.create(id=fijo("plantilla-vacia"), tenant=demo, name="Control anual")
+    antigua = TreatmentPlanTemplate.objects.create(id=fijo("plantilla-antigua"), tenant=demo, name="Antigua",
+                                                   is_active=False)
+    TreatmentPlanTemplateItem.objects.create(template=antigua, treatment=Treatment.objects.get(id=fijo("tratamiento-antiguo")))
+    plan_seguro = TreatmentPlan.objects.create(id=fijo("plan-seguro"), tenant=demo, patient=pacientes[5], status="active")
+    TreatmentPlanItem.objects.create(treatment_plan=plan_seguro, treatment=resina, tooth_fdi_code="11", order=1,
+                                     estimated_price=Decimal("99.99"), price_is_manual=True)
+    TreatmentPlanItem.objects.create(treatment_plan=plan_seguro, treatment=endodoncia, tooth_fdi_code="21", order=2,
+                                     estimated_price=Decimal("1"))
+    TreatmentPlanItem.objects.create(treatment_plan=plan_seguro, treatment=resina, order=3,
+                                     estimated_price=Decimal("0"), price_is_manual=True)
 
     # ── Inventario ───────────────────────────────────────────────────
     agujas = Product.objects.create(tenant=demo, name="Agujas", min_stock=Decimal("50"))
@@ -343,6 +369,9 @@ def sembrar():
                                                  name="Tratamiento ajeno", base_price=Decimal("1"))
     plan_ajeno = TreatmentPlan.objects.create(id=fijo("plan-vecina"), tenant=vecina, patient=pv)
     TreatmentPlanItem.objects.create(id=fijo("linea-vecina"), treatment_plan=plan_ajeno, treatment=tratamiento_ajeno)
+    plantilla_ajena = TreatmentPlanTemplate.objects.create(id=fijo("plantilla-vecina"), tenant=vecina, name="Ajena")
+    TreatmentPlanTemplateItem.objects.create(id=fijo("linea-plantilla-vecina"), template=plantilla_ajena,
+                                             treatment=tratamiento_ajeno)
     Evolution.objects.create(id=fijo("evolucion-vecina"), tenant=vecina, patient=pv, type="clinical_note", date=hoy,
                              notes="Ajena")
     Diagnosis.objects.create(tenant=vecina, patient=pv, description="Ajeno", date=hoy)
