@@ -15,8 +15,18 @@ diferencia entre los dos últimos importa:
 > **Estado a 2026-10-21:** el servidor compila sin errores ni avisos y la
 > suite pasa entera dos veces (84 pruebas en UTC y 84 en
 > Pacific/Kiritimati), incluidas las de integración contra PostgreSQL 16 con
-> la línea base de Flyway y Hibernate en `validate`. **Falta** recorrer el
-> panel en el navegador contra este servidor.
+> la línea base de Flyway y Hibernate en `validate`.
+>
+> **El panel entra con un usuario creado por Django** (comprobado en el
+> navegador, con el panel de `frontend/` sin tocar y `NEXT_PUBLIC_API_URL`
+> apuntando a Kotlin, contra una copia de la base de Django). La petición
+> previa de CORS, el login y `/auth/me/` responden 200, y el panel guarda los
+> tokens y el perfil completo. Después lleva a `/condiciones/`, como con
+> Django, porque la clínica demo no las ha aceptado, y ahí se queda:
+> **no se puede pasar de esa pantalla** hasta portar
+> `GET /legal/condiciones/` y `POST /legal/condiciones/aceptar/`. Son lo
+> siguiente que pide el panel, junto con `GET /auth/google/config/`, que la
+> pantalla de entrada consulta para decidir si enseña el botón de Google.
 
 > Este archivo dice la verdad. Si una ruta no responde igual que Django, lo
 > dice aunque las pruebas propias pasen.

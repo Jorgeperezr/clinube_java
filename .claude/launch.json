@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "servidor-kotlin",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": ["-c", "cd /Users/jorge/clinube_java && POSTGRES_HOST=localhost POSTGRES_DB=clinube_kotlin POSTGRES_USER=clinica POSTGRES_PASSWORD=clinica PANEL_URL=http://localhost:3000 exec ./gradlew --console=plain :backend:bootRun"],
+      "port": 8000
+    },
+    {
+      "name": "panel",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": ["-c", "cd /Users/jorge/clinube_java/frontend && NEXT_PUBLIC_API_URL=http://localhost:8000 NEXT_TELEMETRY_DISABLED=1 exec npm run dev"],
+      "port": 3000
+    }
+  ]
+}
