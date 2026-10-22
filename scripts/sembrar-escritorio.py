@@ -41,10 +41,10 @@ from apps.accounts.models import User  # noqa: E402
 from apps.agenda.models import Appointment, Doctor  # noqa: E402
 from apps.app_paciente.models import MensajeConsultorio, SolicitudCita  # noqa: E402
 from apps.billing.models import Budget, Installment, Payment, PaymentPlan  # noqa: E402
-from apps.clinical.models import Evolution  # noqa: E402
+from apps.clinical.models import Evolution, Form033Record  # noqa: E402
 from apps.common.models import Tenant  # noqa: E402
 from apps.inventory.models import Batch, Product  # noqa: E402
-from apps.patients.models import Patient  # noqa: E402
+from apps.patients.models import MedicalBackground, Patient  # noqa: E402
 
 CLAVE = "OdontoDemo2026"
 
@@ -121,8 +121,35 @@ def sembrar():
     ]):
         p.birth_date = nacimiento
         p.save(update_fields=["birth_date"])
-    Patient.objects.create(tenant=demo, first_name="Dado", last_name="De Baja", national_id="1799999999",
+    Patient.objects.create(id=fijo("paciente-baja"), tenant=demo, first_name="Dado", last_name="De Baja", national_id="1799999999",
                            is_active=False, birth_date=datetime(1990, hoy.month, min(hoy.day, 28)).date())
+
+    # ── Antecedentes y formularios 033, para las alertas clínicas ────
+    # paciente-4: alertas de los tres campos, con negaciones y tildes.
+    MedicalBackground.objects.create(
+        patient=pacientes[4], allergies="Alergia a la Penicilina (urticaria). Niega alergia al látex",
+        medications="Sintrom 4 mg; Ácido alendrónico semanal", conditions="Hipertensión controlada, diabetes tipo 2",
+    )
+    # paciente-9: solo negaciones, y embarazo declarado como «no».
+    MedicalBackground.objects.create(
+        patient=pacientes[9], allergies="Niega alergias", medications="No toma anticoagulantes",
+        conditions="Sin antecedentes", is_pregnant=False,
+    )
+    # paciente-6: tres formularios; manda el de fecha más reciente y, con la
+    # misma fecha, el creado después.
+    Form033Record.objects.create(tenant=demo, patient=pacientes[6], date=hoy - timedelta(days=30),
+                                 antecedentes_personales={"Diabetes": {"checked": True, "detail": ""}})
+    Form033Record.objects.create(tenant=demo, patient=pacientes[6], date=hoy - timedelta(days=10),
+                                 antecedentes_personales={"Alergia antibiótico": {"checked": True, "detail": "no recuerda cuál"}})
+    Form033Record.objects.create(tenant=demo, patient=pacientes[6], date=hoy - timedelta(days=10), embarazada=True,
+                                 antecedentes_personales={
+                                     "Alergia antibiótico": {"checked": True, "detail": "Amoxicilina, urticaria"},
+                                     "Otro": {"checked": "sí", "detail": "Toma Xarelto. Zoledronato por osteoporosis"},
+                                     "Hemorragias": {"checked": 0, "detail": "hemofilia"},
+                                     "Enf. cardíaca": {"checked": [1]},
+                                 })
+    # paciente-9 también tiene un formulario, con la sección D vacía.
+    Form033Record.objects.create(tenant=demo, patient=pacientes[9], date=hoy, antecedentes_personales={})
 
     # ── Citas: hoy en varios estados, y los bordes del día ───────────
     numero = iter(range(1000))

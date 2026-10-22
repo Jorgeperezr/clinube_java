@@ -51,6 +51,19 @@ class Sembrador(private val jdbc: JdbcTemplate, private val ahora: () -> Instant
         return id
     }
 
+    /** Un formulario 033 con solo lo que leen las alertas: la sección D (JSON) y el embarazo. */
+    fun form033(clinica: String, paciente: UUID, dia: LocalDate, seccion: String = "{}", embarazada: Boolean? = null): UUID {
+        val id = UUID.randomUUID()
+        jdbc.update(
+            """insert into clinical_form033record (id, motivo_consulta, embarazada, enfermedad_actual, antecedentes_personales,
+               antecedentes_familiares, presion_arterial, examen_estomatognatico, indicadores_salud_bucal, professional_snapshot,
+               date, created_at, updated_at, patient_id, tenant_id)
+               values (?, '', ?, '', ?::jsonb, '{}', '', '{}', '{}', '{}', ?, ?, ?, ?, ?::uuid)""",
+            id, embarazada, seccion, dia, t(ahora()), t(ahora()), paciente, clinica,
+        )
+        return id
+    }
+
     fun cita(
         clinica: String, paciente: UUID, doctor: UUID, inicio: Instant, estado: String = "confirmed",
         llegada: Instant? = null, atencion: Instant? = null,

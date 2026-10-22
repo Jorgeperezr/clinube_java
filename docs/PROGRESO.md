@@ -9,25 +9,23 @@ diferencia entre los dos últimos importa:
 | **hecha** | Implementada y con sus pruebas en verde. **No basta:** las pruebas propias pueden pasar y la respuesta no ser la de Django. |
 | **igual a Django** | Comprobada con `scripts/comparar-contrato`: mismo código HTTP, mismas claves, mismo orden, mismos valores. |
 
-**31 de 202** igual a Django (15 %), y **4 más en parte** (falta un método o una exportación),
-comprobadas con `scripts/comparar-contrato` (158 de 158 peticiones iguales y las 8 tablas tocadas idénticas en las dos bases, informe en `docs/contrato/INFORME-COMPARADOR.md`).
+**33 de 202** igual a Django (16 %), y **4 más en parte** (falta un método o una exportación),
+comprobadas con `scripts/comparar-contrato` (181 de 181 peticiones iguales y las 8 tablas tocadas idénticas en las dos bases, informe en `docs/contrato/INFORME-COMPARADOR.md`).
 
 > **Estado a 2026-10-21:** el servidor compila sin errores ni avisos y la
-> suite pasa entera dos veces (126 pruebas en UTC y 126 en
+> suite pasa entera dos veces (136 pruebas en UTC y 136 en
 > Pacific/Kiritimati), incluidas las de integración contra PostgreSQL 16 con
 > la línea base de Flyway y Hibernate en `validate`.
 >
 > **El panel entra, el escritorio se carga entero y las pantallas de
 > Pacientes y Agenda funcionan** contra Kotlin (comprobado en el navegador con
 > el panel de `frontend/` sin tocar): alta de un paciente con convenio, su
-> ficha, el registro del aviso de privacidad, el cambio de convenio, y en la
-> agenda confirmar, marcar la llegada, iniciar y finalizar la atención y
-> crear una cita. La ficha pide además rutas de la historia clínica
-> (odontograma, diagnósticos, formulario 033, alertas clínicas) y de WhatsApp,
-> que son de las fases 5 y 13. **Los antecedentes** responden igual que Django
-> por la API, pero el panel solo enseña su editor dentro de las alertas
-> clínicas (`/patients/{id}/alertas/`, fase 5), así que hasta portarlas no se
-> ven en la ficha.
+> ficha, el registro del aviso de privacidad, el cambio de convenio, **los
+> antecedentes médicos y sus alertas clínicas** (editar los antecedentes y ver
+> aparecer las alertas, con la frase negada que no avisa), y en la agenda
+> confirmar, marcar la llegada, iniciar y finalizar la atención y crear una
+> cita. La ficha pide además rutas de la historia clínica (odontograma,
+> diagnósticos, formulario 033) y de WhatsApp, que son de las fases 5 y 13.
 
 > Este archivo dice la verdad. Si una ruta no responde igual que Django, lo
 > dice aunque las pruebas propias pasen.
@@ -169,7 +167,7 @@ comprobadas con `scripts/comparar-contrato` (158 de 158 peticiones iguales y las
 | GET | `/api/v1/doctors/<uuid:pk>/calendar-url/` | igual a Django |
 | GET POST | `/api/v1/doctors/me/signature/` | pendiente |
 
-### Fase 5 · `clinical` — Historia clínica (1/41)
+### Fase 5 · `clinical` — Historia clínica (3/41)
 
 | Métodos | Ruta | Estado |
 |---|---|---|
@@ -188,8 +186,8 @@ comprobadas con `scripts/comparar-contrato` (158 de 158 peticiones iguales y las
 | PATCH | `/api/v1/exam-requests/<uuid:pk>/report/` | pendiente |
 | GET PUT PATCH | `/api/v1/form033/<uuid:pk>/` | pendiente |
 | GET | `/api/v1/odontogram-states/` | pendiente |
-| GET | `/api/v1/patients/<uuid:pk>/alertas/` | pendiente |
-| POST | `/api/v1/patients/<uuid:pk>/alertas/revisar/` | pendiente |
+| GET | `/api/v1/patients/<uuid:pk>/alertas/` | igual a Django |
+| POST | `/api/v1/patients/<uuid:pk>/alertas/revisar/` | igual a Django |
 | POST | `/api/v1/patients/<uuid:pk>/apply-plan-template/` | pendiente |
 | GET POST | `/api/v1/patients/<uuid:pk>/certificado-atencion/` | pendiente |
 | GET PUT PATCH | `/api/v1/patients/<uuid:pk>/clinical-record/` | pendiente |

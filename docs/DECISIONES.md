@@ -174,3 +174,19 @@ diferencias que ninguna respuesta enseñaba:
 con `uuid5` de un nombre (`paciente-0`, `cita-2`…). Así `peticiones.json` puede
 nombrarlos, y el comparador puede confirmar, reagendar o dar de baja una fila
 concreta en los dos servidores, en el mismo orden.
+
+## 14. Las alertas clínicas se comparan con Django caso a caso
+
+Las alertas son seguridad del paciente: si Kotlin no avisa de una alergia
+que Django sí avisaba, nadie lo nota hasta que pasa algo. Y la traducción
+tiene trampas que una prueba escrita a mano no encuentra: `\b`, `\w` y `\s`
+no significan lo mismo en Python que en Java («²» es parte de una palabra en
+Python y no en Java; «\u001c» es un espacio en Python y no en Java).
+
+Por eso `scripts/casos-de-alertas.py` ejecuta el `alertas.py` de Django
+sobre 3000 casos —los de tests_alertas.py y textos al azar con semilla fija:
+negaciones, tildes compuestas y descompuestas, espacios de Unicode, signos
+pegados a la palabra, casillas del 033 con valores de todos los tipos— y
+`ReglasDeAlertasTest` exige que Kotlin dé lo mismo en todos. Quitar un solo
+carácter de los espacios de Python hace fallar 45 casos: la prueba no es de
+adorno. Si cambian las reglas en Django, se vuelve a generar el fichero.

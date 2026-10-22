@@ -190,3 +190,21 @@ uno inventado: «Clave primaria "…" inválida - objeto no existe.». Lo compru
   cuerpo que no es un objeto en el aviso de privacidad, o cuando el Super
   Administrador sin clínica da de alta un paciente: aquí son un 400 y un error
   de la base, respectivamente.
+
+## 12. Alertas clínicas: los 500 de Django no se copian
+
+Las reglas dan exactamente lo mismo que el `alertas.py` de Django (3000
+casos comparados en `ReglasDeAlertasTest`), y las respuestas de
+`/patients/{id}/alertas/` y `/alertas/revisar/` son iguales en el
+comparador. Solo cambian tres casos en los que Django se cae con un 500:
+
+- **Revisar una receta con un cuerpo que no es un objeto** (`["…"]`,
+  `"texto"`, `null`): Django llama a `.get()` sobre él y falla; aquí es el
+  400 de siempre, «Falta el texto de la receta.».
+- **Un formulario 033 cuya sección D no es un objeto** (una lista o un texto
+  no vacíos): Django falla al recorrerla; aquí no cuenta ninguna casilla.
+- **Una casilla marcada con un detalle que no es texto** (un número, una
+  lista) en «Alergia antibiótico», «Alergia anestesia» u «Otro»: Django
+  falla al leerlo; aquí cuenta como detalle vacío.
+
+El panel no puede producir ninguno de los tres: siempre manda texto.

@@ -125,6 +125,29 @@
 | aviso registrado | `POST /api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/aviso-privacidad/` | igual a Django |
 | aviso otra vez | `POST /api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/aviso-privacidad/` | igual a Django |
 | aviso, doctora | `GET /api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/aviso-privacidad/` | igual a Django |
+| alertas sin sesión | `GET /api/v1/patients/f6ebcb43-a2a8-55ab-9a94-aa1ac29f9cfa/alertas/` | igual a Django |
+| alertas, recepción | `GET /api/v1/patients/f6ebcb43-a2a8-55ab-9a94-aa1ac29f9cfa/alertas/` | igual a Django |
+| alertas de los antecedentes | `GET /api/v1/patients/f6ebcb43-a2a8-55ab-9a94-aa1ac29f9cfa/alertas/` | igual a Django |
+| alertas del último formulario 033 | `GET /api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/alertas/` | igual a Django |
+| alertas, solo negaciones | `GET /api/v1/patients/90ccff49-5d1a-5058-bc43-f5c67cde4a51/alertas/` | igual a Django |
+| alertas sin antecedentes | `GET /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/alertas/` | igual a Django |
+| alertas tras el patch de antecedentes | `GET /api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/alertas/` | igual a Django |
+| alertas de otra clínica | `GET /api/v1/patients/92f3248c-fcd2-5d23-991f-58410f9ce47c/alertas/` | igual a Django |
+| alertas de un paciente de baja | `GET /api/v1/patients/f392b107-da73-5a13-948a-727cbcaa6cb2/alertas/` | igual a Django |
+| alertas de un paciente que no existe | `GET /api/v1/patients/00000000-0000-4000-8000-000000000000/alertas/` | igual a Django |
+| alertas con POST | `POST /api/v1/patients/f6ebcb43-a2a8-55ab-9a94-aa1ac29f9cfa/alertas/` | igual a Django |
+| revisar receta con choques | `POST /api/v1/patients/f6ebcb43-a2a8-55ab-9a94-aa1ac29f9cfa/alertas/revisar/` | igual a Django |
+| revisar receta del formulario 033 | `POST /api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/alertas/revisar/` | igual a Django |
+| revisar receta compatible | `POST /api/v1/patients/f6ebcb43-a2a8-55ab-9a94-aa1ac29f9cfa/alertas/revisar/` | igual a Django |
+| revisar, recepción | `POST /api/v1/patients/f6ebcb43-a2a8-55ab-9a94-aa1ac29f9cfa/alertas/revisar/` | igual a Django |
+| revisar sin texto | `POST /api/v1/patients/f6ebcb43-a2a8-55ab-9a94-aa1ac29f9cfa/alertas/revisar/` | igual a Django |
+| revisar texto en blanco | `POST /api/v1/patients/f6ebcb43-a2a8-55ab-9a94-aa1ac29f9cfa/alertas/revisar/` | igual a Django |
+| revisar texto que no es texto | `POST /api/v1/patients/f6ebcb43-a2a8-55ab-9a94-aa1ac29f9cfa/alertas/revisar/` | igual a Django |
+| revisar receta larga | `POST /api/v1/patients/f6ebcb43-a2a8-55ab-9a94-aa1ac29f9cfa/alertas/revisar/` | igual a Django |
+| revisar 5000 emojis | `POST /api/v1/patients/f6ebcb43-a2a8-55ab-9a94-aa1ac29f9cfa/alertas/revisar/` | igual a Django |
+| revisar sin texto y sin paciente | `POST /api/v1/patients/00000000-0000-4000-8000-000000000000/alertas/revisar/` | igual a Django |
+| revisar, paciente de otra clínica | `POST /api/v1/patients/92f3248c-fcd2-5d23-991f-58410f9ce47c/alertas/revisar/` | igual a Django |
+| revisar con GET | `GET /api/v1/patients/f6ebcb43-a2a8-55ab-9a94-aa1ac29f9cfa/alertas/revisar/` | igual a Django |
 | cita: crear vacía | `POST /api/v1/appointments/` | igual a Django |
 | cita: fin antes del inicio | `POST /api/v1/appointments/` | igual a Django |
 | cita: en el pasado | `POST /api/v1/appointments/` | igual a Django |
