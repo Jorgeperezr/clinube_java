@@ -9,6 +9,14 @@
     "admin": {
       "email": "admin@clinube.local",
       "password": "OdontoDemo2026"
+    },
+    "doctora": {
+      "email": "doctora@clinube.local",
+      "password": "OdontoDemo2026"
+    },
+    "recepcion": {
+      "email": "recepcion@clinube.local",
+      "password": "OdontoDemo2026"
     }
   },
   "peticiones": [
@@ -184,6 +192,300 @@
       "cuerpo": {
         "version": "1999.01"
       }
+    },
+    {
+      "nombre": "marca (la crea)",
+      "metodo": "GET",
+      "ruta": "/api/v1/config/branding/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "updated_at"
+      ]
+    },
+    {
+      "nombre": "marca otra vez",
+      "metodo": "GET",
+      "ruta": "/api/v1/config/branding/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "updated_at"
+      ]
+    },
+    {
+      "nombre": "marca, recepción",
+      "metodo": "GET",
+      "ruta": "/api/v1/config/branding/",
+      "usuario": "recepcion",
+      "volatiles": [
+        "id",
+        "updated_at"
+      ]
+    },
+    {
+      "nombre": "marca sin token",
+      "metodo": "GET",
+      "ruta": "/api/v1/config/branding/",
+      "usuario": null
+    },
+    {
+      "nombre": "pacientes",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "pacientes página 2",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/?page=2",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "pacientes página 3 (no existe)",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/?page=3",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "pacientes buscando «lópez»",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/?search=l%C3%B3pez",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "pacientes buscando «50%»",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/?search=50%25",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "pacientes buscando «_»",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/?search=_",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "pacientes buscando por cédula",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/?search=1700000001",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "pacientes buscando vacío",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/?search=",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "pacientes ordenados created_desc",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/?ordering=created_desc",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "pacientes ordenados created_asc",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/?ordering=created_asc",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "pacientes ordenados name_desc",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/?ordering=name_desc",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "pacientes ordenados attention_desc",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/?ordering=attention_desc",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "pacientes ordenados attention_asc",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/?ordering=attention_asc",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "pacientes ordenados next_appt_asc",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/?ordering=next_appt_asc",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "pacientes ordenados inventado",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/?ordering=inventado",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "pacientes con búsqueda y página 2",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/?search=a&page=2&ordering=name_desc",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "pacientes, doctora",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/",
+      "usuario": "doctora"
+    },
+    {
+      "nombre": "agenda de hoy",
+      "metodo": "GET",
+      "ruta": "/api/v1/agenda/view/?mode=daily",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "agenda semanal",
+      "metodo": "GET",
+      "ruta": "/api/v1/agenda/view/?mode=weekly",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "agenda mensual",
+      "metodo": "GET",
+      "ruta": "/api/v1/agenda/view/?mode=monthly",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "agenda en un día sin citas",
+      "metodo": "GET",
+      "ruta": "/api/v1/agenda/view/?mode=daily&date=2020-01-01",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "agenda con fecha de un dígito",
+      "metodo": "GET",
+      "ruta": "/api/v1/agenda/view/?mode=weekly&date=2026-1-5",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "agenda modo desconocido",
+      "metodo": "GET",
+      "ruta": "/api/v1/agenda/view/?mode=raro",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "agenda de la doctora",
+      "metodo": "GET",
+      "ruta": "/api/v1/agenda/view/?mode=monthly",
+      "usuario": "doctora"
+    },
+    {
+      "nombre": "sala de espera",
+      "metodo": "GET",
+      "ruta": "/api/v1/appointments/waiting/",
+      "usuario": "admin",
+      "volatiles": [
+        "waiting_minutes"
+      ]
+    },
+    {
+      "nombre": "sala de espera, doctora",
+      "metodo": "GET",
+      "ruta": "/api/v1/appointments/waiting/",
+      "usuario": "doctora",
+      "volatiles": [
+        "waiting_minutes"
+      ]
+    },
+    {
+      "nombre": "cumpleaños",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/birthdays/?days=7",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "cumpleaños sin parámetro",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/birthdays/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "cumpleaños de hoy",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/birthdays/?days=0",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "cumpleaños 60 días",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/birthdays/?days=999",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "cumpleaños días no numéricos",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/birthdays/?days=abc",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "ingresos del mes",
+      "metodo": "GET",
+      "ruta": "/api/v1/reports/financial/?date_from=2026-10-01&date_to=2026-10-31",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "ingresos de siempre",
+      "metodo": "GET",
+      "ruta": "/api/v1/reports/financial/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "ingresos sin cobros",
+      "metodo": "GET",
+      "ruta": "/api/v1/reports/financial/?date_from=2020-01-01&date_to=2020-01-31",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "ingresos, recepción (sin la función)",
+      "metodo": "GET",
+      "ruta": "/api/v1/reports/financial/",
+      "usuario": "recepcion"
+    },
+    {
+      "nombre": "morosidad",
+      "metodo": "GET",
+      "ruta": "/api/v1/reports/delinquency/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "morosidad, doctora (sin la función)",
+      "metodo": "GET",
+      "ruta": "/api/v1/reports/delinquency/",
+      "usuario": "doctora"
+    },
+    {
+      "nombre": "morosidad, recepción",
+      "metodo": "GET",
+      "ruta": "/api/v1/reports/delinquency/",
+      "usuario": "recepcion"
+    },
+    {
+      "nombre": "seguimientos",
+      "metodo": "GET",
+      "ruta": "/api/v1/clinical/follow-ups/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "stock bajo",
+      "metodo": "GET",
+      "ruta": "/api/v1/inventory/alerts/low-stock/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "bandeja",
+      "metodo": "GET",
+      "ruta": "/api/v1/bandeja-app/resumen/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "bandeja, recepción",
+      "metodo": "GET",
+      "ruta": "/api/v1/bandeja-app/resumen/",
+      "usuario": "recepcion"
     },
     {
       "nombre": "_comentario: desde aquí cambia el estado (acepta las condiciones)",

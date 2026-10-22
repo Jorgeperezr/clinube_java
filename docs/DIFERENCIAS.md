@@ -139,3 +139,20 @@ Django guarda en `ip_address` el primer valor de `X-Forwarded-For` tal como
 llega; si no es una IP, la base lo rechaza y la petición da 500. Aquí, si no
 es una IP literal, se guarda nula: convertir un texto cualquiera en
 `InetAddress` haría una consulta DNS con algo que manda el cliente.
+
+## 9. Lo del escritorio que no es igual a propósito, o todavía
+
+- **`GET /reports/financial/?export=excel`** no está portado: responde **501**
+  en vez de devolver el JSON como si nada. El escritorio no lo pide; la
+  pantalla de Reportes, sí.
+- **Una fecha mal escrita** en `agenda/view/?date=` o en los informes da 500
+  en los dos servidores (en Django, el filtro recibe `None`), pero con cuerpos
+  distintos: HTML en Django, JSON aquí.
+- **Empates de orden.** Donde Django no ordena del todo (pacientes con el mismo
+  apellido y nombre, cuotas vencidas el mismo día, productos sin `ORDER BY`),
+  el orden lo decide PostgreSQL. Se usan las mismas consultas para que salga
+  igual, y el comparador lo confirma con los datos sembrados, pero no es un
+  orden garantizado en ninguno de los dos servidores.
+- **`waiting_minutes`** se compara por tipo y no por valor en el comparador:
+  los dos servidores responden con milisegundos de diferencia y el minuto
+  puede cambiar entre uno y otro. Lo comprueban las pruebas con el reloj fijo.

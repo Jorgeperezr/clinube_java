@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
 import org.springframework.boot.test.web.server.LocalServerPort
 import org.springframework.jdbc.core.JdbcTemplate
+import org.springframework.context.annotation.Import
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
@@ -29,6 +30,7 @@ import org.testcontainers.junit.jupiter.Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("prueba")
 @Testcontainers
+@Import(ConfiguracionDePrueba::class)
 abstract class PruebaDeIntegracion {
 
     @Autowired
@@ -40,8 +42,16 @@ abstract class PruebaDeIntegracion {
     @LocalServerPort
     protected var puerto: Int = 0
 
+    @Autowired
+    protected lateinit var reloj: RelojDePrueba
+
+    /** Para sembrar filas de prueba con las columnas obligatorias de cada tabla. */
+    protected val sembrar: Sembrador by lazy { Sembrador(jdbc) { reloj.instant() } }
+
     @BeforeEach
-    fun sembrar() {
+    fun prepararBase() {
+        // Cada prueba empieza con la hora real; la que necesite otra, la fija.
+        reloj.fijo = null
         // Se vacía y se vuelve a sembrar en cada prueba: una prueba que
         // dependa de lo que dejó la anterior pasa sola y falla en el CI.
         jdbc.execute(

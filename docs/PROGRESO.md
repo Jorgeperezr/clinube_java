@@ -9,26 +9,23 @@ diferencia entre los dos últimos importa:
 | **hecha** | Implementada y con sus pruebas en verde. **No basta:** las pruebas propias pueden pasar y la respuesta no ser la de Django. |
 | **igual a Django** | Comprobada con `scripts/comparar-contrato`: mismo código HTTP, mismas claves, mismo orden, mismos valores. |
 
-**9 de 202** igual a Django (4 %), comprobadas con `scripts/comparar-contrato`
-(25 de 25 peticiones iguales, informe en `docs/contrato/INFORME-COMPARADOR.md`).
+**16 de 202** igual a Django (8 %), y **3 más en parte** (falta un método o una exportación),
+comprobadas con `scripts/comparar-contrato` (71 de 71 peticiones iguales, informe en `docs/contrato/INFORME-COMPARADOR.md`).
 
 > **Estado a 2026-10-21:** el servidor compila sin errores ni avisos y la
-> suite pasa entera dos veces (90 pruebas en UTC y 90 en
+> suite pasa entera dos veces (110 pruebas en UTC y 110 en
 > Pacific/Kiritimati), incluidas las de integración contra PostgreSQL 16 con
 > la línea base de Flyway y Hibernate en `validate`.
 >
-> **El panel entra y llega al escritorio** con un usuario creado por Django
-> (comprobado en el navegador, con el panel de `frontend/` sin tocar, contra
-> una copia de la base de Django). Entrar, leer las condiciones y aceptarlas
-> (201) funcionan, y la base queda como la deja Django: la constancia y dos
-> filas de auditoría. El escritorio carga la barra lateral, pero sus
-> recuadros se quedan en «Cargando…»: piden rutas que aún no existen en
-> Kotlin. Las que pide nada más entrar, por orden de prioridad:
-> `GET /config/branding/` (la marca de la clínica, en todas las pantallas),
-> `GET /patients/`, `GET /agenda/view/`, `GET /appointments/waiting/`,
-> `GET /patients/birthdays/`, `GET /reports/financial/`,
-> `GET /reports/delinquency/`, `GET /clinical/follow-ups/`,
-> `GET /inventory/alerts/low-stock/` y `GET /bandeja-app/resumen/`.
+> **El panel entra y el escritorio se carga entero** con un usuario creado por
+> Django (comprobado en el navegador, con el panel de `frontend/` sin tocar,
+> contra una copia de la base de Django con los datos de
+> `scripts/sembrar-escritorio.py`). Entrar, aceptar las condiciones y el
+> escritorio completo —la marca de la clínica, sala de espera, cumpleaños,
+> citas de hoy, pacientes, ingresos del mes, morosos, stock bajo,
+> seguimientos y el contador de la bandeja— funcionan: las 25 peticiones que
+> hace el panel responden sin error. Lo siguiente son las pantallas de la
+> barra lateral, empezando por Pacientes (la ficha) y Agenda.
 
 > Este archivo dice la verdad. Si una ruta no responde igual que Django, lo
 > dice aunque las pruebas propias pasen.
@@ -52,7 +49,7 @@ diferencia entre los dos últimos importa:
 | Contraseñas `pbkdf2_sha256` de Django | hecha; probada contra hashes reales de Django (1.000, 390.000 y 1.000.000 iteraciones, y contraseña vacía) |
 | JWT compatible con SimpleJWT, con las tablas `token_blacklist_*` | hecha |
 | Comprobación de producción (no arranca con claves de ejemplo) | hecha |
-| Comparador de contrato | hecha: 25 de 25 iguales; cada servidor con su copia de la base |
+| Comparador de contrato | hecha: 71 de 71 iguales; cada servidor con su copia de la base, sembrada con el ORM de Django |
 | Respuestas de Django capturadas como fixtures (43, más el estado de la base tras aceptar) | hecha |
 | Auditoría automática de las escrituras (el `AuditLogMiddleware` de Django) | hecha |
 | Límites de intentos en Redis (600/min, 20/min, 5/min, 10/hora) | **pendiente** |
@@ -106,7 +103,7 @@ diferencia entre los dos últimos importa:
 | POST | `/api/v1/users/<uuid:pk>/invitar/` | pendiente |
 | GET | `/api/v1/users/funciones/` | pendiente |
 
-### Fase 2 · `configuration` — Configuración y catálogos (0/16)
+### Fase 2 · `configuration` — Configuración y catálogos (1/16)
 
 | Métodos | Ruta | Estado |
 |---|---|---|
@@ -115,7 +112,7 @@ diferencia entre los dos últimos importa:
 | POST | `/api/v1/config/backup/` | pendiente |
 | POST | `/api/v1/config/backup/decrypt/` | pendiente |
 | GET | `/api/v1/config/backup/herramientas/` | pendiente |
-| GET PATCH | `/api/v1/config/branding/` | pendiente |
+| GET PATCH | `/api/v1/config/branding/` | GET igual a Django · PATCH pendiente |
 | GET PATCH DELETE | `/api/v1/config/document-appearance/` | pendiente |
 | GET PATCH | `/api/v1/config/modulos/` | pendiente |
 | GET | `/api/v1/config/parameters/` | pendiente |
@@ -137,11 +134,11 @@ diferencia entre los dos últimos importa:
 | GET | `/api/v1/specialties/<uuid:pk>/form-template/` | pendiente |
 | GET PUT PATCH | `/api/v1/specialty-forms/<uuid:pk>/` | pendiente |
 
-### Fase 3 · `patients` — Pacientes (0/9)
+### Fase 3 · `patients` — Pacientes (1/9)
 
 | Métodos | Ruta | Estado |
 |---|---|---|
-| GET POST | `/api/v1/patients/` | pendiente |
+| GET POST | `/api/v1/patients/` | GET igual a Django · POST pendiente |
 | GET PUT PATCH DELETE | `/api/v1/patients/<uuid:pk>/` | pendiente |
 | GET POST DELETE | `/api/v1/patients/<uuid:pk>/app-access/` | pendiente |
 | GET POST | `/api/v1/patients/<uuid:pk>/aviso-privacidad/` | pendiente |
@@ -151,11 +148,11 @@ diferencia entre los dos últimos importa:
 | GET PUT PATCH | `/api/v1/patients/<uuid:pk>/medical-background/` | pendiente |
 | GET | `/api/v1/patients/<uuid:pk>/treatment-history/` | pendiente |
 
-### Fase 4 · `agenda` — Agenda (0/14)
+### Fase 4 · `agenda` — Agenda (2/14)
 
 | Métodos | Ruta | Estado |
 |---|---|---|
-| GET | `/api/v1/agenda/view/` | pendiente |
+| GET | `/api/v1/agenda/view/` | igual a Django |
 | GET POST | `/api/v1/appointments/` | pendiente |
 | GET PUT PATCH | `/api/v1/appointments/<uuid:pk>/` | pendiente |
 | POST | `/api/v1/appointments/<uuid:pk>/cancel/` | pendiente |
@@ -164,18 +161,18 @@ diferencia entre los dos últimos importa:
 | POST | `/api/v1/appointments/<uuid:pk>/confirm/` | pendiente |
 | POST | `/api/v1/appointments/<uuid:pk>/reschedule/` | pendiente |
 | POST | `/api/v1/appointments/<uuid:pk>/start/` | pendiente |
-| GET | `/api/v1/appointments/waiting/` | pendiente |
+| GET | `/api/v1/appointments/waiting/` | igual a Django |
 | ? | `/api/v1/calendar/<uuid:token>.ics` | pendiente |
 | GET | `/api/v1/doctors/` | pendiente |
 | GET | `/api/v1/doctors/<uuid:pk>/calendar-url/` | pendiente |
 | GET POST | `/api/v1/doctors/me/signature/` | pendiente |
 
-### Fase 5 · `clinical` — Historia clínica (0/41)
+### Fase 5 · `clinical` — Historia clínica (1/41)
 
 | Métodos | Ruta | Estado |
 |---|---|---|
 | GET | `/api/v1/cie10/` | pendiente |
-| GET | `/api/v1/clinical/follow-ups/` | pendiente |
+| GET | `/api/v1/clinical/follow-ups/` | igual a Django |
 | DELETE | `/api/v1/clinical/plan-template-items/<uuid:pk>/` | pendiente |
 | GET POST | `/api/v1/clinical/plan-templates/` | pendiente |
 | POST | `/api/v1/clinical/plan-templates/<uuid:pk>/items/` | pendiente |
@@ -216,7 +213,7 @@ diferencia entre los dos últimos importa:
 | POST | `/api/v1/treatment-plans/<uuid:pk>/generate-budget/` | pendiente |
 | POST | `/api/v1/treatment-plans/<uuid:pk>/items/` | pendiente |
 
-### Fase 7 · `billing` — Cobros (0/17)
+### Fase 7 · `billing` — Cobros (3/17)
 
 | Métodos | Ruta | Estado |
 |---|---|---|
@@ -229,21 +226,21 @@ diferencia entre los dos últimos importa:
 | GET | `/api/v1/patients/<uuid:pk>/account-statement/` | pendiente |
 | GET POST | `/api/v1/patients/<uuid:pk>/budgets/` | pendiente |
 | GET POST | `/api/v1/patients/<uuid:pk>/payments/` | pendiente |
-| GET | `/api/v1/patients/birthdays/` | pendiente |
+| GET | `/api/v1/patients/birthdays/` | igual a Django |
 | GET | `/api/v1/payment-plans/<uuid:pk>/installments/` | pendiente |
 | GET | `/api/v1/reports/appointments-summary/` | pendiente |
-| GET | `/api/v1/reports/delinquency/` | pendiente |
-| GET | `/api/v1/reports/financial/` | pendiente |
+| GET | `/api/v1/reports/delinquency/` | igual a Django |
+| GET | `/api/v1/reports/financial/` | igual a Django salvo `?export=excel` (pendiente: responde 501) |
 | GET | `/api/v1/reports/inventory/` | pendiente |
 | GET | `/api/v1/reports/new-patients/` | pendiente |
 | GET | `/api/v1/reports/production-by-doctor/` | pendiente |
 
-### Fase 8 · `inventory` — Inventario y reportes (0/6)
+### Fase 8 · `inventory` — Inventario y reportes (1/6)
 
 | Métodos | Ruta | Estado |
 |---|---|---|
 | GET | `/api/v1/inventory/alerts/expiring/` | pendiente |
-| GET | `/api/v1/inventory/alerts/low-stock/` | pendiente |
+| GET | `/api/v1/inventory/alerts/low-stock/` | igual a Django |
 | GET | `/api/v1/inventory/movements/` | pendiente |
 | GET POST | `/api/v1/products/` | pendiente |
 | GET PUT PATCH | `/api/v1/products/<uuid:pk>/` | pendiente |
@@ -283,7 +280,7 @@ diferencia entre los dos últimos importa:
 | POST | `/api/v1/finanzas/roles/generar/` | pendiente |
 | GET | `/api/v1/finanzas/roles/previa/` | pendiente |
 
-### Fase 10 · `app_paciente` — App del paciente (0/16)
+### Fase 10 · `app_paciente` — App del paciente (1/16)
 
 | Métodos | Ruta | Estado |
 |---|---|---|
@@ -299,7 +296,7 @@ diferencia entre los dos últimos importa:
 | GET POST | `/api/v1/app/solicitudes-cita/` | pendiente |
 | GET | `/api/v1/bandeja-app/mensajes/` | pendiente |
 | POST | `/api/v1/bandeja-app/mensajes/<uuid:pk>/responder/` | pendiente |
-| GET | `/api/v1/bandeja-app/resumen/` | pendiente |
+| GET | `/api/v1/bandeja-app/resumen/` | igual a Django |
 | GET | `/api/v1/bandeja-app/solicitudes/` | pendiente |
 | POST | `/api/v1/bandeja-app/solicitudes/<uuid:pk>/agendar/` | pendiente |
 | POST | `/api/v1/bandeja-app/solicitudes/<uuid:pk>/rechazar/` | pendiente |

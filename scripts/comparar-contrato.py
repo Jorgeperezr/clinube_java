@@ -57,6 +57,20 @@ def entrar(base, credenciales):
     return None
 
 
+ORIGENES = {}   # {"django": "http://127.0.0.1:8010", "kotlin": "http://127.0.0.1:8000"}
+
+
+def sin_origen(valor, servidor):
+    """
+    Los enlaces absolutos (`next`, `previous`) llevan el host y el puerto de
+    cada servidor, que por fuerza son distintos. Se sustituyen por un
+    marcador; el resto del enlace sí se compara.
+    """
+    if isinstance(valor, str) and servidor in ORIGENES:
+        return valor.replace(ORIGENES[servidor], "{servidor}")
+    return valor
+
+
 def comparar(a, b, volatiles, camino=""):
     """Las diferencias entre dos respuestas, como lista de textos."""
     dif = []
@@ -89,6 +103,7 @@ def comparar(a, b, volatiles, camino=""):
         hoja = camino.split(".")[-1].split("[")[0]
         if hoja in volatiles:
             return dif                                        # cambia solo: basta el tipo
+        a, b = sin_origen(a, "django"), sin_origen(b, "kotlin")
         if a != b:
             dif.append(f"{camino}:\n      Django: {a!r}\n      Kotlin: {b!r}")
     return dif
@@ -107,6 +122,7 @@ def main():
     p.add_argument("--markdown", default=None, help="escribe el informe para docs/PROGRESO.md")
     args = p.parse_args()
 
+    ORIGENES.update({"django": args.django.rstrip("/"), "kotlin": args.kotlin.rstrip("/")})
     ruta = args.peticiones or __file__.rsplit("/", 1)[0] + "/peticiones.json"
     with open(ruta, encoding="utf-8") as f:
         config = json.load(f)

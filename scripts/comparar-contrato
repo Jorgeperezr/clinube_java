@@ -39,11 +39,15 @@ esperar() {
   echo "No arrancó: $1" >&2; return 1
 }
 
-echo "→ Dos copias de $base_ref: $base_django y $base_kotlin"
-for copia in "$base_django" "$base_kotlin"; do
-  psql -h localhost -d postgres -qc "DROP DATABASE IF EXISTS $copia"
-  psql -h localhost -d postgres -qc "CREATE DATABASE $copia WITH TEMPLATE $base_ref OWNER clinica"
-done
+echo "→ Copia de $base_ref para Django: $base_django, con los datos del escritorio"
+psql -h localhost -d postgres -qc "DROP DATABASE IF EXISTS $base_django"
+psql -h localhost -d postgres -qc "CREATE DATABASE $base_django WITH TEMPLATE $base_ref OWNER clinica"
+# Los datos se siembran con el ORM de Django y DESPUÉS se copia la base para
+# Kotlin: así los dos servidores ven exactamente las mismas filas.
+BASE="$base_django" CLINUBE="$clinube" "$clinube/.venv/bin/python" "$raiz/scripts/sembrar-escritorio.py"
+echo "→ Copia para Kotlin: $base_kotlin"
+psql -h localhost -d postgres -qc "DROP DATABASE IF EXISTS $base_kotlin"
+psql -h localhost -d postgres -qc "CREATE DATABASE $base_kotlin WITH TEMPLATE $base_django OWNER clinica"
 
 echo "→ Django en el 8010"
 ( cd "$clinube/django-api" && \

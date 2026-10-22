@@ -121,3 +121,35 @@ el comparador copia la referencia dos veces (`clinube_cmp_django` y
 `clinube_cmp_kotlin`) y no la toca. Las capturas con estado
 (`scripts/capturar-condiciones.sh`) se hacen también sobre una copia
 desechable.
+
+## 10. Las rutas que solo leen van en SQL, no con entidades
+
+Los listados e informes del escritorio (`patients/`, `agenda/view/`, los
+informes, el stock…) son consultas SQL escritas a mano con
+`NamedParameterJdbcTemplate`, no entidades JPA. Tres razones:
+
+1. **El mismo orden que Django.** Donde Django no ordena del todo, el orden lo
+   pone PostgreSQL según la consulta. Copiando la consulta (el mismo filtro,
+   sin `ORDER BY` donde Django no lo pone) sale el mismo orden; el comparador
+   lo confirma.
+2. **Agrupar en la base.** Django calcula la morosidad y el stock en Python,
+   con una consulta por cuota o por producto. Aquí agrupa la base, como pide
+   el plan.
+3. **Subconsultas después de paginar.** Las atenciones y la próxima cita de la
+   lista de pacientes se calculan solo para las 20 filas de la página, no con
+   un JOIN y un GROUP BY sobre todas las citas, que es lo que hace Django.
+
+Las entidades llegarán con las escrituras de cada módulo.
+
+## 11. Los datos del comparador se siembran con Django
+
+`scripts/sembrar-escritorio.py` crea pacientes, citas, cobros, cuotas,
+seguimientos, inventario y la bandeja **con el ORM de Django** y con fechas
+relativas a hoy. El comparador lo ejecuta en la copia de Django y después
+copia esa base para Kotlin: los dos servidores ven exactamente las mismas
+filas, con los valores por defecto que pone Django.
+
+Las rutas que dependen de «hoy» no se comparan con respuestas capturadas
+(dejarían de valer al día siguiente): su paridad la da el comparador, que
+pregunta a los dos a la vez, y sus reglas las comprueban las pruebas con un
+reloj fijo (`RelojDePrueba`), como hacen las de Django.

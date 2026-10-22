@@ -96,6 +96,23 @@ object FormatoDeDrf {
         val fraccion = if (micros == 0) "" else ".%06d".format(micros)
         return momento.format(HASTA_LOS_SEGUNDOS) + fraccion + momento.format(DESPLAZAMIENTO)
     }
+
+    /**
+     * `datetime.isoformat()` de Python sobre un valor que viene de la base:
+     * en UTC y con «+00:00», NO con «Z». Es lo que sale cuando una vista
+     * construye el diccionario a mano (`a.checkin_at.isoformat()`) en vez de
+     * pasar por un serializador de DRF. Un tercer formato, y también se copia.
+     */
+    fun isoformatDePython(instante: Instant): String {
+        val utc = instante.atOffset(java.time.ZoneOffset.UTC)
+        val micros = utc.nano / 1_000
+        val fraccion = if (micros == 0) "" else ".%06d".format(micros)
+        return utc.format(HASTA_LOS_SEGUNDOS) + fraccion + "+00:00"
+    }
+
+    /** Una fecha y hora de un serializador de DRF: en la zona de la clínica. */
+    fun deDrf(instante: Instant, zona: java.time.ZoneId): String =
+        escribir(instante.atZone(zona).toOffsetDateTime())
 }
 
 class FechaDeDrf(private val ajustes: Ajustes) : JsonSerializer<OffsetDateTime>() {
