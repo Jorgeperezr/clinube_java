@@ -1,0 +1,10 @@
+{
+ "estado": 401,
+ "cuerpo": {
+  "error": {
+   "code": "not_authenticated",
+   "message": "Las credenciales de autenticación no se proveyeron.",
+   "details": {}
+  }
+ }
+}

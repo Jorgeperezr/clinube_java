@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service
 
 /** Las funcionalidades de una clínica, resolviendo antes qué está en prueba. */
 @Service
-class ServicioDeFuncionalidades(private val configuracion: ConfiguracionDePlataforma) {
+class ServicioDeFuncionalidades(private val configuracion: ServicioDeConfiguracion) {
 
     /** Las que todavía solo existen en las clínicas de prueba. */
     fun enPrueba(): Set<String> {

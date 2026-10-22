@@ -1,0 +1,43 @@
+{
+ "estado": 200,
+ "cuerpo": {
+  "id": "a35f7a96-7c8b-4954-8f61-0596bd5118ad",
+  "email": "admin@clinube.local",
+  "full_name": "Marta Ruiz",
+  "role": "admin",
+  "must_change_password": false,
+  "condiciones_pendientes": false,
+  "funciones": {
+   "agenda": true,
+   "cobros": true,
+   "mensajes_app": true,
+   "logros": true,
+   "inventario": true,
+   "reportes": true,
+   "finanzas": true,
+   "whatsapp": true,
+   "respaldo": true
+  },
+  "puede_gestionar_logros": true,
+  "puede_gestionar_whatsapp": true,
+  "funcionalidades": {
+   "inventario": true,
+   "whatsapp": false,
+   "convenios": true,
+   "app_paciente": true,
+   "formulario_033": true,
+   "reportes": true,
+   "temas_personales": true,
+   "finanzas": true,
+   "odontograma_3d": false,
+   "logros": false
+  },
+  "preferencias": {
+   "odontograma_3d": true,
+   "acento": "",
+   "barra_oculta": [],
+   "tema": ""
+  },
+  "clinica_de_pruebas": true
+ }
+}

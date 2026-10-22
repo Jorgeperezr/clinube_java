@@ -100,3 +100,24 @@ está dada de baja devuelve **200 con sus tokens**, y es la siguiente
 petición (`/auth/me/`) la que devuelve 401 «La clínica de este usuario
 está desactivada.». No se «arregla» rechazándolo en el login: sería
 responder distinto que Django.
+
+## 8. Los textos legales se generan desde Django, no se copian
+
+`TextosLegalesGenerados.kt` sale de `scripts/generar-textos-legales.py`, que
+ejecuta `apps/common/legal.py` con los datos del titular sustituidos por
+marcadores y los convierte en plantillas de Kotlin. Son cientos de líneas en
+castellano y una errata dejaría de responder igual que Django; además, la
+versión que acepta una clínica tiene que corresponder EXACTAMENTE con el
+texto que leyó. Lo único escrito a mano es la lista de proveedores, que
+cambia con el canal del código, y la comprueban los fixtures de los dos
+canales.
+
+## 9. Cada servidor del comparador trabaja con su propia copia
+
+El comparador manda peticiones que cambian el estado (aceptar las
+condiciones). Si Django trabajara sobre la base de referencia, la dejaría
+distinta para la siguiente captura; así pasó una vez, y se restauró. Ahora
+el comparador copia la referencia dos veces (`clinube_cmp_django` y
+`clinube_cmp_kotlin`) y no la toca. Las capturas con estado
+(`scripts/capturar-condiciones.sh`) se hacen también sobre una copia
+desechable.

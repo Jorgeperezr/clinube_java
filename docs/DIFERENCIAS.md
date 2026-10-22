@@ -120,3 +120,22 @@ va el de Jackson, que dice lo mismo con otras palabras. El código HTTP, el
 `code` y el principio del mensaje coinciden; el resto no se puede copiar sin
 reimplementar el analizador de JSON de Python, y ni el panel ni la app
 envían JSON roto.
+
+## 7. Aceptar las condiciones: dos casos en los que Django da 500
+
+Django responde **500** en dos casos raros de `POST /legal/condiciones/aceptar/`
+y aquí no se copian, porque un 500 no es un contrato:
+
+- **Cuerpo que no es un objeto** (`[1]`, `null`): Django hace
+  `request.data.get(...)` sobre una lista y revienta. Aquí se trata como «no
+  trae la versión vigente»: 409, igual que un cuerpo vacío.
+- **Super Administrador sin clínica**: `HasRole` lo deja pasar por ser
+  superusuario, y al guardar la constancia sin clínica la base rechaza el
+  nulo. Aquí responde 403 («esta acción se realiza dentro de una clínica»).
+
+## 8. La IP de la auditoría, solo si es una IP
+
+Django guarda en `ip_address` el primer valor de `X-Forwarded-For` tal como
+llega; si no es una IP, la base lo rechaza y la petición da 500. Aquí, si no
+es una IP literal, se guarda nula: convertir un texto cualquiera en
+`InetAddress` haría una consulta DNS con algo que manda el cliente.

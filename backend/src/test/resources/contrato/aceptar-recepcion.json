@@ -1,0 +1,10 @@
+{
+ "estado": 403,
+ "cuerpo": {
+  "error": {
+   "code": "permission_denied",
+   "message": "Usted no tiene permiso para realizar esta acción.",
+   "details": {}
+  }
+ }
+}

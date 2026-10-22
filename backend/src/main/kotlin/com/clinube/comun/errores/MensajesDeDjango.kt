@@ -66,6 +66,8 @@ object MensajesDeDjango {
         "Los pacientes deben ingresar con el código OTP enviado por WhatsApp."
     const val USUARIO_DESACTIVADO = "Este usuario está desactivado."
     const val CLINICA_DESACTIVADA = "La clínica de este usuario está desactivada."
+    /** 409 al aceptar una versión de las condiciones que ya no es la vigente. Va como `{"detail": …}`. */
+    const val CONDICIONES_CAMBIARON = "Las condiciones cambiaron mientras las leías. Vuelve a cargarlas."
     const val CAMBIO_DE_CONTRASENA_REQUERIDO =
         "Debes elegir tu propia contraseña antes de usar el sistema."
 }

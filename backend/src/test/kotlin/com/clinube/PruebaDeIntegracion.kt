@@ -47,7 +47,8 @@ abstract class PruebaDeIntegracion {
         jdbc.execute(
             """
             truncate token_blacklist_blacklistedtoken, token_blacklist_outstandingtoken,
-                     common_aceptacioncondiciones, accounts_user, common_tenant cascade
+                     common_aceptacioncondiciones, accounts_auditlog, common_platformconfiguration,
+                     accounts_user, common_tenant cascade
             """,
         )
         val semilla = javaClass.getResource("/semilla.sql")!!.readText()

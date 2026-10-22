@@ -1,0 +1,10 @@
+{
+ "estado": 405,
+ "cuerpo": {
+  "error": {
+   "code": "method_not_allowed",
+   "message": "Método \"GET\" no permitido.",
+   "details": {}
+  }
+ }
+}

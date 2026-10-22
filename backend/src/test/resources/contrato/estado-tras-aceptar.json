@@ -1,0 +1,64 @@
+{
+ "aceptaciones": [
+  {
+   "version": "2026.10",
+   "nombre": "Marta Ruiz",
+   "correo": "admin@clinube.local",
+   "ip": "127.0.0.1",
+   "aceptada_por": "a35f7a96-7c8b-4954-8f61-0596bd5118ad",
+   "tenant": "88a4cbeb-8604-4c10-b8fd-5bb844cd9362"
+  }
+ ],
+ "auditoria": [
+  {
+   "action": "accept_terms",
+   "entity_type": "AceptacionCondiciones",
+   "entity_id_vacio": false,
+   "ip": null,
+   "metadata": {
+    "version": "2026.10"
+   },
+   "user": "a35f7a96-7c8b-4954-8f61-0596bd5118ad",
+   "tenant": "88a4cbeb-8604-4c10-b8fd-5bb844cd9362"
+  },
+  {
+   "action": "post",
+   "entity_type": "/api/v1/legal/condiciones/aceptar/",
+   "entity_id_vacio": true,
+   "ip": "127.0.0.1",
+   "metadata": {
+    "status_code": 201
+   },
+   "user": "a35f7a96-7c8b-4954-8f61-0596bd5118ad",
+   "tenant": "88a4cbeb-8604-4c10-b8fd-5bb844cd9362"
+  },
+  {
+   "action": "post",
+   "entity_type": "/api/v1/legal/condiciones/aceptar/",
+   "entity_id_vacio": true,
+   "ip": "127.0.0.1",
+   "metadata": {
+    "status_code": 200
+   },
+   "user": "a35f7a96-7c8b-4954-8f61-0596bd5118ad",
+   "tenant": "88a4cbeb-8604-4c10-b8fd-5bb844cd9362"
+  }
+ ],
+ "configuracion": {
+  "currency": "USD",
+  "logo_url": "",
+  "timezone": "America/Guayaquil",
+  "smtp_host": "",
+  "smtp_port": 587,
+  "smtp_user": "",
+  "titular_ruc": "",
+  "platform_name": "Clinube",
+  "smtp_password": "",
+  "titular_correo": "",
+  "titular_nombre": "",
+  "google_client_id": "",
+  "proveedor_correo": "",
+  "funciones_publicadas": [],
+  "canal_codigo_paciente": "correo"
+ }
+}

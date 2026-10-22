@@ -1,0 +1,6 @@
+{
+ "estado": 409,
+ "cuerpo": {
+  "detail": "Las condiciones cambiaron mientras las leías. Vuelve a cargarlas."
+ }
+}

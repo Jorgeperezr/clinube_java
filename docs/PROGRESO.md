@@ -9,24 +9,26 @@ diferencia entre los dos últimos importa:
 | **hecha** | Implementada y con sus pruebas en verde. **No basta:** las pruebas propias pueden pasar y la respuesta no ser la de Django. |
 | **igual a Django** | Comprobada con `scripts/comparar-contrato`: mismo código HTTP, mismas claves, mismo orden, mismos valores. |
 
-**5 de 202** igual a Django (2 %), comprobadas con `scripts/comparar-contrato`
-(15 de 15 peticiones iguales, informe en `docs/contrato/INFORME-COMPARADOR.md`).
+**9 de 202** igual a Django (4 %), comprobadas con `scripts/comparar-contrato`
+(25 de 25 peticiones iguales, informe en `docs/contrato/INFORME-COMPARADOR.md`).
 
 > **Estado a 2026-10-21:** el servidor compila sin errores ni avisos y la
-> suite pasa entera dos veces (84 pruebas en UTC y 84 en
+> suite pasa entera dos veces (90 pruebas en UTC y 90 en
 > Pacific/Kiritimati), incluidas las de integración contra PostgreSQL 16 con
 > la línea base de Flyway y Hibernate en `validate`.
 >
-> **El panel entra con un usuario creado por Django** (comprobado en el
-> navegador, con el panel de `frontend/` sin tocar y `NEXT_PUBLIC_API_URL`
-> apuntando a Kotlin, contra una copia de la base de Django). La petición
-> previa de CORS, el login y `/auth/me/` responden 200, y el panel guarda los
-> tokens y el perfil completo. Después lleva a `/condiciones/`, como con
-> Django, porque la clínica demo no las ha aceptado, y ahí se queda:
-> **no se puede pasar de esa pantalla** hasta portar
-> `GET /legal/condiciones/` y `POST /legal/condiciones/aceptar/`. Son lo
-> siguiente que pide el panel, junto con `GET /auth/google/config/`, que la
-> pantalla de entrada consulta para decidir si enseña el botón de Google.
+> **El panel entra y llega al escritorio** con un usuario creado por Django
+> (comprobado en el navegador, con el panel de `frontend/` sin tocar, contra
+> una copia de la base de Django). Entrar, leer las condiciones y aceptarlas
+> (201) funcionan, y la base queda como la deja Django: la constancia y dos
+> filas de auditoría. El escritorio carga la barra lateral, pero sus
+> recuadros se quedan en «Cargando…»: piden rutas que aún no existen en
+> Kotlin. Las que pide nada más entrar, por orden de prioridad:
+> `GET /config/branding/` (la marca de la clínica, en todas las pantallas),
+> `GET /patients/`, `GET /agenda/view/`, `GET /appointments/waiting/`,
+> `GET /patients/birthdays/`, `GET /reports/financial/`,
+> `GET /reports/delinquency/`, `GET /clinical/follow-ups/`,
+> `GET /inventory/alerts/low-stock/` y `GET /bandeja-app/resumen/`.
 
 > Este archivo dice la verdad. Si una ruta no responde igual que Django, lo
 > dice aunque las pruebas propias pasen.
@@ -50,20 +52,21 @@ diferencia entre los dos últimos importa:
 | Contraseñas `pbkdf2_sha256` de Django | hecha; probada contra hashes reales de Django (1.000, 390.000 y 1.000.000 iteraciones, y contraseña vacía) |
 | JWT compatible con SimpleJWT, con las tablas `token_blacklist_*` | hecha |
 | Comprobación de producción (no arranca con claves de ejemplo) | hecha |
-| Comparador de contrato | hecha: 15 de 15 iguales |
-| Respuestas de Django capturadas como fixtures (25) | hecha |
+| Comparador de contrato | hecha: 25 de 25 iguales; cada servidor con su copia de la base |
+| Respuestas de Django capturadas como fixtures (43, más el estado de la base tras aceptar) | hecha |
+| Auditoría automática de las escrituras (el `AuditLogMiddleware` de Django) | hecha |
 | Límites de intentos en Redis (600/min, 20/min, 5/min, 10/hora) | **pendiente** |
 
 ## Rutas
 
-### Fase 0 · `common` — Cimientos y Plataforma (2/20)
+### Fase 0 · `common` — Cimientos y Plataforma (5/20)
 
 | Métodos | Ruta | Estado |
 |---|---|---|
 | GET | `/api/v1/health/` | igual a Django |
-| GET | `/api/v1/legal/condiciones/` | pendiente |
-| POST | `/api/v1/legal/condiciones/aceptar/` | pendiente |
-| GET | `/api/v1/legal/privacidad/` | pendiente |
+| GET | `/api/v1/legal/condiciones/` | igual a Django |
+| POST | `/api/v1/legal/condiciones/aceptar/` | igual a Django |
+| GET | `/api/v1/legal/privacidad/` | igual a Django |
 | GET | `/api/v1/platform/audit/` | pendiente |
 | GET POST | `/api/v1/platform/clinics/` | pendiente |
 | GET PUT PATCH | `/api/v1/platform/clinics/<uuid:pk>/` | pendiente |
@@ -81,14 +84,14 @@ diferencia entre los dos últimos importa:
 | POST | `/api/v1/publico/solicitudes/<uuid:pk>/confirmar/` | pendiente |
 | GET | `/api/v1/ready/` | igual a Django |
 
-### Fase 1 · `accounts` — Cuentas (2/17)
+### Fase 1 · `accounts` — Cuentas (3/17)
 
 | Métodos | Ruta | Estado |
 |---|---|---|
 | GET | `/api/v1/audit-logs/` | pendiente |
 | POST | `/api/v1/auth/change-password/` | pendiente |
 | POST | `/api/v1/auth/google/` | pendiente |
-| GET | `/api/v1/auth/google/config/` | pendiente |
+| GET | `/api/v1/auth/google/config/` | igual a Django |
 | POST | `/api/v1/auth/login/` | igual a Django |
 | GET | `/api/v1/auth/me/` | igual a Django |
 | GET PATCH | `/api/v1/auth/me/preferencias/` | pendiente |

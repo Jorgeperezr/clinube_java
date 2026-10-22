@@ -48,6 +48,11 @@ values
    'pbkdf2_sha256$1000000$5nzb8mbtEDCsQIIMppAK3o$G1XYgABbEZjed831acNhDO/p6AI6bTWbm+Y9o1vjVns=',
    null, false, 'apagada@clinube.local', null, 'admin', true, false,
    '2026-10-21 04:53:46.378048+00', '64b02b7e-a748-4395-9ca3-7490a7d8c314', '', false, '{}', '{}'),
+  -- Recepción de la clínica demo: no puede aceptar las condiciones.
+  ('33333333-3333-3333-3333-333333333333',
+   'pbkdf2_sha256$1000000$5nzb8mbtEDCsQIIMppAK3o$G1XYgABbEZjed831acNhDO/p6AI6bTWbm+Y9o1vjVns=',
+   null, false, 'recepcion@clinube.local', null, 'reception', true, false,
+   '2026-10-21 04:53:46.378048+00', '88a4cbeb-8604-4c10-b8fd-5bb844cd9362', 'Laura Paz', false, '{}', '{}'),
   -- Administración de la clínica vecina: nunca debe ver nada de la demo.
   ('22222222-2222-2222-2222-222222222222',
    'pbkdf2_sha256$1000000$5nzb8mbtEDCsQIIMppAK3o$G1XYgABbEZjed831acNhDO/p6AI6bTWbm+Y9o1vjVns=',

@@ -4,8 +4,13 @@
 set -uo pipefail
 raiz="$(cd "$(dirname "$0")/.." && pwd)"
 clinube="${CLINUBE:-$raiz/../clinube}"
-base_django="${BASE_DJANGO:-clinube_ref}"
-base_kotlin="${BASE_KOTLIN:-clinube_kotlin}"
+# La base de referencia NO se toca: cada servidor trabaja con su propia
+# copia. Algunas peticiones cambian el estado (aceptar las condiciones), y
+# si Django trabajara sobre la referencia, la dejaría distinta para la
+# siguiente captura.
+base_ref="${BASE_REF:-clinube_ref}"
+base_django="${BASE_DJANGO:-clinube_cmp_django}"
+base_kotlin="${BASE_KOTLIN:-clinube_cmp_kotlin}"
 
 [ -x "$clinube/.venv/bin/python" ] || { echo "clinube no tiene su .venv en $clinube" >&2; exit 1; }
 if [ -x "$raiz/gradlew" ]; then GRADLE=./gradlew
@@ -34,10 +39,11 @@ esperar() {
   echo "No arrancó: $1" >&2; return 1
 }
 
-echo "→ Copiando $base_django a $base_kotlin (misma base, dos copias)"
-psql -h localhost -d postgres -tc "SELECT 1 FROM pg_database WHERE datname='$base_kotlin'" | grep -q 1 \
-  && psql -h localhost -d postgres -qc "DROP DATABASE $base_kotlin"
-psql -h localhost -d postgres -qc "CREATE DATABASE $base_kotlin WITH TEMPLATE $base_django OWNER clinica"
+echo "→ Dos copias de $base_ref: $base_django y $base_kotlin"
+for copia in "$base_django" "$base_kotlin"; do
+  psql -h localhost -d postgres -qc "DROP DATABASE IF EXISTS $copia"
+  psql -h localhost -d postgres -qc "CREATE DATABASE $copia WITH TEMPLATE $base_ref OWNER clinica"
+done
 
 echo "→ Django en el 8010"
 ( cd "$clinube/django-api" && \

@@ -1,0 +1,73 @@
+{
+ "estado": 200,
+ "cuerpo": {
+  "titulo": "Condiciones de uso y acuerdo de tratamiento de datos",
+  "version": "2026.10",
+  "vigente_desde": "4 de octubre de 2026",
+  "secciones": [
+   {
+    "titulo": "Partes y objeto",
+    "parrafos": [
+     "[pendiente de completar] (RUC [pendiente de completar]), que opera Clinube («la plataforma»), y la clínica que la usa («la clínica»), representada por quien acepta estas condiciones como administrador o administradora.",
+     "La plataforma presta un sistema de gestión clínica en la nube: agenda, fichas de pacientes, historia clínica, cobros, app del paciente y copias de seguridad."
+    ]
+   },
+   {
+    "titulo": "Quién responde de los datos",
+    "parrafos": [
+     "La clínica es la responsable del tratamiento de los datos de sus pacientes y de su personal. La plataforma es encargada del tratamiento: los trata solo para prestar el servicio y según las instrucciones de la clínica, que son estas condiciones y el uso que la clínica hace del sistema."
+    ]
+   },
+   {
+    "titulo": "Lo que se compromete a hacer la plataforma",
+    "parrafos": [
+     "Usar los datos únicamente para prestar el servicio. No venderlos, no cederlos y no usarlos para fines propios.",
+     "Exigir confidencialidad a toda persona que tenga acceso a ellos.",
+     "Mantener medidas de seguridad: conexiones cifradas, copias diarias cifradas guardadas fuera del servidor, parches de seguridad automáticos y acceso administrativo restringido.",
+     "Trabajar solo con estos proveedores (subencargados), y avisar a la clínica antes de añadir o cambiar alguno:",
+     "Oracle Cloud Infrastructure: aloja el servidor, en la región de Santiago de Chile.",
+     "Cloudflare: por su red pasan, cifradas, las conexiones entre el navegador o la app y el servidor, y guarda las copias de seguridad, que van cifradas antes de salir y no puede leer.",
+     "Meta Platforms (WhatsApp): envía, a quien lo autorizó, los recordatorios de citas y pagos.",
+     "El proveedor de correo de la plataforma: envía los correos del sistema: los códigos para entrar en la app y los de recuperar una contraseña.",
+     "Avisar a la clínica sin demora de cualquier violación de seguridad que afecte a sus datos, con lo que se sepa en ese momento, para que pueda cumplir su propio deber de notificarla a la Superintendencia de Protección de Datos Personales y a los afectados.",
+     "Ayudar a la clínica a atender las solicitudes de sus pacientes sobre sus derechos.",
+     "Al terminar el servicio, dar a la clínica 30 días para descargar su copia completa (datos y archivos). Después, los datos se borran del servidor, y de las copias de seguridad cuando estas caducan, a los 30 días."
+    ]
+   },
+   {
+    "titulo": "Lo que se compromete a hacer la clínica",
+    "parrafos": [
+     "Tener base legal para los datos que registra y entregar a cada paciente el aviso de privacidad. El sistema permite dejar constancia de la entrega en la ficha.",
+     "Pedir la autorización del paciente antes de activarle los recordatorios por WhatsApp.",
+     "Crear una cuenta personal para cada persona que use el sistema, con el rol que le corresponde, y desactivarla cuando deje la clínica. Las contraseñas no se comparten.",
+     "Usar el sistema solo para la gestión de la propia clínica. No está permitido subir contenido ilícito o programas maliciosos, intentar acceder a datos de otras clínicas, sobrecargar el servicio, escanear o probar la seguridad del sistema o de la infraestructura donde se aloja sin autorización por escrito, ni hacer nada que vaya contra las políticas de uso aceptable de los proveedores de alojamiento.",
+     "Descargar sus propias copias de seguridad cada cierto tiempo, desde Configuración → Copia de seguridad."
+    ]
+   },
+   {
+    "titulo": "Disponibilidad y suspensión",
+    "parrafos": [
+     "La plataforma procura que el servicio esté siempre disponible, pero no puede garantizar que funcione sin interrupciones: hay mantenimientos y fallos de proveedores que no controla.",
+     "Puede suspender el acceso de una clínica que incumpla el uso permitido. Avisará antes, salvo que el riesgo para otros sea inmediato."
+    ]
+   },
+   {
+    "titulo": "Cambios",
+    "parrafos": [
+     "Si estas condiciones cambian, la versión nueva se mostrará al entrar en el panel y habrá que aceptarla para seguir usándolo."
+    ]
+   },
+   {
+    "titulo": "Ley aplicable",
+    "parrafos": [
+     "Estas condiciones se rigen por las leyes de la República del Ecuador, en particular por la Ley Orgánica de Protección de Datos Personales y su reglamento."
+    ]
+   }
+  ],
+  "pendientes": [
+   "titular",
+   "ruc",
+   "correo"
+  ]
+ }
+}
