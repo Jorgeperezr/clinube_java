@@ -2,9 +2,15 @@ package com.clinube.comun.json
 
 import com.clinube.comun.errores.ExcepcionApi
 import com.clinube.comun.errores.MensajesDeDjango
+import com.clinube.comun.tiempo.FechasDePython
+import com.clinube.comun.validacion.ValidadorDeCorreo
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.fasterxml.jackson.databind.node.ObjectNode
+import java.time.LocalDate
+import java.time.OffsetDateTime
+import java.time.ZoneId
+import java.util.UUID
 
 /**
  * Lee el cuerpo de una petición con las reglas de un serializador de DRF.
@@ -33,7 +39,7 @@ object CuerpoDrf {
         return cuerpo as ObjectNode
     }
 
-    /** El nombre que tendría ese valor en Python, que es lo que DRF pone en el mensaje. */
+    /** El nombre que tendría ese valor en Python, que es lo que DRF pone en algunos mensajes. */
     fun tipoEnPython(valor: JsonNode): String = when {
         valor.isArray -> "list"
         valor.isTextual -> "str"
@@ -43,48 +49,227 @@ object CuerpoDrf {
         valor.isNull -> "NoneType"
         else -> "dict"
     }
+
+    /**
+     * `repr()` de Python de un valor JSON, para los mensajes que lo
+     * incluyen: un UUID que llega como lista sale «“['x']” no es un UUID
+     * válido.».
+     */
+    fun reprDePython(valor: JsonNode): String = when {
+        valor.isNull -> "None"
+        valor.isBoolean -> if (valor.booleanValue()) "True" else "False"
+        valor.isTextual -> "'" + valor.textValue().replace("\\", "\\\\").replace("'", "\\'") + "'"
+        valor.isNumber -> valor.asText()
+        valor.isArray -> valor.joinToString(", ", "[", "]") { reprDePython(it) }
+        else -> valor.properties().joinToString(", ", "{", "}") { (k, v) -> "'$k': ${reprDePython(v)}" }
+    }
 }
 
 /**
- * Los campos de un serializador, validados todos antes de responder: DRF
- * devuelve los errores de TODOS los campos a la vez, en el orden en que se
- * declararon, no el primero que encuentra.
+ * Los campos de un serializador de DRF, validados todos antes de
+ * responder: DRF devuelve los errores de TODOS los campos a la vez, en el
+ * orden en que se declararon en el serializador, no el primero que
+ * encuentra. Por eso cada vista lee sus campos en ese orden.
  *
- *     val campos = CamposDrf(CuerpoDrf.objeto(cuerpo))
- *     val correo = campos.texto("email")
- *     val clave = campos.texto("password")
+ *     val campos = CamposDrf(CuerpoDrf.objeto(cuerpo), parcial = metodo == PATCH)
+ *     val nombre = campos.texto("first_name", maximo = 100)
+ *     val correo = campos.texto("email", maximo = 254, requerido = false, enBlanco = true, correo = true)
  *     campos.validar()   // 400 con los que fallaron
- *     // aquí correo y clave ya no son nulos
+ *
+ * Cada lectura devuelve `Leido.Ausente` si el campo no llegó (y no es
+ * obligatorio, o es una actualización parcial) o `Leido.Valor(x)`, donde
+ * `x` puede ser nulo si el campo admite nulos y llegó nulo.
  */
-class CamposDrf(private val datos: ObjectNode) {
+class CamposDrf(private val datos: ObjectNode, private val parcial: Boolean = false) {
 
-    private val errores = LinkedHashMap<String, List<String>>()
+    sealed interface Leido<out T> {
+        data object Ausente : Leido<Nothing>
+        data class Valor<T>(val valor: T?) : Leido<T>
+    }
+
+    private val errores = LinkedHashMap<String, MutableList<String>>()
+
+    val hayErrores: Boolean get() = errores.isNotEmpty()
+
+    fun tieneError(campo: String) = campo in errores
+
+    /** Un error de un `validate_<campo>` propio de la vista, después de leer el campo. */
+    fun error(campo: String, mensaje: String) {
+        errores.getOrPut(campo) { mutableListOf() }.add(mensaje)
+    }
 
     /**
-     * Un `CharField` obligatorio, sin blancos ni nulos y recortando los
-     * espacios, que es lo que trae DRF por defecto. Ojo: también recorta la
-     * contraseña (`PasswordField` de SimpleJWT no lo desactiva), así que una
-     * contraseña con un espacio al final entra sin él. Así funciona Django
-     * y así tiene que funcionar aquí.
+     * Ausente, nulo o con valor: la parte común de todos los tipos
+     * (`validate_empty_values` de DRF). Devuelve el nodo si hay que seguir
+     * mirándolo, o el resultado ya decidido.
      */
-    fun texto(campo: String): String? {
+    private fun vacio(campo: String, requerido: Boolean, nulo: Boolean): Pair<JsonNode?, Leido<Nothing>?> {
         val valor = datos.get(campo)
-        val motivo = when {
-            valor == null || valor.isMissingNode -> MensajesDeDjango.CAMPO_REQUERIDO
-            valor.isNull -> MensajesDeDjango.CAMPO_NULO
-            valor.isBoolean || valor.isContainerNode -> MensajesDeDjango.CADENA_INVALIDA
-            valor.asText().trim().isEmpty() -> MensajesDeDjango.CAMPO_EN_BLANCO
-            else -> null
+        if (valor == null || valor.isMissingNode) {
+            if (requerido && !parcial) error(campo, MensajesDeDjango.CAMPO_REQUERIDO)
+            return null to Leido.Ausente
         }
-        if (motivo != null) {
-            errores[campo] = listOf(motivo)
-            return null
+        if (valor.isNull) {
+            if (!nulo) {
+                error(campo, MensajesDeDjango.CAMPO_NULO)
+                return null to Leido.Ausente
+            }
+            return null to Leido.Valor(null)
         }
-        return valor!!.asText().trim()
+        return valor to null
+    }
+
+    /**
+     * Un `CharField`: recorta los espacios, rechaza listas, objetos y
+     * booleanos, convierte los números en texto, y comprueba el largo y,
+     * si es un `EmailField`, el formato con el validador de Django.
+     */
+    fun texto(
+        campo: String,
+        maximo: Int? = null,
+        requerido: Boolean = true,
+        enBlanco: Boolean = false,
+        nulo: Boolean = false,
+        correo: Boolean = false,
+    ): Leido<String> {
+        val (valor, decidido) = vacio(campo, requerido, nulo)
+        if (decidido != null) return decidido
+        valor!!
+        if (valor.isBoolean || valor.isContainerNode) {
+            error(campo, MensajesDeDjango.CADENA_INVALIDA)
+            return Leido.Ausente
+        }
+        val texto = valor.asText().trim()
+        if (texto.isEmpty()) {
+            if (!enBlanco) {
+                error(campo, MensajesDeDjango.CAMPO_EN_BLANCO)
+                return Leido.Ausente
+            }
+            return Leido.Valor("")
+        }
+        val antes = errores[campo]?.size ?: 0
+        if (maximo != null && texto.length > maximo) error(campo, MensajesDeDjango.maximoDeCaracteres(maximo))
+        if (correo && !ValidadorDeCorreo.esValido(texto)) error(campo, MensajesDeDjango.CORREO_INVALIDO)
+        return if ((errores[campo]?.size ?: 0) > antes) Leido.Ausente else Leido.Valor(texto)
+    }
+
+    /** Un `DateField`: solo `AAAA-MM-DD`. */
+    fun fecha(campo: String, requerido: Boolean = true, nulo: Boolean = false): Leido<LocalDate> {
+        val (valor, decidido) = vacio(campo, requerido, nulo)
+        if (decidido != null) return decidido
+        val fecha = valor!!.takeIf { it.isTextual }?.let { FechasDePython.fecha(it.textValue()) }
+        if (fecha == null) {
+            error(campo, MensajesDeDjango.FECHA_INVALIDA)
+            return Leido.Ausente
+        }
+        return Leido.Valor(fecha)
+    }
+
+    /** Un `DateTimeField`: `fromisoformat` de Python; sin zona, la hora es de la clínica. */
+    fun fechaHora(campo: String, zona: ZoneId, requerido: Boolean = true, nulo: Boolean = false): Leido<OffsetDateTime> {
+        val (valor, decidido) = vacio(campo, requerido, nulo)
+        if (decidido != null) return decidido
+        val momento = valor!!.takeIf { it.isTextual }?.let { FechasDePython.fechaHora(it.textValue(), zona) }
+        if (momento == null) {
+            error(campo, MensajesDeDjango.FECHA_HORA_INVALIDA)
+            return Leido.Ausente
+        }
+        return Leido.Valor(momento)
+    }
+
+    /**
+     * Un `BooleanField` de DRF, con los textos que acepta: «y», «on»,
+     * «1»… En uno que admite nulos, «null» o "" es nulo.
+     */
+    fun booleano(campo: String, requerido: Boolean = false, nulo: Boolean = false): Leido<Boolean> {
+        val (valor, decidido) = vacio(campo, requerido, nulo)
+        if (decidido != null) return decidido
+        valor!!
+        if (valor.isBoolean) return Leido.Valor(valor.booleanValue())
+        if (valor.isIntegralNumber || valor.isFloatingPointNumber) {
+            when (valor.asDouble()) {
+                1.0 -> return Leido.Valor(true)
+                0.0 -> return Leido.Valor(false)
+            }
+        }
+        if (valor.isTextual) {
+            val t = valor.textValue()
+            if (t in VERDADEROS) return Leido.Valor(true)
+            if (t in FALSOS) return Leido.Valor(false)
+            if (nulo && t in NULOS) return Leido.Valor(null)
+        }
+        error(campo, MensajesDeDjango.BOOLEANO_INVALIDO)
+        return Leido.Ausente
+    }
+
+    /**
+     * Un `PrimaryKeyRelatedField` con clave UUID. `existe` dice si el
+     * objeto está en el conjunto que admite el campo; si no, «Clave
+     * primaria "…" inválida - objeto no existe.».
+     */
+    fun clave(
+        campo: String,
+        requerido: Boolean = true,
+        nulo: Boolean = false,
+        existe: (UUID) -> Boolean,
+    ): Leido<UUID> {
+        val (valor, decidido) = vacio(campo, requerido, nulo)
+        if (decidido != null) return decidido
+        valor!!
+        if (valor.isBoolean) {
+            error(campo, "Tipo incorrecto. Se esperaba valor de clave primaria y se recibió bool.")
+            return Leido.Ausente
+        }
+        val texto = if (valor.isTextual) valor.textValue() else if (valor.isNumber) valor.asText() else CuerpoDrf.reprDePython(valor)
+        // Un número lo convierte Django en UUID (`UUID(int=n)`), así que no
+        // es «UUID inválido» sino «no existe».
+        if (valor.isIntegralNumber) {
+            error(campo, MensajesDeDjango.claveInexistente(texto))
+            return Leido.Ausente
+        }
+        val id = uuidDePython(texto)
+        if (id == null) {
+            error(campo, MensajesDeDjango.uuidInvalido(texto))
+            return Leido.Ausente
+        }
+        if (!existe(id)) {
+            error(campo, MensajesDeDjango.claveInexistente(texto))
+            return Leido.Ausente
+        }
+        return Leido.Valor(id)
     }
 
     /** 400 con los errores de todos los campos, si hubo alguno. */
     fun validar() {
         if (errores.isNotEmpty()) throw ExcepcionApi.validacion(errores)
     }
+
+    companion object {
+        val VERDADEROS = setOf("t", "T", "y", "Y", "yes", "Yes", "YES", "true", "True", "TRUE", "on", "On", "ON", "1")
+        val FALSOS = setOf("f", "F", "n", "N", "no", "No", "NO", "false", "False", "FALSE", "off", "Off", "OFF", "0")
+        val NULOS = setOf("null", "Null", "NULL", "")
+
+        /**
+         * `uuid.UUID(texto)` de Python: admite el UUID con o sin guiones,
+         * entre llaves y con prefijo «urn:uuid:». `UUID.fromString` de Java
+         * es más permisivo con los ceros a la izquierda, así que se
+         * comprueba también la forma.
+         */
+        private val UUID_DE_PYTHON = Regex("""^(urn:uuid:)?\{?[0-9a-fA-F]{8}-?[0-9a-fA-F]{4}-?[0-9a-fA-F]{4}-?[0-9a-fA-F]{4}-?[0-9a-fA-F]{12}}?$""")
+
+        /** El UUID como lo lee Python, o nulo si no lo es. */
+        fun uuidDePython(texto: String): UUID? {
+            if (!UUID_DE_PYTHON.matches(texto)) return null
+            val hex = texto.removePrefix("urn:uuid:").removePrefix("{").removeSuffix("}").replace("-", "")
+            return UUID.fromString("${hex.substring(0, 8)}-${hex.substring(8, 12)}-${hex.substring(12, 16)}-" +
+                "${hex.substring(16, 20)}-${hex.substring(20)}")
+        }
+    }
+
+    /**
+     * El `CharField` obligatorio de las rutas de autenticación, con la
+     * forma antigua de esta clase (nulo si falló). Recorta también la
+     * contraseña, como `PasswordField` de SimpleJWT.
+     */
+    fun texto(campo: String): String? = (texto(campo, maximo = null) as? Leido.Valor)?.valor
 }

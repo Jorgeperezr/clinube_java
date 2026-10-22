@@ -19,6 +19,25 @@ object MensajesDeDjango {
     const val CAMPO_EN_BLANCO = "Este campo no puede estar en blanco."
     const val CAMPO_NULO = "Este campo no puede ser nulo."
     const val CADENA_INVALIDA = "No es una cadena válida."
+    const val CORREO_INVALIDO = "Introduzca una dirección de correo electrónico válida."
+    const val FECHA_INVALIDA = "Fecha con formato erróneo. Use uno de los siguientes formatos en su lugar: YYYY-MM-DD."
+    const val FECHA_HORA_INVALIDA =
+        "Fecha/hora con formato erróneo. Use uno de los siguientes formatos en su lugar: " +
+            "YYYY-MM-DDThh:mm[:ss[.uuuuuu]][+HH:MM|-HH:MM|Z]."
+    const val BOOLEANO_INVALIDO = "Debe ser un booleano válido."
+
+    fun maximoDeCaracteres(n: Int) = "Asegúrese de que este campo no tenga más de $n caracteres."
+    fun claveInexistente(clave: String) = "Clave primaria \"$clave\" inválida - objeto no existe."
+
+    /** Con las comillas tipográficas de Django: «“abc” no es un UUID válido.». */
+    fun uuidInvalido(texto: String) = "“$texto” no es un UUID válido."
+
+    /** Los filtros de django-filter. */
+    fun opcionNoValida(valor: String) = "Escoja una opción válida. $valor no es una de las opciones disponibles."
+    const val OPCION_INEXISTENTE = "Escoja una opción válida. Esa opción no está entre las disponibles."
+
+    /** El 404 de `get_object_or_404`: el nombre del modelo, en inglés y sin traducir. */
+    fun noHayCoincidencia(modelo: String) = "No $modelo matches the given query."
 
     /** Cuerpo `null`. Sin traducir en DRF, y así se deja. */
     const val SIN_DATOS = "No data provided"

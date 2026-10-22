@@ -31,6 +31,9 @@ def pedir(base, peticion, token):
     if "cuerpo" in peticion:
         datos = json.dumps(peticion["cuerpo"]).encode()
         cabeceras["Content-Type"] = "application/json"
+    elif "crudo" in peticion:
+        datos = peticion["crudo"].encode()
+        cabeceras["Content-Type"] = peticion.get("tipo", "application/json")
     if token:
         cabeceras["Authorization"] = "Bearer " + token
     cabeceras.update(peticion.get("cabeceras", {}))
@@ -46,7 +49,9 @@ def pedir(base, peticion, token):
     try:
         return estado, json.loads(cuerpo) if cuerpo else None
     except json.JSONDecodeError:
-        return estado, cuerpo.decode("utf-8", "replace")[:200]
+        texto = cuerpo.decode("utf-8", "replace")
+        # Una página de error de Django en HTML no se compara entera.
+        return estado, texto[:200] if texto.lstrip().startswith("<") else texto
 
 
 def entrar(base, credenciales):

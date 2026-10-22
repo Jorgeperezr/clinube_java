@@ -71,3 +71,90 @@
 | aceptar la primera vez | `POST /api/v1/legal/condiciones/aceptar/` | igual a Django |
 | aceptar otra vez | `POST /api/v1/legal/condiciones/aceptar/` | igual a Django |
 | perfil tras aceptar | `GET /api/v1/auth/me/` | igual a Django |
+| _comentario: pantallas de Pacientes y Agenda; primero lo que solo lee | `GET /api/v1/health/` | igual a Django |
+| ficha | `GET /api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/` | igual a Django |
+| ficha inexistente | `GET /api/v1/patients/00000000-0000-4000-8000-000000000000/` | igual a Django |
+| ficha de otra clínica | `GET /api/v1/patients/92f3248c-fcd2-5d23-991f-58410f9ce47c/` | igual a Django |
+| ficha, doctora | `GET /api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/` | igual a Django |
+| convenios | `GET /api/v1/config/agreements/` | igual a Django |
+| acceso a la app | `GET /api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/app-access/` | igual a Django |
+| acceso a la app con teléfono y correo | `GET /api/v1/patients/b6993fcd-fc33-55b8-9059-d7eb18482ee3/app-access/` | igual a Django |
+| acceso a la app, doctora | `GET /api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/app-access/` | igual a Django |
+| doctores | `GET /api/v1/doctors/` | igual a Django |
+| citas | `GET /api/v1/appointments/` | igual a Django |
+| citas pendientes | `GET /api/v1/appointments/?status=pending` | igual a Django |
+| citas de un doctor | `GET /api/v1/appointments/?doctor=33030969-3883-589d-bc77-8a3916a2253c` | igual a Django |
+| citas de un paciente | `GET /api/v1/appointments/?patient=b6993fcd-fc33-55b8-9059-d7eb18482ee3` | igual a Django |
+| citas con filtros malos | `GET /api/v1/appointments/?doctor=abc&status=raro&patient=xyz` | igual a Django |
+| citas de un doctor inexistente | `GET /api/v1/appointments/?doctor=00000000-0000-4000-8000-000000000000` | igual a Django |
+| citas de la doctora | `GET /api/v1/appointments/` | igual a Django |
+| cita | `GET /api/v1/appointments/fe6d5606-7bb8-5de6-b4fd-30fd9b945dcd/` | igual a Django |
+| cita inexistente | `GET /api/v1/appointments/00000000-0000-4000-8000-000000000000/` | igual a Django |
+| calendario de la doctora (.ics) | `GET /api/v1/calendar/5fa9c0cb-b38e-5347-9cd6-61b41ba03aab.ics` | igual a Django |
+| dirección del calendario | `GET /api/v1/doctors/db326626-1f49-5458-b448-7b9e96fa589e/calendar-url/` | igual a Django |
+| dirección del calendario de otro, doctora | `GET /api/v1/doctors/33030969-3883-589d-bc77-8a3916a2253c/calendar-url/` | igual a Django |
+| dirección del calendario inexistente | `GET /api/v1/doctors/00000000-0000-4000-8000-000000000000/calendar-url/` | igual a Django |
+| dirección del calendario, recepción | `GET /api/v1/doctors/db326626-1f49-5458-b448-7b9e96fa589e/calendar-url/` | igual a Django |
+| _comentario: desde aquí se escribe | `GET /api/v1/health/` | igual a Django |
+| alta vacía | `POST /api/v1/patients/` | igual a Django |
+| alta con todo mal | `POST /api/v1/patients/` | igual a Django |
+| alta con fecha vacía y convenio raro | `POST /api/v1/patients/` | igual a Django |
+| alta con convenio inexistente | `POST /api/v1/patients/` | igual a Django |
+| alta con convenio ajeno | `POST /api/v1/patients/` | igual a Django |
+| alta con cédula repetida | `POST /api/v1/patients/` | igual a Django |
+| alta, doctora | `POST /api/v1/patients/` | igual a Django |
+| alta con cuerpo lista | `POST /api/v1/patients/` | igual a Django |
+| alta buena | `POST /api/v1/patients/` | igual a Django |
+| alta sin fecha, teléfono número | `POST /api/v1/patients/` | igual a Django |
+| alta con correos raros | `POST /api/v1/patients/` | igual a Django |
+| patch nombre vacío | `PATCH /api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/` | igual a Django |
+| patch cédula repetida | `PATCH /api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/` | igual a Django |
+| patch quita el convenio (sin agreement_name) | `PATCH /api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/` | igual a Django |
+| put incompleto | `PUT /api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/` | igual a Django |
+| put completo (con agreement_name nulo) | `PUT /api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/` | igual a Django |
+| patch, doctora | `PATCH /api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/` | igual a Django |
+| antecedentes, recepción | `GET /api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/medical-background/` | igual a Django |
+| antecedentes (los crea) | `GET /api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/medical-background/` | igual a Django |
+| antecedentes put malo | `PUT /api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/medical-background/` | igual a Django |
+| antecedentes patch | `PATCH /api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/medical-background/` | igual a Django |
+| antecedentes booleano «y» | `PATCH /api/v1/patients/1ef52a3a-b8a2-5758-896d-57935d332c51/medical-background/` | igual a Django |
+| antecedentes «NULL» y número | `PATCH /api/v1/patients/1ef52a3a-b8a2-5758-896d-57935d332c51/medical-background/` | igual a Django |
+| antecedentes de otra clínica | `GET /api/v1/patients/92f3248c-fcd2-5d23-991f-58410f9ce47c/medical-background/` | igual a Django |
+| aviso | `GET /api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/aviso-privacidad/` | igual a Django |
+| aviso con medio malo | `POST /api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/aviso-privacidad/` | igual a Django |
+| aviso registrado | `POST /api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/aviso-privacidad/` | igual a Django |
+| aviso otra vez | `POST /api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/aviso-privacidad/` | igual a Django |
+| aviso, doctora | `GET /api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/aviso-privacidad/` | igual a Django |
+| cita: crear vacía | `POST /api/v1/appointments/` | igual a Django |
+| cita: fin antes del inicio | `POST /api/v1/appointments/` | igual a Django |
+| cita: en el pasado | `POST /api/v1/appointments/` | igual a Django |
+| cita: fecha mala | `POST /api/v1/appointments/` | igual a Django |
+| cita: paciente ajeno | `POST /api/v1/appointments/` | igual a Django |
+| cita: claves número, lista y bool | `POST /api/v1/appointments/` | igual a Django |
+| cita: nulos | `POST /api/v1/appointments/` | igual a Django |
+| cita: paciente moroso | `POST /api/v1/appointments/` | igual a Django |
+| cita: moroso con override | `POST /api/v1/appointments/` | igual a Django |
+| cita: cruzada | `POST /api/v1/appointments/` | igual a Django |
+| cita: separador raro y siete decimales | `POST /api/v1/appointments/` | igual a Django |
+| cita: notas nulas | `POST /api/v1/appointments/` | igual a Django |
+| cita: doctora sin la función | `POST /api/v1/appointments/` | igual a Django |
+| cita: patch notas (el estado no cambia) | `PATCH /api/v1/appointments/fe6d5606-7bb8-5de6-b4fd-30fd9b945dcd/` | igual a Django |
+| cita: patch solo el inicio, en el pasado | `PATCH /api/v1/appointments/fe6d5606-7bb8-5de6-b4fd-30fd9b945dcd/` | igual a Django |
+| cita: put con el fin antes | `PUT /api/v1/appointments/8473c095-6409-54cf-a976-d8505d656fee/` | igual a Django |
+| cita: patch inexistente | `PATCH /api/v1/appointments/00000000-0000-4000-8000-000000000000/` | igual a Django |
+| confirmar | `POST /api/v1/appointments/fe6d5606-7bb8-5de6-b4fd-30fd9b945dcd/confirm/` | igual a Django |
+| confirmar inexistente | `POST /api/v1/appointments/00000000-0000-4000-8000-000000000000/confirm/` | igual a Django |
+| reagendar con datos malos | `POST /api/v1/appointments/fe6d5606-7bb8-5de6-b4fd-30fd9b945dcd/reschedule/` | igual a Django |
+| reagendar al revés | `POST /api/v1/appointments/fe6d5606-7bb8-5de6-b4fd-30fd9b945dcd/reschedule/` | igual a Django |
+| reagendar encima de otra | `POST /api/v1/appointments/fe6d5606-7bb8-5de6-b4fd-30fd9b945dcd/reschedule/` | igual a Django |
+| reagendar | `POST /api/v1/appointments/fe6d5606-7bb8-5de6-b4fd-30fd9b945dcd/reschedule/` | igual a Django |
+| iniciar sin llegada | `POST /api/v1/appointments/fe6d5606-7bb8-5de6-b4fd-30fd9b945dcd/start/` | igual a Django |
+| llegada | `POST /api/v1/appointments/fe6d5606-7bb8-5de6-b4fd-30fd9b945dcd/checkin/` | igual a Django |
+| iniciar | `POST /api/v1/appointments/fe6d5606-7bb8-5de6-b4fd-30fd9b945dcd/start/` | igual a Django |
+| iniciar otra vez | `POST /api/v1/appointments/fe6d5606-7bb8-5de6-b4fd-30fd9b945dcd/start/` | igual a Django |
+| iniciar inexistente | `POST /api/v1/appointments/00000000-0000-4000-8000-000000000000/start/` | igual a Django |
+| finalizar, auxiliar | `POST /api/v1/appointments/fe6d5606-7bb8-5de6-b4fd-30fd9b945dcd/checkout/` | igual a Django |
+| finalizar, recepción | `POST /api/v1/appointments/fe6d5606-7bb8-5de6-b4fd-30fd9b945dcd/checkout/` | igual a Django |
+| cancelar | `POST /api/v1/appointments/35fa5eb9-7647-580c-b5bd-7bbe514b6cce/cancel/` | igual a Django |
+| baja, recepción | `DELETE /api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/` | igual a Django |
+| ficha tras la baja | `GET /api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/` | igual a Django |

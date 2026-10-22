@@ -5,9 +5,7 @@ import com.clinube.comun.paginacion.Pagina
 import com.clinube.comun.seguridad.ContextoDeLaPeticion
 import com.clinube.comun.seguridad.Permisos
 import com.clinube.comun.sql.Filas.instante
-import com.clinube.comun.sql.Filas.instanteONulo
 import com.clinube.comun.sql.Filas.uuid
-import com.clinube.comun.sql.Filas.uuidONulo
 import com.clinube.comun.tiempo.ZonaDeLaClinica
 import com.clinube.cuentas.dominio.Rol
 import jakarta.servlet.http.HttpServletRequest
@@ -15,7 +13,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
-import java.sql.ResultSet
 import java.sql.Timestamp
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -29,19 +26,10 @@ class ControladorDeAgenda(
     private val contexto: ContextoDeLaPeticion,
     private val jdbc: NamedParameterJdbcTemplate,
     private val zona: ZonaDeLaClinica,
+    private val citas: RepresentacionDeCitas,
 ) {
 
     companion object {
-        /** Las etiquetas de `Appointment.Status`, para `status_display`. */
-        val ESTADOS = mapOf(
-            "pending" to "Pendiente",
-            "confirmed" to "Confirmada",
-            "cancelled" to "Cancelada",
-            "rescheduled" to "Reagendada",
-            "completed" to "Completada",
-            "no_show" to "No asistió",
-        )
-
         /** Lo que `parse_date` de Django acepta: AAAA-M-D, con meses y días de una o dos cifras. */
         private val FECHA = Regex("""^(\d{4})-(\d{1,2})-(\d{1,2})$""")
     }
@@ -100,50 +88,14 @@ class ControladorDeAgenda(
         // Todo en una consulta, con sus JOIN: el `select_related` de Django.
         val filas = jdbc.query(
             """
-            select a.*, p.first_name, p.last_name, u.full_name as doctor_full_name, u.email as doctor_email,
-                   d.user_id as doctor_user_id
-            from agenda_appointment a
-            join agenda_doctor d on d.id = a.doctor_id
-            join patients_patient p on p.id = a.patient_id
-            join accounts_user u on u.id = d.user_id
+            ${RepresentacionDeCitas.SELECT}
             where $filtro
             order by a.scheduled_start
             limit :cuantos offset :desdeFila
             """,
             parametros,
-        ) { fila, _ -> cita(fila) }
+        ) { fila, _ -> citas.deFila(fila) }
         return Pagina.de(total, filas, pagina, peticion)
-    }
-
-    /**
-     * `AppointmentSerializer` de Django. El nombre del doctor es su nombre
-     * completo, y si no tiene, su correo, y si tampoco, el id de su usuario
-     * (`Doctor.full_name`).
-     */
-    private fun cita(fila: ResultSet): Map<String, Any?> {
-        fun fechaDrf(columna: String) = fila.instanteONulo(columna)?.let { FormatoDeDrf.deDrf(it, zona.zona) }
-        val nombreDoctor = fila.getString("doctor_full_name").ifEmpty { null }
-            ?: fila.getString("doctor_email")?.ifEmpty { null }
-            ?: fila.uuid("doctor_user_id").toString()
-        val estado = fila.getString("status")
-        return linkedMapOf(
-            "id" to fila.uuid("id").toString(),
-            "patient" to fila.uuid("patient_id").toString(),
-            "patient_name" to "${fila.getString("first_name")} ${fila.getString("last_name")}",
-            "doctor" to fila.uuid("doctor_id").toString(),
-            "doctor_name" to nombreDoctor,
-            "treatment" to fila.uuidONulo("treatment_id")?.toString(),
-            "scheduled_start" to fechaDrf("scheduled_start"),
-            "scheduled_end" to fechaDrf("scheduled_end"),
-            "status" to estado,
-            "status_display" to (ESTADOS[estado] ?: estado),
-            "notes" to fila.getString("notes"),
-            "checkin_at" to fechaDrf("checkin_at"),
-            "attention_started_at" to fechaDrf("attention_started_at"),
-            "reminder_sent_at" to fechaDrf("reminder_sent_at"),
-            "checkout_at" to fechaDrf("checkout_at"),
-            "created_at" to fechaDrf("created_at"),
-        )
     }
 
     /**

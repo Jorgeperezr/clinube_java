@@ -68,3 +68,9 @@ echo "  (registros de los dos servidores en $registros)"
 echo
 python3 "$raiz/scripts/comparar-contrato.py" \
   --markdown "$raiz/docs/contrato/INFORME-COMPARADOR.md" "$@"
+resultado=$?
+
+echo
+echo "→ Estado de las dos bases después de las mismas peticiones"
+python3 "$raiz/scripts/comparar-estado.py" "$base_django" "$base_kotlin" || resultado=1
+exit $resultado

@@ -17,6 +17,10 @@
     "recepcion": {
       "email": "recepcion@clinube.local",
       "password": "OdontoDemo2026"
+    },
+    "auxiliar": {
+      "email": "auxiliar@clinube.local",
+      "password": "OdontoDemo2026"
     }
   },
   "peticiones": [
@@ -525,6 +529,918 @@
       "volatiles": [
         "id"
       ]
+    },
+    {
+      "nombre": "_comentario: pantallas de Pacientes y Agenda; primero lo que solo lee",
+      "metodo": "GET",
+      "ruta": "/api/v1/health/",
+      "usuario": null
+    },
+    {
+      "nombre": "ficha",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "ficha inexistente",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/00000000-0000-4000-8000-000000000000/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "ficha de otra clínica",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/92f3248c-fcd2-5d23-991f-58410f9ce47c/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "ficha, doctora",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/",
+      "usuario": "doctora"
+    },
+    {
+      "nombre": "convenios",
+      "metodo": "GET",
+      "ruta": "/api/v1/config/agreements/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "acceso a la app",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/app-access/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "acceso a la app con teléfono y correo",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/b6993fcd-fc33-55b8-9059-d7eb18482ee3/app-access/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "acceso a la app, doctora",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/app-access/",
+      "usuario": "doctora"
+    },
+    {
+      "nombre": "doctores",
+      "metodo": "GET",
+      "ruta": "/api/v1/doctors/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "citas",
+      "metodo": "GET",
+      "ruta": "/api/v1/appointments/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "citas pendientes",
+      "metodo": "GET",
+      "ruta": "/api/v1/appointments/?status=pending",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "citas de un doctor",
+      "metodo": "GET",
+      "ruta": "/api/v1/appointments/?doctor=33030969-3883-589d-bc77-8a3916a2253c",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "citas de un paciente",
+      "metodo": "GET",
+      "ruta": "/api/v1/appointments/?patient=b6993fcd-fc33-55b8-9059-d7eb18482ee3",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "citas con filtros malos",
+      "metodo": "GET",
+      "ruta": "/api/v1/appointments/?doctor=abc&status=raro&patient=xyz",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "citas de un doctor inexistente",
+      "metodo": "GET",
+      "ruta": "/api/v1/appointments/?doctor=00000000-0000-4000-8000-000000000000",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "citas de la doctora",
+      "metodo": "GET",
+      "ruta": "/api/v1/appointments/",
+      "usuario": "doctora"
+    },
+    {
+      "nombre": "cita",
+      "metodo": "GET",
+      "ruta": "/api/v1/appointments/fe6d5606-7bb8-5de6-b4fd-30fd9b945dcd/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "cita inexistente",
+      "metodo": "GET",
+      "ruta": "/api/v1/appointments/00000000-0000-4000-8000-000000000000/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "calendario de la doctora (.ics)",
+      "metodo": "GET",
+      "ruta": "/api/v1/calendar/5fa9c0cb-b38e-5347-9cd6-61b41ba03aab.ics",
+      "usuario": null
+    },
+    {
+      "nombre": "dirección del calendario",
+      "metodo": "GET",
+      "ruta": "/api/v1/doctors/db326626-1f49-5458-b448-7b9e96fa589e/calendar-url/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "dirección del calendario de otro, doctora",
+      "metodo": "GET",
+      "ruta": "/api/v1/doctors/33030969-3883-589d-bc77-8a3916a2253c/calendar-url/",
+      "usuario": "doctora"
+    },
+    {
+      "nombre": "dirección del calendario inexistente",
+      "metodo": "GET",
+      "ruta": "/api/v1/doctors/00000000-0000-4000-8000-000000000000/calendar-url/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "dirección del calendario, recepción",
+      "metodo": "GET",
+      "ruta": "/api/v1/doctors/db326626-1f49-5458-b448-7b9e96fa589e/calendar-url/",
+      "usuario": "recepcion"
+    },
+    {
+      "nombre": "_comentario: desde aquí se escribe",
+      "metodo": "GET",
+      "ruta": "/api/v1/health/",
+      "usuario": null
+    },
+    {
+      "nombre": "alta vacía",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/",
+      "usuario": "admin",
+      "cuerpo": {}
+    },
+    {
+      "nombre": "alta con todo mal",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/",
+      "usuario": "admin",
+      "cuerpo": {
+        "first_name": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "last_name": "",
+        "national_id": "999999999999999999999",
+        "email": "no-es-correo",
+        "birth_date": "2026-13-01",
+        "phone": "111111111111111111111",
+        "address": null
+      }
+    },
+    {
+      "nombre": "alta con fecha vacía y convenio raro",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/",
+      "usuario": "admin",
+      "cuerpo": {
+        "first_name": "A",
+        "last_name": "B",
+        "national_id": "123",
+        "birth_date": "",
+        "agreement": "no-uuid"
+      }
+    },
+    {
+      "nombre": "alta con convenio inexistente",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/",
+      "usuario": "admin",
+      "cuerpo": {
+        "first_name": "A",
+        "last_name": "B",
+        "national_id": "123",
+        "agreement": "00000000-0000-4000-8000-000000000000"
+      }
+    },
+    {
+      "nombre": "alta con convenio ajeno",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/",
+      "usuario": "admin",
+      "cuerpo": {
+        "first_name": "A",
+        "last_name": "B",
+        "national_id": "123",
+        "agreement": "3563bf32-d2d6-56e1-941e-ffbe76159572"
+      }
+    },
+    {
+      "nombre": "alta con cédula repetida",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/",
+      "usuario": "admin",
+      "cuerpo": {
+        "first_name": "A",
+        "last_name": "B",
+        "national_id": "1700000000"
+      }
+    },
+    {
+      "nombre": "alta, doctora",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/",
+      "usuario": "doctora",
+      "cuerpo": {
+        "first_name": "A",
+        "last_name": "B",
+        "national_id": "123"
+      }
+    },
+    {
+      "nombre": "alta con cuerpo lista",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/",
+      "usuario": "admin",
+      "crudo": "[1]"
+    },
+    {
+      "nombre": "alta buena",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/",
+      "usuario": "admin",
+      "cuerpo": {
+        "first_name": " Nuevo ",
+        "last_name": "Paciente",
+        "national_id": " 0999999999 ",
+        "birth_date": "1990-05-04",
+        "agreement": "34f98a1a-8540-5d45-ac1b-8a1b198c769e",
+        "email": "NUEVO@Correo.EC",
+        "foto": "ignorado"
+      },
+      "volatiles": [
+        "id",
+        "created_at",
+        "updated_at",
+        "checkin_at",
+        "attention_started_at",
+        "checkout_at",
+        "fecha"
+      ]
+    },
+    {
+      "nombre": "alta sin fecha, teléfono número",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/",
+      "usuario": "admin",
+      "cuerpo": {
+        "first_name": "A",
+        "last_name": "B",
+        "national_id": "780",
+        "birth_date": null,
+        "phone": 12345
+      },
+      "volatiles": [
+        "id",
+        "created_at",
+        "updated_at",
+        "checkin_at",
+        "attention_started_at",
+        "checkout_at",
+        "fecha"
+      ]
+    },
+    {
+      "nombre": "alta con correos raros",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/",
+      "usuario": "admin",
+      "cuerpo": {
+        "first_name": "A",
+        "last_name": "B",
+        "national_id": "777",
+        "email": "josé@dominio.ecuador"
+      }
+    },
+    {
+      "nombre": "patch nombre vacío",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/",
+      "usuario": "admin",
+      "cuerpo": {
+        "first_name": ""
+      }
+    },
+    {
+      "nombre": "patch cédula repetida",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/",
+      "usuario": "admin",
+      "cuerpo": {
+        "national_id": "1700000001"
+      }
+    },
+    {
+      "nombre": "patch quita el convenio (sin agreement_name)",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/",
+      "usuario": "admin",
+      "cuerpo": {
+        "national_id": "1700000000",
+        "phone": "0991234567",
+        "agreement": null
+      },
+      "volatiles": [
+        "id",
+        "created_at",
+        "updated_at",
+        "checkin_at",
+        "attention_started_at",
+        "checkout_at",
+        "fecha"
+      ]
+    },
+    {
+      "nombre": "put incompleto",
+      "metodo": "PUT",
+      "ruta": "/api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/",
+      "usuario": "admin",
+      "cuerpo": {
+        "first_name": "Solo"
+      }
+    },
+    {
+      "nombre": "put completo (con agreement_name nulo)",
+      "metodo": "PUT",
+      "ruta": "/api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/",
+      "usuario": "admin",
+      "cuerpo": {
+        "first_name": "Ana",
+        "last_name": "López",
+        "national_id": "1700000000"
+      },
+      "volatiles": [
+        "id",
+        "created_at",
+        "updated_at",
+        "checkin_at",
+        "attention_started_at",
+        "checkout_at",
+        "fecha"
+      ]
+    },
+    {
+      "nombre": "patch, doctora",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/",
+      "usuario": "doctora",
+      "cuerpo": {
+        "phone": "1"
+      }
+    },
+    {
+      "nombre": "antecedentes, recepción",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/medical-background/",
+      "usuario": "recepcion"
+    },
+    {
+      "nombre": "antecedentes (los crea)",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/medical-background/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "updated_at",
+        "checkin_at",
+        "attention_started_at",
+        "checkout_at",
+        "fecha"
+      ]
+    },
+    {
+      "nombre": "antecedentes put malo",
+      "metodo": "PUT",
+      "ruta": "/api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/medical-background/",
+      "usuario": "admin",
+      "cuerpo": {
+        "is_pregnant": "quizá",
+        "allergies": null
+      }
+    },
+    {
+      "nombre": "antecedentes patch",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/medical-background/",
+      "usuario": "admin",
+      "cuerpo": {
+        "allergies": "Penicilina",
+        "is_pregnant": false
+      },
+      "volatiles": [
+        "id",
+        "created_at",
+        "updated_at",
+        "checkin_at",
+        "attention_started_at",
+        "checkout_at",
+        "fecha"
+      ]
+    },
+    {
+      "nombre": "antecedentes booleano «y»",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/patients/1ef52a3a-b8a2-5758-896d-57935d332c51/medical-background/",
+      "usuario": "admin",
+      "cuerpo": {
+        "is_pregnant": "y"
+      },
+      "volatiles": [
+        "id",
+        "created_at",
+        "updated_at",
+        "checkin_at",
+        "attention_started_at",
+        "checkout_at",
+        "fecha"
+      ]
+    },
+    {
+      "nombre": "antecedentes «NULL» y número",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/patients/1ef52a3a-b8a2-5758-896d-57935d332c51/medical-background/",
+      "usuario": "admin",
+      "cuerpo": {
+        "is_pregnant": "NULL",
+        "allergies": 123
+      },
+      "volatiles": [
+        "id",
+        "created_at",
+        "updated_at",
+        "checkin_at",
+        "attention_started_at",
+        "checkout_at",
+        "fecha"
+      ]
+    },
+    {
+      "nombre": "antecedentes de otra clínica",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/92f3248c-fcd2-5d23-991f-58410f9ce47c/medical-background/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "aviso",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/aviso-privacidad/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "aviso con medio malo",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/aviso-privacidad/",
+      "usuario": "admin",
+      "cuerpo": {
+        "medio": "paloma"
+      }
+    },
+    {
+      "nombre": "aviso registrado",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/aviso-privacidad/",
+      "usuario": "admin",
+      "cuerpo": {},
+      "volatiles": [
+        "id",
+        "created_at",
+        "updated_at",
+        "checkin_at",
+        "attention_started_at",
+        "checkout_at",
+        "fecha"
+      ]
+    },
+    {
+      "nombre": "aviso otra vez",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/aviso-privacidad/",
+      "usuario": "admin",
+      "cuerpo": {
+        "medio": "enlace"
+      },
+      "volatiles": [
+        "id",
+        "created_at",
+        "updated_at",
+        "checkin_at",
+        "attention_started_at",
+        "checkout_at",
+        "fecha"
+      ]
+    },
+    {
+      "nombre": "aviso, doctora",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/aviso-privacidad/",
+      "usuario": "doctora"
+    },
+    {
+      "nombre": "cita: crear vacía",
+      "metodo": "POST",
+      "ruta": "/api/v1/appointments/",
+      "usuario": "admin",
+      "cuerpo": {}
+    },
+    {
+      "nombre": "cita: fin antes del inicio",
+      "metodo": "POST",
+      "ruta": "/api/v1/appointments/",
+      "usuario": "admin",
+      "cuerpo": {
+        "patient": "1ef52a3a-b8a2-5758-896d-57935d332c51",
+        "doctor": "db326626-1f49-5458-b448-7b9e96fa589e",
+        "scheduled_start": "2030-01-15T10:00:00-05:00",
+        "scheduled_end": "2030-01-15T09:00:00-05:00"
+      }
+    },
+    {
+      "nombre": "cita: en el pasado",
+      "metodo": "POST",
+      "ruta": "/api/v1/appointments/",
+      "usuario": "admin",
+      "cuerpo": {
+        "patient": "1ef52a3a-b8a2-5758-896d-57935d332c51",
+        "doctor": "db326626-1f49-5458-b448-7b9e96fa589e",
+        "scheduled_start": "2020-01-01T10:00:00Z",
+        "scheduled_end": "2020-01-01T10:30:00Z"
+      }
+    },
+    {
+      "nombre": "cita: fecha mala",
+      "metodo": "POST",
+      "ruta": "/api/v1/appointments/",
+      "usuario": "admin",
+      "cuerpo": {
+        "patient": "1ef52a3a-b8a2-5758-896d-57935d332c51",
+        "doctor": "db326626-1f49-5458-b448-7b9e96fa589e",
+        "scheduled_start": "mañana",
+        "scheduled_end": "2030-01-15T10:30"
+      }
+    },
+    {
+      "nombre": "cita: paciente ajeno",
+      "metodo": "POST",
+      "ruta": "/api/v1/appointments/",
+      "usuario": "admin",
+      "cuerpo": {
+        "patient": "92f3248c-fcd2-5d23-991f-58410f9ce47c",
+        "doctor": "db326626-1f49-5458-b448-7b9e96fa589e",
+        "scheduled_start": "2030-01-15T10:00",
+        "scheduled_end": "2030-01-15T10:30"
+      }
+    },
+    {
+      "nombre": "cita: claves número, lista y bool",
+      "metodo": "POST",
+      "ruta": "/api/v1/appointments/",
+      "usuario": "admin",
+      "cuerpo": {
+        "patient": 5,
+        "doctor": [
+          "x"
+        ],
+        "treatment": true,
+        "scheduled_start": "2030-01-01",
+        "scheduled_end": "2030-01-01T00:30"
+      }
+    },
+    {
+      "nombre": "cita: nulos",
+      "metodo": "POST",
+      "ruta": "/api/v1/appointments/",
+      "usuario": "admin",
+      "cuerpo": {
+        "patient": null,
+        "doctor": null,
+        "scheduled_start": null,
+        "scheduled_end": "2030-01-01T00:30:00.1234567+0500"
+      }
+    },
+    {
+      "nombre": "cita: paciente moroso",
+      "metodo": "POST",
+      "ruta": "/api/v1/appointments/",
+      "usuario": "admin",
+      "cuerpo": {
+        "patient": "e94cdd80-71c7-5e48-ba65-27d342d0cf1e",
+        "doctor": "db326626-1f49-5458-b448-7b9e96fa589e",
+        "scheduled_start": "2030-01-15T11:00",
+        "scheduled_end": "2030-01-15T11:30"
+      }
+    },
+    {
+      "nombre": "cita: moroso con override",
+      "metodo": "POST",
+      "ruta": "/api/v1/appointments/",
+      "usuario": "admin",
+      "cuerpo": {
+        "patient": "e94cdd80-71c7-5e48-ba65-27d342d0cf1e",
+        "doctor": "db326626-1f49-5458-b448-7b9e96fa589e",
+        "scheduled_start": "2030-01-15T11:00:00.5",
+        "scheduled_end": "2030-01-15T11:30",
+        "override": "TRUE"
+      },
+      "volatiles": [
+        "id",
+        "created_at",
+        "updated_at",
+        "checkin_at",
+        "attention_started_at",
+        "checkout_at",
+        "fecha"
+      ]
+    },
+    {
+      "nombre": "cita: cruzada",
+      "metodo": "POST",
+      "ruta": "/api/v1/appointments/",
+      "usuario": "admin",
+      "cuerpo": {
+        "patient": "1ef52a3a-b8a2-5758-896d-57935d332c51",
+        "doctor": "db326626-1f49-5458-b448-7b9e96fa589e",
+        "scheduled_start": "2030-01-15T11:15",
+        "scheduled_end": "2030-01-15T11:45"
+      }
+    },
+    {
+      "nombre": "cita: separador raro y siete decimales",
+      "metodo": "POST",
+      "ruta": "/api/v1/appointments/",
+      "usuario": "admin",
+      "cuerpo": {
+        "patient": "9b5596f7-ee46-5793-b9b9-f4b14d0130c2",
+        "doctor": "33030969-3883-589d-bc77-8a3916a2253c",
+        "scheduled_start": "2030-01-02X10:00:00+05:30",
+        "scheduled_end": "2030-01-02 23:30:00.1234567"
+      },
+      "volatiles": [
+        "id",
+        "created_at",
+        "updated_at",
+        "checkin_at",
+        "attention_started_at",
+        "checkout_at",
+        "fecha"
+      ]
+    },
+    {
+      "nombre": "cita: notas nulas",
+      "metodo": "POST",
+      "ruta": "/api/v1/appointments/",
+      "usuario": "admin",
+      "cuerpo": {
+        "patient": "9b5596f7-ee46-5793-b9b9-f4b14d0130c2",
+        "doctor": "33030969-3883-589d-bc77-8a3916a2253c",
+        "scheduled_start": "2030-02-01",
+        "scheduled_end": "2030-02-01T00:30",
+        "notes": null
+      }
+    },
+    {
+      "nombre": "cita: doctora sin la función",
+      "metodo": "POST",
+      "ruta": "/api/v1/appointments/",
+      "usuario": "doctora",
+      "cuerpo": {}
+    },
+    {
+      "nombre": "cita: patch notas (el estado no cambia)",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/appointments/fe6d5606-7bb8-5de6-b4fd-30fd9b945dcd/",
+      "usuario": "admin",
+      "cuerpo": {
+        "notes": "Traer radiografía",
+        "status": "cancelled"
+      },
+      "volatiles": [
+        "id",
+        "created_at",
+        "updated_at",
+        "checkin_at",
+        "attention_started_at",
+        "checkout_at",
+        "fecha"
+      ]
+    },
+    {
+      "nombre": "cita: patch solo el inicio, en el pasado",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/appointments/fe6d5606-7bb8-5de6-b4fd-30fd9b945dcd/",
+      "usuario": "admin",
+      "cuerpo": {
+        "scheduled_start": "2020-01-01T10:00:00Z"
+      },
+      "volatiles": [
+        "id",
+        "created_at",
+        "updated_at",
+        "checkin_at",
+        "attention_started_at",
+        "checkout_at",
+        "fecha"
+      ]
+    },
+    {
+      "nombre": "cita: put con el fin antes",
+      "metodo": "PUT",
+      "ruta": "/api/v1/appointments/8473c095-6409-54cf-a976-d8505d656fee/",
+      "usuario": "admin",
+      "cuerpo": {
+        "patient": "9b5596f7-ee46-5793-b9b9-f4b14d0130c2",
+        "doctor": "33030969-3883-589d-bc77-8a3916a2253c",
+        "scheduled_start": "2020-01-01T10:00",
+        "scheduled_end": "2020-01-01T09:00"
+      }
+    },
+    {
+      "nombre": "cita: patch inexistente",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/appointments/00000000-0000-4000-8000-000000000000/",
+      "usuario": "admin",
+      "cuerpo": {
+        "notes": "x"
+      }
+    },
+    {
+      "nombre": "confirmar",
+      "metodo": "POST",
+      "ruta": "/api/v1/appointments/fe6d5606-7bb8-5de6-b4fd-30fd9b945dcd/confirm/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "updated_at",
+        "checkin_at",
+        "attention_started_at",
+        "checkout_at",
+        "fecha"
+      ]
+    },
+    {
+      "nombre": "confirmar inexistente",
+      "metodo": "POST",
+      "ruta": "/api/v1/appointments/00000000-0000-4000-8000-000000000000/confirm/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "reagendar con datos malos",
+      "metodo": "POST",
+      "ruta": "/api/v1/appointments/fe6d5606-7bb8-5de6-b4fd-30fd9b945dcd/reschedule/",
+      "usuario": "admin",
+      "cuerpo": {
+        "new_start": "x"
+      }
+    },
+    {
+      "nombre": "reagendar al revés",
+      "metodo": "POST",
+      "ruta": "/api/v1/appointments/fe6d5606-7bb8-5de6-b4fd-30fd9b945dcd/reschedule/",
+      "usuario": "admin",
+      "cuerpo": {
+        "new_start": "2030-01-15T15:00",
+        "new_end": "2030-01-15T14:00"
+      }
+    },
+    {
+      "nombre": "reagendar encima de otra",
+      "metodo": "POST",
+      "ruta": "/api/v1/appointments/fe6d5606-7bb8-5de6-b4fd-30fd9b945dcd/reschedule/",
+      "usuario": "admin",
+      "cuerpo": {
+        "new_start": "2030-01-15T11:10",
+        "new_end": "2030-01-15T11:40"
+      }
+    },
+    {
+      "nombre": "reagendar",
+      "metodo": "POST",
+      "ruta": "/api/v1/appointments/fe6d5606-7bb8-5de6-b4fd-30fd9b945dcd/reschedule/",
+      "usuario": "admin",
+      "cuerpo": {
+        "new_start": "2030-01-15T15:00",
+        "new_end": "2030-01-15T15:30"
+      },
+      "volatiles": [
+        "id",
+        "created_at",
+        "updated_at",
+        "checkin_at",
+        "attention_started_at",
+        "checkout_at",
+        "fecha"
+      ]
+    },
+    {
+      "nombre": "iniciar sin llegada",
+      "metodo": "POST",
+      "ruta": "/api/v1/appointments/fe6d5606-7bb8-5de6-b4fd-30fd9b945dcd/start/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "llegada",
+      "metodo": "POST",
+      "ruta": "/api/v1/appointments/fe6d5606-7bb8-5de6-b4fd-30fd9b945dcd/checkin/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "updated_at",
+        "checkin_at",
+        "attention_started_at",
+        "checkout_at",
+        "fecha"
+      ]
+    },
+    {
+      "nombre": "iniciar",
+      "metodo": "POST",
+      "ruta": "/api/v1/appointments/fe6d5606-7bb8-5de6-b4fd-30fd9b945dcd/start/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "updated_at",
+        "checkin_at",
+        "attention_started_at",
+        "checkout_at",
+        "fecha"
+      ]
+    },
+    {
+      "nombre": "iniciar otra vez",
+      "metodo": "POST",
+      "ruta": "/api/v1/appointments/fe6d5606-7bb8-5de6-b4fd-30fd9b945dcd/start/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "iniciar inexistente",
+      "metodo": "POST",
+      "ruta": "/api/v1/appointments/00000000-0000-4000-8000-000000000000/start/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "finalizar, auxiliar",
+      "metodo": "POST",
+      "ruta": "/api/v1/appointments/fe6d5606-7bb8-5de6-b4fd-30fd9b945dcd/checkout/",
+      "usuario": "auxiliar"
+    },
+    {
+      "nombre": "finalizar, recepción",
+      "metodo": "POST",
+      "ruta": "/api/v1/appointments/fe6d5606-7bb8-5de6-b4fd-30fd9b945dcd/checkout/",
+      "usuario": "recepcion",
+      "volatiles": [
+        "id",
+        "created_at",
+        "updated_at",
+        "checkin_at",
+        "attention_started_at",
+        "checkout_at",
+        "fecha"
+      ]
+    },
+    {
+      "nombre": "cancelar",
+      "metodo": "POST",
+      "ruta": "/api/v1/appointments/35fa5eb9-7647-580c-b5bd-7bbe514b6cce/cancel/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "updated_at",
+        "checkin_at",
+        "attention_started_at",
+        "checkout_at",
+        "fecha"
+      ]
+    },
+    {
+      "nombre": "baja, recepción",
+      "metodo": "DELETE",
+      "ruta": "/api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/",
+      "usuario": "recepcion"
+    },
+    {
+      "nombre": "ficha tras la baja",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/",
+      "usuario": "admin"
     }
   ]
 }

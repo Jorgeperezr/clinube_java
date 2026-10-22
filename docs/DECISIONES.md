@@ -153,3 +153,24 @@ Las rutas que dependen de «hoy» no se comparan con respuestas capturadas
 (dejarían de valer al día siguiente): su paridad la da el comparador, que
 pregunta a los dos a la vez, y sus reglas las comprueban las pruebas con un
 reloj fijo (`RelojDePrueba`), como hacen las de Django.
+
+## 12. El comparador compara también el estado de las dos bases
+
+Después de lanzar las mismas peticiones contra Django y contra Kotlin,
+`scripts/comparar-estado.py` resume cada tabla que tocan las rutas portadas
+—sin identificadores generados ni marcas de tiempo— y compara las dos bases.
+
+Las respuestas iguales no bastan. La primera vez que se usó cazó dos
+diferencias que ninguna respuesta enseñaba:
+
+- un PUT de antecedentes con datos malos no dejaba su fila de auditoría en
+  Kotlin, porque la transacción se deshacía con el error de validación (en
+  Django la petición no es atómica y la fila se queda);
+- Django guarda la foto de un paciente nuevo como `''` y no como `NULL`.
+
+## 13. Los ids de la siembra son fijos
+
+`scripts/sembrar-escritorio.py` crea pacientes, doctores, citas y convenios
+con `uuid5` de un nombre (`paciente-0`, `cita-2`…). Así `peticiones.json` puede
+nombrarlos, y el comparador puede confirmar, reagendar o dar de baja una fila
+concreta en los dos servidores, en el mismo orden.

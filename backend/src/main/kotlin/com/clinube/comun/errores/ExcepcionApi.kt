@@ -51,6 +51,15 @@ class ExcepcionApi(
             ExcepcionApi(HttpStatus.NOT_FOUND, "not_found", mensaje)
 
         /**
+         * El 404 de `get_object_or_404` de Django. El código es «http404»
+         * —el nombre de la clase de la excepción, en minúsculas— y el
+         * mensaje, el de Django sin traducir: «No Patient matches the given
+         * query.». Así responde Django y así se copia.
+         */
+        fun http404(modelo: String) =
+            ExcepcionApi(HttpStatus.NOT_FOUND, "http404", MensajesDeDjango.noHayCoincidencia(modelo))
+
+        /**
          * Error de validación de campos. Django no pone el motivo en
          * `message` —ahí va un texto genérico— sino en `details`, campo a
          * campo y con la lista de mensajes de cada uno.

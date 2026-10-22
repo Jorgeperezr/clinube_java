@@ -33,6 +33,8 @@ object RutasPublicas {
         "/api/v1/auth/google/config/",
         "/api/v1/auth/google/",
         "/api/v1/auth/otp/canal/",
+        // El feed iCalendar de cada doctor: el token de la dirección ES el secreto.
+        "/api/v1/calendar/*.ics",
     )
 
     /** Django deja entrar sin token, pero si llega uno, lo comprueba. */

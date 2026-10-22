@@ -17,6 +17,7 @@ clínica de demostración con pacientes inventados.
 """
 import os
 import sys
+import uuid
 from datetime import datetime, time, timedelta
 from decimal import Decimal
 
@@ -47,6 +48,15 @@ from apps.patients.models import Patient  # noqa: E402
 
 CLAVE = "OdontoDemo2026"
 
+# Identificadores FIJOS para lo que el comparador necesita nombrar
+# (`/patients/<id>/`, `/appointments/<id>/confirm/`…): uuid5 de un nombre,
+# así son los mismos en cada siembra y se pueden escribir en peticiones.json.
+ESPACIO = uuid.UUID("6f1c2a5e-0000-4000-8000-c1b0be000000")
+
+
+def fijo(nombre):
+    return uuid.uuid5(ESPACIO, nombre)
+
 
 @transaction.atomic
 def sembrar():
@@ -63,14 +73,26 @@ def sembrar():
 
     # ── Personal ─────────────────────────────────────────────────────
     def usuario(correo, rol, nombre):
-        u = User(email=correo, role=rol, tenant=demo, full_name=nombre)
+        u = User(id=fijo(correo), email=correo, role=rol, tenant=demo, full_name=nombre)
         u.set_password(CLAVE)
         u.save()
         return u
-    doctora = Doctor.objects.create(tenant=demo, user=usuario("doctora@clinube.local", "doctor", "Dra. Elena Mora"))
+    doctora = Doctor.objects.create(id=fijo("doctor-doctora"), calendar_token=fijo("calendario-doctora"), tenant=demo,
+                                    user=usuario("doctora@clinube.local", "doctor", "Dra. Elena Mora"))
     # Sin nombre completo: el nombre del doctor cae en su correo.
-    doctor2 = Doctor.objects.create(tenant=demo, user=usuario("doctor2@clinube.local", "doctor", ""))
+    doctor2 = Doctor.objects.create(id=fijo("doctor-doctor2"), calendar_token=fijo("calendario-doctor2"), tenant=demo,
+                                    user=usuario("doctor2@clinube.local", "doctor", ""))
     usuario("recepcion@clinube.local", "reception", "Laura Paz")
+    usuario("auxiliar@clinube.local", "auxiliary", "Carlos Auxiliar")
+
+    # ── Convenios: el formulario del paciente los pide para su desplegable ──
+    from apps.configuration.models import Agreement
+    seguro = Agreement.objects.create(id=fijo("convenio-seguro"), tenant=demo, name="Seguro Andino",
+                                      discount_percentage=Decimal("15.00"))
+    Agreement.objects.create(id=fijo("convenio-empresa"), tenant=demo, name="Empresa Austral",
+                             discount_percentage=Decimal("10.50"))
+    Agreement.objects.create(id=fijo("convenio-retirado"), tenant=demo, name="Antiguo convenio",
+                             discount_percentage=Decimal("5"), is_active=False)
 
     # ── Pacientes: más de 20, para que la lista pagine ───────────────
     nombres = [
@@ -84,8 +106,9 @@ def sembrar():
     pacientes = []
     for i, (nombre, apellido) in enumerate(nombres):
         pacientes.append(Patient.objects.create(
-            tenant=demo, first_name=nombre, last_name=apellido, national_id=f"17{i:08d}",
-            phone=f"09{i:08d}" if i % 3 else "",
+            id=fijo(f"paciente-{i}"), tenant=demo, first_name=nombre, last_name=apellido, national_id=f"17{i:08d}",
+            phone=f"09{i:08d}" if i % 3 else "", email=f"paciente{i}@correo.ec" if i % 2 else "",
+            agreement=seguro if i in (0, 5) else None,
         ))
     # Cumpleaños: hoy, dentro de 3 días, 29 de febrero, 1 de enero, y alguien sin fecha.
     en_3 = hoy + timedelta(days=3)
@@ -102,9 +125,11 @@ def sembrar():
                            is_active=False, birth_date=datetime(1990, hoy.month, min(hoy.day, 28)).date())
 
     # ── Citas: hoy en varios estados, y los bordes del día ───────────
+    numero = iter(range(1000))
+
     def cita(p, doctor, inicio, estado="confirmed", llegada=None, atencion=None, notas=""):
         return Appointment.objects.create(
-            tenant=demo, patient=p, doctor=doctor, scheduled_start=inicio,
+            id=fijo(f"cita-{next(numero)}"), tenant=demo, patient=p, doctor=doctor, scheduled_start=inicio,
             scheduled_end=inicio + timedelta(minutes=30), status=estado, notes=notas,
             checkin_at=llegada, attention_started_at=atencion, created_by=admin)
     cita(pacientes[0], doctora, a_las(hoy, 8), llegada=ahora - timedelta(minutes=25, seconds=30), notas="Control")
@@ -182,11 +207,18 @@ def sembrar():
                                       respondido_por=admin, respondido_en=ahora)
 
     # ── Otra clínica, para comprobar que no se mezcla nada ───────────
-    vecina = Tenant.objects.create(name="Clínica Vecina")
-    pv = Patient.objects.create(tenant=vecina, first_name="Ana", last_name="Vecina", national_id="1700000000",
+    vecina = Tenant.objects.create(id=fijo("clinica-vecina"), name="Clínica Vecina")
+    pv = Patient.objects.create(id=fijo("paciente-vecina"), tenant=vecina, first_name="Ana", last_name="Vecina", national_id="1700000000",
                                 birth_date=datetime(1970, hoy.month, min(hoy.day, 28)).date())
     Payment.objects.create(tenant=vecina, patient=pv, amount=Decimal("5000.00"), method="cash", date=hoy)
     Product.objects.create(tenant=vecina, name="Ajeno", min_stock=Decimal("1000"))
+    uv = User(id=fijo("doctor-vecina@clinube.local"), email="doctor-vecina@clinube.local", role="doctor",
+              tenant=vecina, full_name="Dr. Vecino")
+    uv.set_password(CLAVE)
+    uv.save()
+    Doctor.objects.create(id=fijo("doctor-vecina"), calendar_token=fijo("calendario-vecina"), tenant=vecina, user=uv)
+    Agreement.objects.create(id=fijo("convenio-vecina"), tenant=vecina, name="Convenio ajeno",
+                             discount_percentage=Decimal("50"))
 
     print(f"Sembrado en {BASE}: {Patient.objects.filter(tenant=demo).count()} pacientes, "
           f"{Appointment.objects.filter(tenant=demo).count()} citas, hoy {hoy} en {zona}.")

@@ -156,3 +156,37 @@ es una IP literal, se guarda nula: convertir un texto cualquiera en
 - **`waiting_minutes`** se compara por tipo y no por valor en el comparador:
   los dos servidores responden con milisegundos de diferencia y el minuto
   puede cambiar entre uno y otro. Lo comprueban las pruebas con el reloj fijo.
+
+## 10. Una cita con el doctor de otra clínica: aquí no (diferencia DELIBERADA)
+
+En Django, `POST /appointments/` (y `PUT`/`PATCH /appointments/{id}/`) acepta
+el doctor y el tratamiento de **cualquier** clínica: el serializador los busca
+en `Doctor.objects.all()` y `Treatment.objects.all()` sin filtrar. Comprobado
+contra Django: la cita se crea (201) y la respuesta trae el nombre del doctor
+ajeno («Dr. Vecino»).
+
+Eso choca con la regla de aislamiento del plan, que no se negocia («un
+usuario nunca ve datos de otra clínica»). Aquí el doctor y el tratamiento se
+buscan solo en la clínica de la petición, y uno ajeno da el mismo error que
+uno inventado: «Clave primaria "…" inválida - objeto no existe.». Lo comprueba
+`PacientesYAgendaTest`, y el comparador no incluye ese caso.
+
+**Conviene corregirlo también en Django** (filtrar los dos `queryset` por
+`request.tenant`): es una fuga de datos entre clínicas.
+
+## 11. Pequeñas diferencias de las pantallas de Pacientes y Agenda
+
+- **Un id que no es un UUID en la dirección** (`/patients/abc/`): Django
+  responde con su 404 en HTML porque la ruta ni coincide; aquí, 404 en JSON.
+  Lo mismo con un token de calendario que no existe (`/calendar/<token>.ics`).
+- **Fechas en formato ISO «básico»** (`20300102T1000`, sin guiones): las
+  acepta `datetime.fromisoformat` de Python y aquí no. El panel y la app
+  mandan siempre el formato extendido; todos los demás casos raros (cualquier
+  separador, `+0500`, siete decimales, solo la fecha) se aceptan igual.
+- **La llegada no avisa al doctor por WhatsApp.** En Django,
+  `POST /appointments/{id}/checkin/` encola ese aviso; el módulo de WhatsApp es
+  la fase 13. La llegada se registra igual, que es lo crítico.
+- **El 500 de Django no se copia** cuando un `PATCH` de la ficha llega con un
+  cuerpo que no es un objeto en el aviso de privacidad, o cuando el Super
+  Administrador sin clínica da de alta un paciente: aquí son un 400 y un error
+  de la base, respectivamente.

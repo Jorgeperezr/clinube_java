@@ -9,23 +9,25 @@ diferencia entre los dos últimos importa:
 | **hecha** | Implementada y con sus pruebas en verde. **No basta:** las pruebas propias pueden pasar y la respuesta no ser la de Django. |
 | **igual a Django** | Comprobada con `scripts/comparar-contrato`: mismo código HTTP, mismas claves, mismo orden, mismos valores. |
 
-**16 de 202** igual a Django (8 %), y **3 más en parte** (falta un método o una exportación),
-comprobadas con `scripts/comparar-contrato` (71 de 71 peticiones iguales, informe en `docs/contrato/INFORME-COMPARADOR.md`).
+**31 de 202** igual a Django (15 %), y **4 más en parte** (falta un método o una exportación),
+comprobadas con `scripts/comparar-contrato` (158 de 158 peticiones iguales y las 8 tablas tocadas idénticas en las dos bases, informe en `docs/contrato/INFORME-COMPARADOR.md`).
 
 > **Estado a 2026-10-21:** el servidor compila sin errores ni avisos y la
-> suite pasa entera dos veces (110 pruebas en UTC y 110 en
+> suite pasa entera dos veces (126 pruebas en UTC y 126 en
 > Pacific/Kiritimati), incluidas las de integración contra PostgreSQL 16 con
 > la línea base de Flyway y Hibernate en `validate`.
 >
-> **El panel entra y el escritorio se carga entero** con un usuario creado por
-> Django (comprobado en el navegador, con el panel de `frontend/` sin tocar,
-> contra una copia de la base de Django con los datos de
-> `scripts/sembrar-escritorio.py`). Entrar, aceptar las condiciones y el
-> escritorio completo —la marca de la clínica, sala de espera, cumpleaños,
-> citas de hoy, pacientes, ingresos del mes, morosos, stock bajo,
-> seguimientos y el contador de la bandeja— funcionan: las 25 peticiones que
-> hace el panel responden sin error. Lo siguiente son las pantallas de la
-> barra lateral, empezando por Pacientes (la ficha) y Agenda.
+> **El panel entra, el escritorio se carga entero y las pantallas de
+> Pacientes y Agenda funcionan** contra Kotlin (comprobado en el navegador con
+> el panel de `frontend/` sin tocar): alta de un paciente con convenio, su
+> ficha, el registro del aviso de privacidad, el cambio de convenio, y en la
+> agenda confirmar, marcar la llegada, iniciar y finalizar la atención y
+> crear una cita. La ficha pide además rutas de la historia clínica
+> (odontograma, diagnósticos, formulario 033, alertas clínicas) y de WhatsApp,
+> que son de las fases 5 y 13. **Los antecedentes** responden igual que Django
+> por la API, pero el panel solo enseña su editor dentro de las alertas
+> clínicas (`/patients/{id}/alertas/`, fase 5), así que hasta portarlas no se
+> ven en la ficha.
 
 > Este archivo dice la verdad. Si una ruta no responde igual que Django, lo
 > dice aunque las pruebas propias pasen.
@@ -103,11 +105,11 @@ comprobadas con `scripts/comparar-contrato` (71 de 71 peticiones iguales, inform
 | POST | `/api/v1/users/<uuid:pk>/invitar/` | pendiente |
 | GET | `/api/v1/users/funciones/` | pendiente |
 
-### Fase 2 · `configuration` — Configuración y catálogos (1/16)
+### Fase 2 · `configuration` — Configuración y catálogos (2/16)
 
 | Métodos | Ruta | Estado |
 |---|---|---|
-| GET POST | `/api/v1/config/agreements/` | pendiente |
+| GET POST | `/api/v1/config/agreements/` | GET igual a Django · POST pendiente |
 | GET PUT PATCH DELETE | `/api/v1/config/agreements/<uuid:pk>/` | pendiente |
 | POST | `/api/v1/config/backup/` | pendiente |
 | POST | `/api/v1/config/backup/decrypt/` | pendiente |
@@ -134,37 +136,37 @@ comprobadas con `scripts/comparar-contrato` (71 de 71 peticiones iguales, inform
 | GET | `/api/v1/specialties/<uuid:pk>/form-template/` | pendiente |
 | GET PUT PATCH | `/api/v1/specialty-forms/<uuid:pk>/` | pendiente |
 
-### Fase 3 · `patients` — Pacientes (1/9)
+### Fase 3 · `patients` — Pacientes (5/9)
 
 | Métodos | Ruta | Estado |
 |---|---|---|
-| GET POST | `/api/v1/patients/` | GET igual a Django · POST pendiente |
-| GET PUT PATCH DELETE | `/api/v1/patients/<uuid:pk>/` | pendiente |
-| GET POST DELETE | `/api/v1/patients/<uuid:pk>/app-access/` | pendiente |
-| GET POST | `/api/v1/patients/<uuid:pk>/aviso-privacidad/` | pendiente |
+| GET POST | `/api/v1/patients/` | igual a Django |
+| GET PUT PATCH DELETE | `/api/v1/patients/<uuid:pk>/` | igual a Django |
+| GET POST DELETE | `/api/v1/patients/<uuid:pk>/app-access/` | GET igual a Django · POST y DELETE pendientes |
+| GET POST | `/api/v1/patients/<uuid:pk>/aviso-privacidad/` | igual a Django |
 | GET POST | `/api/v1/patients/<uuid:pk>/documents/` | pendiente |
 | DELETE | `/api/v1/patients/<uuid:pk>/documents/<int:doc_id>/` | pendiente |
 | GET | `/api/v1/patients/<uuid:pk>/documents/<int:doc_id>/file/` | pendiente |
-| GET PUT PATCH | `/api/v1/patients/<uuid:pk>/medical-background/` | pendiente |
+| GET PUT PATCH | `/api/v1/patients/<uuid:pk>/medical-background/` | igual a Django |
 | GET | `/api/v1/patients/<uuid:pk>/treatment-history/` | pendiente |
 
-### Fase 4 · `agenda` — Agenda (2/14)
+### Fase 4 · `agenda` — Agenda (13/14)
 
 | Métodos | Ruta | Estado |
 |---|---|---|
 | GET | `/api/v1/agenda/view/` | igual a Django |
-| GET POST | `/api/v1/appointments/` | pendiente |
-| GET PUT PATCH | `/api/v1/appointments/<uuid:pk>/` | pendiente |
-| POST | `/api/v1/appointments/<uuid:pk>/cancel/` | pendiente |
-| POST | `/api/v1/appointments/<uuid:pk>/checkin/` | pendiente |
-| POST | `/api/v1/appointments/<uuid:pk>/checkout/` | pendiente |
-| POST | `/api/v1/appointments/<uuid:pk>/confirm/` | pendiente |
-| POST | `/api/v1/appointments/<uuid:pk>/reschedule/` | pendiente |
-| POST | `/api/v1/appointments/<uuid:pk>/start/` | pendiente |
+| GET POST | `/api/v1/appointments/` | igual a Django, salvo el doctor o tratamiento de otra clínica (diferencia deliberada) |
+| GET PUT PATCH | `/api/v1/appointments/<uuid:pk>/` | igual a Django, salvo el doctor o tratamiento de otra clínica (diferencia deliberada) |
+| POST | `/api/v1/appointments/<uuid:pk>/cancel/` | igual a Django |
+| POST | `/api/v1/appointments/<uuid:pk>/checkin/` | igual a Django; sin el aviso por WhatsApp al doctor (fase 13) |
+| POST | `/api/v1/appointments/<uuid:pk>/checkout/` | igual a Django |
+| POST | `/api/v1/appointments/<uuid:pk>/confirm/` | igual a Django |
+| POST | `/api/v1/appointments/<uuid:pk>/reschedule/` | igual a Django |
+| POST | `/api/v1/appointments/<uuid:pk>/start/` | igual a Django |
 | GET | `/api/v1/appointments/waiting/` | igual a Django |
-| ? | `/api/v1/calendar/<uuid:token>.ics` | pendiente |
-| GET | `/api/v1/doctors/` | pendiente |
-| GET | `/api/v1/doctors/<uuid:pk>/calendar-url/` | pendiente |
+| ? | `/api/v1/calendar/<uuid:token>.ics` | igual a Django (el 404 va en JSON, no en HTML) |
+| GET | `/api/v1/doctors/` | igual a Django |
+| GET | `/api/v1/doctors/<uuid:pk>/calendar-url/` | igual a Django |
 | GET POST | `/api/v1/doctors/me/signature/` | pendiente |
 
 ### Fase 5 · `clinical` — Historia clínica (1/41)
