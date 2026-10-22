@@ -208,3 +208,24 @@ comparador. Solo cambian tres casos en los que Django se cae con un 500:
   falla al leerlo; aquí cuenta como detalle vacío.
 
 El panel no puede producir ninguno de los tres: siempre manda texto.
+
+## 13. Formulario 033 y diagnósticos
+
+Las respuestas y el estado de la base son iguales a Django en el comparador
+(listas, altas, ediciones, errores de validación, CIE-10). Lo que cambia:
+
+- **Dar de alta un 033 de un paciente que no existe** (o de otra clínica):
+  Django da un 500, porque busca al paciente con `Patient.objects.get` y no
+  captura el `DoesNotExist`. Aquí es el 404 «No Patient matches the given
+  query.». Como en Django, sí se admite un paciente dado de baja (los
+  diagnósticos, en cambio, exigen que esté activo: así lo hace Django).
+- **Un número infinito en un `JSONField`** (`1e400` en el cuerpo): los dos
+  responden «El valor debe ser JSON válido.». Los tokens `NaN` o `Infinity`,
+  que no son JSON, no se compararon.
+
+## 14. El escape de los caracteres de control en el JSON
+
+DRF escribe `\u001f` y Jackson `\u001F`: el mismo carácter para cualquier
+cliente que lea JSON, pero no los mismos bytes. Solo afecta a textos con
+caracteres de control (del 0x00 al 0x1F que no tienen escape corto), que el
+panel no produce. Viene de antes de esta ronda y vale para todas las rutas.

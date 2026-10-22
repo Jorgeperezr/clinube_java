@@ -2,11 +2,13 @@ package com.clinube.comun.json
 
 import com.clinube.comun.errores.ExcepcionApi
 import com.clinube.comun.errores.MensajesDeDjango
+import com.clinube.comun.python.Python
 import com.clinube.comun.tiempo.FechasDePython
 import com.clinube.comun.validacion.ValidadorDeCorreo
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.fasterxml.jackson.databind.node.ObjectNode
+import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.ZoneId
@@ -55,14 +57,7 @@ object CuerpoDrf {
      * incluyen: un UUID que llega como lista sale «“['x']” no es un UUID
      * válido.».
      */
-    fun reprDePython(valor: JsonNode): String = when {
-        valor.isNull -> "None"
-        valor.isBoolean -> if (valor.booleanValue()) "True" else "False"
-        valor.isTextual -> "'" + valor.textValue().replace("\\", "\\\\").replace("'", "\\'") + "'"
-        valor.isNumber -> valor.asText()
-        valor.isArray -> valor.joinToString(", ", "[", "]") { reprDePython(it) }
-        else -> valor.properties().joinToString(", ", "{", "}") { (k, v) -> "'$k': ${reprDePython(v)}" }
-    }
+    fun reprDePython(valor: JsonNode): String = Python.repr(valor)
 }
 
 /**
@@ -135,11 +130,8 @@ class CamposDrf(private val datos: ObjectNode, private val parcial: Boolean = fa
         val (valor, decidido) = vacio(campo, requerido, nulo)
         if (decidido != null) return decidido
         valor!!
-        if (valor.isBoolean || valor.isContainerNode) {
-            error(campo, MensajesDeDjango.CADENA_INVALIDA)
-            return Leido.Ausente
-        }
-        val texto = valor.asText().trim()
+        // `str(data).strip() == ''` va antes que el tipo: «[]» no está en blanco, es inválido.
+        val texto = Python.recortar(Python.str(valor))
         if (texto.isEmpty()) {
             if (!enBlanco) {
                 error(campo, MensajesDeDjango.CAMPO_EN_BLANCO)
@@ -147,17 +139,123 @@ class CamposDrf(private val datos: ObjectNode, private val parcial: Boolean = fa
             }
             return Leido.Valor("")
         }
+        if (valor.isBoolean || !(valor.isTextual || valor.isNumber)) {
+            // `EmailField` cambia el mensaje «invalid» de `CharField` por el suyo.
+            error(campo, if (correo) MensajesDeDjango.CORREO_INVALIDO else MensajesDeDjango.CADENA_INVALIDA)
+            return Leido.Ausente
+        }
+        // Los validadores de DRF, en su orden y todos a la vez: largo, nulos,
+        // sustitutos sueltos y, en un `EmailField`, el formato.
         val antes = errores[campo]?.size ?: 0
-        if (maximo != null && texto.length > maximo) error(campo, MensajesDeDjango.maximoDeCaracteres(maximo))
+        if (maximo != null && Python.longitud(texto) > maximo) error(campo, MensajesDeDjango.maximoDeCaracteres(maximo))
+        if ('\u0000' in texto) error(campo, MensajesDeDjango.CARACTERES_NULOS)
+        texto.indices.firstOrNull { texto[it].isSurrogate() && !esParDeSustitutos(texto, it) }?.let {
+            error(campo, MensajesDeDjango.caracterSustituto(texto[it].code))
+        }
         if (correo && !ValidadorDeCorreo.esValido(texto)) error(campo, MensajesDeDjango.CORREO_INVALIDO)
         return if ((errores[campo]?.size ?: 0) > antes) Leido.Ausente else Leido.Valor(texto)
     }
 
-    /** Un `DateField`: solo `AAAA-MM-DD`. */
+    private fun esParDeSustitutos(texto: String, i: Int): Boolean =
+        (texto[i].isHighSurrogate() && i + 1 < texto.length && texto[i + 1].isLowSurrogate()) ||
+            (texto[i].isLowSurrogate() && i > 0 && texto[i - 1].isHighSurrogate())
+
+    /** Un `DecimalField` con su número de cifras y de decimales, ya redondeado como DRF. */
+    data class Decimal(val valor: BigDecimal, val texto: String)
+
+    /**
+     * Un `DecimalField`: `Decimal()` de Python sobre `str(dato).strip()`,
+     * y la precisión contada como DRF (`"36.50"` tiene dos decimales; el
+     * número `36.50` es el float 36.5 y tiene uno). Un "" o "  " es nulo si
+     * el campo admite nulos. El texto conserva el «-0.0» de Python, que la
+     * base guarda como 0.0.
+     */
+    fun decimal(campo: String, maxDigitos: Int, decimales: Int, requerido: Boolean = false, nulo: Boolean = false): Leido<Decimal> {
+        val crudo = datos.get(campo)
+        if (nulo && crudo != null && !crudo.isMissingNode && !crudo.isNull && Python.recortar(Python.str(crudo)).isEmpty()) {
+            return Leido.Valor(null)
+        }
+        val (valor, decidido) = vacio(campo, requerido, nulo)
+        if (decidido != null) return decidido
+        val texto = Python.recortar(Python.str(valor!!))
+        if (Python.longitud(texto) > 1000) return fallo(campo, MensajesDeDjango.CADENA_DEMASIADO_LARGA)
+        val numero = Python.decimal(texto) as? Python.Decimal.Numero ?: return fallo(campo, MensajesDeDjango.NUMERO_INVALIDO)
+        val n = numero.cifras.length.toLong()
+        val e = numero.exponente
+        val (total, enteros, posiciones) = when {
+            e >= 0 -> Triple(n + e, n + e, 0L)
+            n > -e -> Triple(n, n + e, -e)
+            else -> Triple(-e, 0L, -e)
+        }
+        if (total > maxDigitos) return fallo(campo, MensajesDeDjango.maximoDeDigitos(maxDigitos))
+        if (posiciones > decimales) return fallo(campo, MensajesDeDjango.maximoDeDecimales(decimales))
+        if (enteros > maxDigitos - decimales) return fallo(campo, MensajesDeDjango.maximoDeDigitosEnteros(maxDigitos - decimales))
+        val redondeado = numero.valor().setScale(decimales)
+        val escrito = (if (numero.negativo && redondeado.signum() == 0) "-" else "") + redondeado.toPlainString()
+        return Leido.Valor(Decimal(redondeado, escrito))
+    }
+
+    /**
+     * Un `IntegerField` con su mínimo y su máximo: `int()` de Python sobre
+     * `str(dato)` sin un «.0» final (así 12.0 y "12.00 " valen 12).
+     */
+    fun entero(campo: String, minimo: Long? = null, maximo: Long? = null, requerido: Boolean = false, nulo: Boolean = false): Leido<Long> {
+        val (valor, decidido) = vacio(campo, requerido, nulo)
+        if (decidido != null) return decidido
+        valor!!
+        if (valor.isTextual && Python.longitud(valor.textValue()) > 1000) return fallo(campo, MensajesDeDjango.CADENA_DEMASIADO_LARGA)
+        val numero = Python.entero(sinPuntoCero(Python.str(valor))) ?: return fallo(campo, MensajesDeDjango.ENTERO_INVALIDO)
+        if (maximo != null && numero > maximo.toBigInteger()) return fallo(campo, MensajesDeDjango.menorOIgual(maximo))
+        if (minimo != null && numero < minimo.toBigInteger()) return fallo(campo, MensajesDeDjango.mayorOIgual(minimo))
+        return Leido.Valor(numero.toLong())
+    }
+
+    /** `re.sub(r'\.0*\s*$', '', texto)`: el primer punto desde el que solo quedan ceros y espacios. */
+    private fun sinPuntoCero(texto: String): String {
+        var i = texto.indexOf('.')
+        while (i >= 0) {
+            var j = i + 1
+            while (j < texto.length && texto[j] == '0') j++
+            if (texto.substring(j).all { Python.esEspacio(it.code) }) return texto.substring(0, i)
+            i = texto.indexOf('.', i + 1)
+        }
+        return texto
+    }
+
+    /**
+     * Un `JSONField`: cualquier valor JSON, salvo un número que en Python es
+     * infinito (`1e400`). Se devuelve tal cual llegó; para escribirlo o
+     * guardarlo como lo haría Python, [JsonDePython.comoPython].
+     */
+    fun json(campo: String, requerido: Boolean = false, nulo: Boolean = false): Leido<JsonNode> {
+        val (valor, decidido) = vacio(campo, requerido, nulo)
+        if (decidido != null) return decidido
+        if (JsonDePython.tieneInfinitos(valor!!)) return fallo(campo, MensajesDeDjango.JSON_INVALIDO)
+        return Leido.Valor(valor)
+    }
+
+    /** Un `ChoiceField`: la clave es `str(dato)`, así que el número 1 vale por la opción "1". */
+    fun opcion(campo: String, opciones: Collection<String>, requerido: Boolean = false, nulo: Boolean = false,
+               enBlanco: Boolean = false): Leido<String> {
+        val (valor, decidido) = vacio(campo, requerido, nulo)
+        if (decidido != null) return decidido
+        valor!!
+        if (enBlanco && valor.isTextual && valor.textValue().isEmpty()) return Leido.Valor("")
+        val clave = Python.str(valor)
+        if (clave !in opciones) return fallo(campo, MensajesDeDjango.eleccionNoValida(clave))
+        return Leido.Valor(clave)
+    }
+
+    private fun fallo(campo: String, mensaje: String): Leido<Nothing> {
+        error(campo, mensaje)
+        return Leido.Ausente
+    }
+
+    /** Un `DateField`: `parse_date` de Django (ver [Python.fecha]). */
     fun fecha(campo: String, requerido: Boolean = true, nulo: Boolean = false): Leido<LocalDate> {
         val (valor, decidido) = vacio(campo, requerido, nulo)
         if (decidido != null) return decidido
-        val fecha = valor!!.takeIf { it.isTextual }?.let { FechasDePython.fecha(it.textValue()) }
+        val fecha = valor!!.takeIf { it.isTextual }?.let { Python.fecha(it.textValue()) }
         if (fecha == null) {
             error(campo, MensajesDeDjango.FECHA_INVALIDA)
             return Leido.Ausente

@@ -30,6 +30,15 @@ RESUMENES = {
                     case when action in ('accept_terms') then 'id generado' else entity_id end as entity_id,
                     ip_address is null as sin_ip, metadata, user_id, tenant_id, count(*) as filas
                     from accounts_auditlog group by 1, 2, 3, 4, 5, 6, 7 order by 1, 2, 3, 4, 5::text, 6, 7""",
+    "formularios 033": """select patient_id, date, motivo_consulta, embarazada, enfermedad_actual,
+                          antecedentes_personales, antecedentes_familiares, temperatura::text, pulso,
+                          frecuencia_respiratoria, presion_arterial, examen_estomatognatico, indicadores_salud_bucal,
+                          professional_snapshot - 'recorded_at' as constancia, created_by_id, doctor_id, tenant_id
+                          from clinical_form033record
+                          order by patient_id, date, motivo_consulta, antecedentes_personales::text, 
+                                   indicadores_salud_bucal::text, examen_estomatognatico::text, temperatura""",
+    "diagnósticos": """select patient_id, doctor_id, tooth_fdi_code, code, description, diagnosis_kind, date, tenant_id
+                       from clinical_diagnosis order by patient_id, date, description, code, tooth_fdi_code""",
     "marca": "select tenant_id, theme, paleta, temas, display_name from configuration_clinicbranding order by tenant_id",
     "configuración": """select platform_name, canal_codigo_paciente, funciones_publicadas, google_client_id
                         from common_platformconfiguration""",

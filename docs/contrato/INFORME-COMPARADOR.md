@@ -148,6 +148,54 @@
 | revisar sin texto y sin paciente | `POST /api/v1/patients/00000000-0000-4000-8000-000000000000/alertas/revisar/` | igual a Django |
 | revisar, paciente de otra clínica | `POST /api/v1/patients/92f3248c-fcd2-5d23-991f-58410f9ce47c/alertas/revisar/` | igual a Django |
 | revisar con GET | `GET /api/v1/patients/f6ebcb43-a2a8-55ab-9a94-aa1ac29f9cfa/alertas/revisar/` | igual a Django |
+| 033: lista | `GET /api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/form033/` | igual a Django |
+| 033: lista, recepción | `GET /api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/form033/` | igual a Django |
+| 033: lista sin sesión | `GET /api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/form033/` | igual a Django |
+| 033: lista de otra clínica | `GET /api/v1/patients/92f3248c-fcd2-5d23-991f-58410f9ce47c/form033/` | igual a Django |
+| 033: lista de un paciente que no existe | `GET /api/v1/patients/00000000-0000-4000-8000-000000000000/form033/` | igual a Django |
+| 033: alta completa | `POST /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/form033/` | igual a Django |
+| 033: alta con registro y firma | `POST /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/form033/` | igual a Django |
+| 033: alta con todo mal | `POST /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/form033/` | igual a Django |
+| 033: alta sin fecha | `POST /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/form033/` | igual a Django |
+| 033: alta, recepción | `POST /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/form033/` | igual a Django |
+| 033: alta con una lista | `POST /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/form033/` | igual a Django |
+| 033: alta de un paciente de baja | `POST /api/v1/patients/f392b107-da73-5a13-948a-727cbcaa6cb2/form033/` | igual a Django |
+| 033: lista tras las altas | `GET /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/form033/` | igual a Django |
+| 033: ver | `GET /api/v1/form033/dd94da3e-1d9f-59be-ae1e-57194765a1cc/` | igual a Django |
+| 033: ver sin constancia | `GET /api/v1/form033/80a490e0-f686-52ad-ac56-deba09b291ff/` | igual a Django |
+| 033: ver, recepción | `GET /api/v1/form033/dd94da3e-1d9f-59be-ae1e-57194765a1cc/` | igual a Django |
+| 033: ver de otra clínica | `GET /api/v1/form033/8aff5c9d-20a5-537a-851f-b26a59695280/` | igual a Django |
+| 033: ver uno que no existe | `GET /api/v1/form033/00000000-0000-4000-8000-000000000000/` | igual a Django |
+| 033: patch malo | `PATCH /api/v1/form033/dd94da3e-1d9f-59be-ae1e-57194765a1cc/` | igual a Django |
+| 033: patch | `PATCH /api/v1/form033/dd94da3e-1d9f-59be-ae1e-57194765a1cc/` | igual a Django |
+| 033: ver tras el patch | `GET /api/v1/form033/dd94da3e-1d9f-59be-ae1e-57194765a1cc/` | igual a Django |
+| 033: put sin fecha | `PUT /api/v1/form033/46ca9603-dcf9-5208-a0d3-59391dce4f3d/` | igual a Django |
+| 033: put | `PUT /api/v1/form033/46ca9603-dcf9-5208-a0d3-59391dce4f3d/` | igual a Django |
+| 033: delete | `DELETE /api/v1/form033/46ca9603-dcf9-5208-a0d3-59391dce4f3d/` | igual a Django |
+| diagnósticos | `GET /api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/diagnoses/` | igual a Django |
+| diagnósticos, página 2 | `GET /api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/diagnoses/?page=2` | igual a Django |
+| diagnósticos, página 3 | `GET /api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/diagnoses/?page=3` | igual a Django |
+| diagnósticos, recepción | `GET /api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/diagnoses/` | igual a Django |
+| diagnósticos de otra clínica | `GET /api/v1/patients/92f3248c-fcd2-5d23-991f-58410f9ce47c/diagnoses/` | igual a Django |
+| diagnóstico nuevo, doctora | `POST /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/diagnoses/` | igual a Django |
+| diagnóstico nuevo, admin | `POST /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/diagnoses/` | igual a Django |
+| diagnóstico con todo mal | `POST /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/diagnoses/` | igual a Django |
+| diagnóstico vacío | `POST /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/diagnoses/` | igual a Django |
+| diagnóstico con tipo nulo | `POST /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/diagnoses/` | igual a Django |
+| diagnóstico de un paciente de baja | `POST /api/v1/patients/f392b107-da73-5a13-948a-727cbcaa6cb2/diagnoses/` | igual a Django |
+| diagnóstico de un paciente que no existe | `POST /api/v1/patients/00000000-0000-4000-8000-000000000000/diagnoses/` | igual a Django |
+| diagnóstico de otra clínica | `POST /api/v1/patients/92f3248c-fcd2-5d23-991f-58410f9ce47c/diagnoses/` | igual a Django |
+| diagnósticos tras las altas | `GET /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/diagnoses/` | igual a Django |
+| cie10 sin q | `GET /api/v1/cie10/` | igual a Django |
+| cie10 corta | `GET /api/v1/cie10/?q=k` | igual a Django |
+| cie10 por código | `GET /api/v1/cie10/?q=+k0+` | igual a Django |
+| cie10 por nombre | `GET /api/v1/cie10/?q=CARIES` | igual a Django |
+| cie10 muchas | `GET /api/v1/cie10/?q=de` | igual a Django |
+| cie10 con tilde | `GET /api/v1/cie10/?q=ER%C3%93SI` | igual a Django |
+| cie10 comodines | `GET /api/v1/cie10/?q=%25%25` | igual a Django |
+| cie10 guion bajo | `GET /api/v1/cie10/?q=K_` | igual a Django |
+| cie10 repetida | `GET /api/v1/cie10/?q=xx&q=pulpa` | igual a Django |
+| cie10 sin sesión | `GET /api/v1/cie10/?q=caries` | igual a Django |
 | cita: crear vacía | `POST /api/v1/appointments/` | igual a Django |
 | cita: fin antes del inicio | `POST /api/v1/appointments/` | igual a Django |
 | cita: en el pasado | `POST /api/v1/appointments/` | igual a Django |

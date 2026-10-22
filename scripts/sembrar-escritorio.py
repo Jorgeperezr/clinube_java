@@ -41,7 +41,7 @@ from apps.accounts.models import User  # noqa: E402
 from apps.agenda.models import Appointment, Doctor  # noqa: E402
 from apps.app_paciente.models import MensajeConsultorio, SolicitudCita  # noqa: E402
 from apps.billing.models import Budget, Installment, Payment, PaymentPlan  # noqa: E402
-from apps.clinical.models import Evolution, Form033Record  # noqa: E402
+from apps.clinical.models import Diagnosis, Evolution, Form033Record  # noqa: E402
 from apps.common.models import Tenant  # noqa: E402
 from apps.inventory.models import Batch, Product  # noqa: E402
 from apps.patients.models import MedicalBackground, Patient  # noqa: E402
@@ -81,7 +81,8 @@ def sembrar():
                                     user=usuario("doctora@clinube.local", "doctor", "Dra. Elena Mora"))
     # Sin nombre completo: el nombre del doctor cae en su correo.
     doctor2 = Doctor.objects.create(id=fijo("doctor-doctor2"), calendar_token=fijo("calendario-doctor2"), tenant=demo,
-                                    user=usuario("doctor2@clinube.local", "doctor", ""))
+                                    user=usuario("doctor2@clinube.local", "doctor", ""),
+                                    license_number="MSP-0002", signature_image="firmas/doctor2.png")
     usuario("recepcion@clinube.local", "reception", "Laura Paz")
     usuario("auxiliar@clinube.local", "auxiliary", "Carlos Auxiliar")
 
@@ -137,11 +138,15 @@ def sembrar():
     )
     # paciente-6: tres formularios; manda el de fecha más reciente y, con la
     # misma fecha, el creado después.
-    Form033Record.objects.create(tenant=demo, patient=pacientes[6], date=hoy - timedelta(days=30),
+    Form033Record.objects.create(id=fijo("form033-1"), tenant=demo, patient=pacientes[6], date=hoy - timedelta(days=30),
                                  antecedentes_personales={"Diabetes": {"checked": True, "detail": ""}})
-    Form033Record.objects.create(tenant=demo, patient=pacientes[6], date=hoy - timedelta(days=10),
+    Form033Record.objects.create(id=fijo("form033-2"), tenant=demo, patient=pacientes[6], date=hoy - timedelta(days=10),
                                  antecedentes_personales={"Alergia antibiótico": {"checked": True, "detail": "no recuerda cuál"}})
-    Form033Record.objects.create(tenant=demo, patient=pacientes[6], date=hoy - timedelta(days=10), embarazada=True,
+    Form033Record.objects.create(id=fijo("form033-3"), tenant=demo, patient=pacientes[6], date=hoy - timedelta(days=10),
+                                 embarazada=True, temperatura=Decimal("36.5"), pulso=72, presion_arterial="120/80",
+                                 indicadores_salud_bucal={"ihos": 1.5, "placa": [0, 1, 2.0]},
+                                 examen_estomatognatico={"labios": "normal", "x": 1e-5, "zz": None},
+                                 professional_snapshot={"full_name": "Dra. Elena Mora", "license_number": "MSP-123"},
                                  antecedentes_personales={
                                      "Alergia antibiótico": {"checked": True, "detail": "Amoxicilina, urticaria"},
                                      "Otro": {"checked": "sí", "detail": "Toma Xarelto. Zoledronato por osteoporosis"},
@@ -149,7 +154,16 @@ def sembrar():
                                      "Enf. cardíaca": {"checked": [1]},
                                  })
     # paciente-9 también tiene un formulario, con la sección D vacía.
-    Form033Record.objects.create(tenant=demo, patient=pacientes[9], date=hoy, antecedentes_personales={})
+    Form033Record.objects.create(id=fijo("form033-4"), tenant=demo, patient=pacientes[9], date=hoy, antecedentes_personales={},
+                                 professional_snapshot={"full_name": None, "license_number": 0})
+
+    # ── Diagnósticos: 22 de paciente-6, para que la lista tenga dos páginas ──
+    codigos = ["K02.1", "K04.0", "K05", "K02.0", "K08.1", ""]
+    for i in range(22):
+        Diagnosis.objects.create(tenant=demo, patient=pacientes[6], doctor=doctora if i % 3 else None,
+                                 tooth_fdi_code=["", "16", "26", "36"][i % 4], code=codigos[i % len(codigos)],
+                                 description=f"Diagnóstico {i}", diagnosis_kind="def" if i % 2 else "pre",
+                                 date=hoy - timedelta(days=i * 3))
 
     # ── Citas: hoy en varios estados, y los bordes del día ───────────
     numero = iter(range(1000))
@@ -246,6 +260,8 @@ def sembrar():
     Doctor.objects.create(id=fijo("doctor-vecina"), calendar_token=fijo("calendario-vecina"), tenant=vecina, user=uv)
     Agreement.objects.create(id=fijo("convenio-vecina"), tenant=vecina, name="Convenio ajeno",
                              discount_percentage=Decimal("50"))
+    Form033Record.objects.create(id=fijo("form033-vecina"), tenant=vecina, patient=pv, date=hoy, motivo_consulta="Ajeno")
+    Diagnosis.objects.create(tenant=vecina, patient=pv, description="Ajeno", date=hoy)
 
     print(f"Sembrado en {BASE}: {Patient.objects.filter(tenant=demo).count()} pacientes, "
           f"{Appointment.objects.filter(tenant=demo).count()} citas, hoy {hoy} en {zona}.")

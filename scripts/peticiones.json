@@ -21,6 +21,10 @@
     "auxiliar": {
       "email": "auxiliar@clinube.local",
       "password": "OdontoDemo2026"
+    },
+    "doctor2": {
+      "email": "doctor2@clinube.local",
+      "password": "OdontoDemo2026"
     }
   },
   "peticiones": [
@@ -1221,6 +1225,464 @@
       "metodo": "GET",
       "ruta": "/api/v1/patients/f6ebcb43-a2a8-55ab-9a94-aa1ac29f9cfa/alertas/revisar/",
       "usuario": "doctora"
+    },
+    {
+      "nombre": "033: lista",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/form033/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "033: lista, recepción",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/form033/",
+      "usuario": "recepcion"
+    },
+    {
+      "nombre": "033: lista sin sesión",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/form033/",
+      "usuario": null
+    },
+    {
+      "nombre": "033: lista de otra clínica",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/92f3248c-fcd2-5d23-991f-58410f9ce47c/form033/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "033: lista de un paciente que no existe",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/00000000-0000-4000-8000-000000000000/form033/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "033: alta completa",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/form033/",
+      "usuario": "doctora",
+      "cuerpo": {
+        "date": "2026-10-20",
+        "motivo_consulta": "  Dolor en 36  ",
+        "embarazada": "y",
+        "enfermedad_actual": "",
+        "antecedentes_personales": {
+          "Diabetes": {
+            "checked": true,
+            "detail": "tipo 2"
+          },
+          "Otro": {
+            "checked": false
+          }
+        },
+        "temperatura": "36.5",
+        "pulso": "72",
+        "frecuencia_respiratoria": 16.0,
+        "presion_arterial": "120/80",
+        "examen_estomatognatico": {
+          "b": 1e-05,
+          "a": [
+            1.0,
+            2,
+            1e+16
+          ],
+          "labios": "normal"
+        },
+        "indicadores_salud_bucal": {}
+      },
+      "volatiles": [
+        "id",
+        "created_at",
+        "updated_at"
+      ]
+    },
+    {
+      "nombre": "033: alta con registro y firma",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/form033/",
+      "usuario": "doctor2",
+      "cuerpo": {
+        "date": "20260101",
+        "temperatura": "-0",
+        "pulso": "12.0",
+        "antecedentes_familiares": {
+          "zz": 1,
+          "a": {
+            "y": 2,
+            "x": 1
+          }
+        }
+      },
+      "volatiles": [
+        "id",
+        "created_at",
+        "updated_at"
+      ]
+    },
+    {
+      "nombre": "033: alta con todo mal",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/form033/",
+      "usuario": "doctora",
+      "cuerpo": {
+        "date": "20-10-2026",
+        "motivo_consulta": [
+          "x"
+        ],
+        "embarazada": "quizá",
+        "antecedentes_personales": null,
+        "temperatura": "36.55",
+        "pulso": -1,
+        "frecuencia_respiratoria": "1e3",
+        "presion_arterial": "xxxxxxxxxxxxxxxx",
+        "examen_estomatognatico": "no es un objeto"
+      }
+    },
+    {
+      "nombre": "033: alta sin fecha",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/form033/",
+      "usuario": "auxiliar",
+      "cuerpo": {
+        "temperatura": ""
+      }
+    },
+    {
+      "nombre": "033: alta, recepción",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/form033/",
+      "usuario": "recepcion",
+      "cuerpo": {
+        "date": "2026-10-20"
+      }
+    },
+    {
+      "nombre": "033: alta con una lista",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/form033/",
+      "usuario": "admin",
+      "cuerpo": [
+        1
+      ]
+    },
+    {
+      "nombre": "033: alta de un paciente de baja",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/f392b107-da73-5a13-948a-727cbcaa6cb2/form033/",
+      "usuario": "admin",
+      "cuerpo": {
+        "date": "2026-W43-3",
+        "temperatura": 36.5,
+        "pulso": " 7 "
+      },
+      "volatiles": [
+        "id",
+        "created_at",
+        "updated_at"
+      ]
+    },
+    {
+      "nombre": "033: lista tras las altas",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/form033/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "updated_at"
+      ]
+    },
+    {
+      "nombre": "033: ver",
+      "metodo": "GET",
+      "ruta": "/api/v1/form033/dd94da3e-1d9f-59be-ae1e-57194765a1cc/",
+      "usuario": "auxiliar"
+    },
+    {
+      "nombre": "033: ver sin constancia",
+      "metodo": "GET",
+      "ruta": "/api/v1/form033/80a490e0-f686-52ad-ac56-deba09b291ff/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "033: ver, recepción",
+      "metodo": "GET",
+      "ruta": "/api/v1/form033/dd94da3e-1d9f-59be-ae1e-57194765a1cc/",
+      "usuario": "recepcion"
+    },
+    {
+      "nombre": "033: ver de otra clínica",
+      "metodo": "GET",
+      "ruta": "/api/v1/form033/8aff5c9d-20a5-537a-851f-b26a59695280/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "033: ver uno que no existe",
+      "metodo": "GET",
+      "ruta": "/api/v1/form033/00000000-0000-4000-8000-000000000000/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "033: patch malo",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/form033/dd94da3e-1d9f-59be-ae1e-57194765a1cc/",
+      "usuario": "doctora",
+      "cuerpo": {
+        "temperatura": 37.25,
+        "pulso": true
+      }
+    },
+    {
+      "nombre": "033: patch",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/form033/dd94da3e-1d9f-59be-ae1e-57194765a1cc/",
+      "usuario": "doctor2",
+      "cuerpo": {
+        "pulso": "80",
+        "antecedentes_familiares": {
+          "Diabetes": {
+            "checked": true
+          }
+        },
+        "temperatura": "-0.0"
+      },
+      "volatiles": [
+        "updated_at"
+      ]
+    },
+    {
+      "nombre": "033: ver tras el patch",
+      "metodo": "GET",
+      "ruta": "/api/v1/form033/dd94da3e-1d9f-59be-ae1e-57194765a1cc/",
+      "usuario": "admin",
+      "volatiles": [
+        "updated_at"
+      ]
+    },
+    {
+      "nombre": "033: put sin fecha",
+      "metodo": "PUT",
+      "ruta": "/api/v1/form033/46ca9603-dcf9-5208-a0d3-59391dce4f3d/",
+      "usuario": "admin",
+      "cuerpo": {
+        "motivo_consulta": "x"
+      }
+    },
+    {
+      "nombre": "033: put",
+      "metodo": "PUT",
+      "ruta": "/api/v1/form033/46ca9603-dcf9-5208-a0d3-59391dce4f3d/",
+      "usuario": "admin",
+      "cuerpo": {
+        "date": "2026-1-5",
+        "motivo_consulta": "Control",
+        "indicadores_salud_bucal": [
+          1,
+          "a",
+          null
+        ]
+      },
+      "volatiles": [
+        "updated_at"
+      ]
+    },
+    {
+      "nombre": "033: delete",
+      "metodo": "DELETE",
+      "ruta": "/api/v1/form033/46ca9603-dcf9-5208-a0d3-59391dce4f3d/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "diagnósticos",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/diagnoses/",
+      "usuario": "doctora"
+    },
+    {
+      "nombre": "diagnósticos, página 2",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/diagnoses/?page=2",
+      "usuario": "auxiliar"
+    },
+    {
+      "nombre": "diagnósticos, página 3",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/diagnoses/?page=3",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "diagnósticos, recepción",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/df2a8872-1a27-5f9c-b59b-4e674c15f420/diagnoses/",
+      "usuario": "recepcion"
+    },
+    {
+      "nombre": "diagnósticos de otra clínica",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/92f3248c-fcd2-5d23-991f-58410f9ce47c/diagnoses/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "diagnóstico nuevo, doctora",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/diagnoses/",
+      "usuario": "doctora",
+      "cuerpo": {
+        "tooth_fdi_code": " 36 ",
+        "code": "K02.1",
+        "description": "  Caries de la dentina ",
+        "diagnosis_kind": "def",
+        "date": "2026-10-21"
+      },
+      "volatiles": [
+        "id",
+        "created_at"
+      ]
+    },
+    {
+      "nombre": "diagnóstico nuevo, admin",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/diagnoses/",
+      "usuario": "admin",
+      "cuerpo": {
+        "description": "General",
+        "date": "2026-10-20"
+      },
+      "volatiles": [
+        "id",
+        "created_at"
+      ]
+    },
+    {
+      "nombre": "diagnóstico con todo mal",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/diagnoses/",
+      "usuario": "doctora",
+      "cuerpo": {
+        "tooth_fdi_code": "123",
+        "code": "xxxxxxxxxxxxxxxxxxxxx",
+        "description": "   ",
+        "diagnosis_kind": "PRE",
+        "date": "hoy"
+      }
+    },
+    {
+      "nombre": "diagnóstico vacío",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/diagnoses/",
+      "usuario": "doctora",
+      "cuerpo": {}
+    },
+    {
+      "nombre": "diagnóstico con tipo nulo",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/diagnoses/",
+      "usuario": "doctora",
+      "cuerpo": {
+        "description": "x",
+        "date": "2026-10-20",
+        "diagnosis_kind": null
+      }
+    },
+    {
+      "nombre": "diagnóstico de un paciente de baja",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/f392b107-da73-5a13-948a-727cbcaa6cb2/diagnoses/",
+      "usuario": "doctora",
+      "cuerpo": {
+        "description": "x",
+        "date": "2026-10-20"
+      }
+    },
+    {
+      "nombre": "diagnóstico de un paciente que no existe",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/00000000-0000-4000-8000-000000000000/diagnoses/",
+      "usuario": "doctora",
+      "cuerpo": {
+        "description": "x",
+        "date": "2026-10-20"
+      }
+    },
+    {
+      "nombre": "diagnóstico de otra clínica",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/92f3248c-fcd2-5d23-991f-58410f9ce47c/diagnoses/",
+      "usuario": "doctora",
+      "cuerpo": {
+        "description": "x",
+        "date": "2026-10-20"
+      }
+    },
+    {
+      "nombre": "diagnósticos tras las altas",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/diagnoses/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at"
+      ]
+    },
+    {
+      "nombre": "cie10 sin q",
+      "metodo": "GET",
+      "ruta": "/api/v1/cie10/",
+      "usuario": "recepcion"
+    },
+    {
+      "nombre": "cie10 corta",
+      "metodo": "GET",
+      "ruta": "/api/v1/cie10/?q=k",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "cie10 por código",
+      "metodo": "GET",
+      "ruta": "/api/v1/cie10/?q=+k0+",
+      "usuario": "doctora"
+    },
+    {
+      "nombre": "cie10 por nombre",
+      "metodo": "GET",
+      "ruta": "/api/v1/cie10/?q=CARIES",
+      "usuario": "doctora"
+    },
+    {
+      "nombre": "cie10 muchas",
+      "metodo": "GET",
+      "ruta": "/api/v1/cie10/?q=de",
+      "usuario": "doctora"
+    },
+    {
+      "nombre": "cie10 con tilde",
+      "metodo": "GET",
+      "ruta": "/api/v1/cie10/?q=ER%C3%93SI",
+      "usuario": "doctora"
+    },
+    {
+      "nombre": "cie10 comodines",
+      "metodo": "GET",
+      "ruta": "/api/v1/cie10/?q=%25%25",
+      "usuario": "doctora"
+    },
+    {
+      "nombre": "cie10 guion bajo",
+      "metodo": "GET",
+      "ruta": "/api/v1/cie10/?q=K_",
+      "usuario": "doctora"
+    },
+    {
+      "nombre": "cie10 repetida",
+      "metodo": "GET",
+      "ruta": "/api/v1/cie10/?q=xx&q=pulpa",
+      "usuario": "doctora"
+    },
+    {
+      "nombre": "cie10 sin sesión",
+      "metodo": "GET",
+      "ruta": "/api/v1/cie10/?q=caries",
+      "usuario": null
     },
     {
       "nombre": "cita: crear vacía",

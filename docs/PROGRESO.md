@@ -9,23 +9,24 @@ diferencia entre los dos últimos importa:
 | **hecha** | Implementada y con sus pruebas en verde. **No basta:** las pruebas propias pueden pasar y la respuesta no ser la de Django. |
 | **igual a Django** | Comprobada con `scripts/comparar-contrato`: mismo código HTTP, mismas claves, mismo orden, mismos valores. |
 
-**33 de 202** igual a Django (16 %), y **4 más en parte** (falta un método o una exportación),
-comprobadas con `scripts/comparar-contrato` (181 de 181 peticiones iguales y las 8 tablas tocadas idénticas en las dos bases, informe en `docs/contrato/INFORME-COMPARADOR.md`).
+**37 de 202** igual a Django (18 %), y **4 más en parte** (falta un método o una exportación),
+comprobadas con `scripts/comparar-contrato` (229 de 229 peticiones iguales y las 10 tablas tocadas idénticas en las dos bases, informe en `docs/contrato/INFORME-COMPARADOR.md`).
 
-> **Estado a 2026-10-21:** el servidor compila sin errores ni avisos y la
-> suite pasa entera dos veces (136 pruebas en UTC y 136 en
+> **Estado a 2026-10-22:** el servidor compila sin errores ni avisos y la
+> suite pasa entera dos veces (147 pruebas en UTC y 147 en
 > Pacific/Kiritimati), incluidas las de integración contra PostgreSQL 16 con
 > la línea base de Flyway y Hibernate en `validate`.
 >
 > **El panel entra, el escritorio se carga entero y las pantallas de
 > Pacientes y Agenda funcionan** contra Kotlin (comprobado en el navegador con
 > el panel de `frontend/` sin tocar): alta de un paciente con convenio, su
-> ficha, el registro del aviso de privacidad, el cambio de convenio, **los
-> antecedentes médicos y sus alertas clínicas** (editar los antecedentes y ver
-> aparecer las alertas, con la frase negada que no avisa), y en la agenda
+> ficha, el registro del aviso de privacidad, el cambio de convenio, los
+> antecedentes médicos y sus alertas clínicas, **el formulario 033** (registrar
+> una consulta y verla con «Registrado por», guardar los indicadores de salud
+> bucal) y **los diagnósticos** con el buscador CIE-10; y en la agenda
 > confirmar, marcar la llegada, iniciar y finalizar la atención y crear una
-> cita. La ficha pide además rutas de la historia clínica (odontograma,
-> diagnósticos, formulario 033) y de WhatsApp, que son de las fases 5 y 13.
+> cita. De la ficha faltan el odontograma y los índices CPO/ceo (fase 5), las
+> exportaciones del 033 a PDF y Excel, y WhatsApp (fase 13).
 
 > Este archivo dice la verdad. Si una ruta no responde igual que Django, lo
 > dice aunque las pruebas propias pasen.
@@ -167,11 +168,11 @@ comprobadas con `scripts/comparar-contrato` (181 de 181 peticiones iguales y las
 | GET | `/api/v1/doctors/<uuid:pk>/calendar-url/` | igual a Django |
 | GET POST | `/api/v1/doctors/me/signature/` | pendiente |
 
-### Fase 5 · `clinical` — Historia clínica (3/41)
+### Fase 5 · `clinical` — Historia clínica (7/41)
 
 | Métodos | Ruta | Estado |
 |---|---|---|
-| GET | `/api/v1/cie10/` | pendiente |
+| GET | `/api/v1/cie10/` | igual a Django |
 | GET | `/api/v1/clinical/follow-ups/` | igual a Django |
 | DELETE | `/api/v1/clinical/plan-template-items/<uuid:pk>/` | pendiente |
 | GET POST | `/api/v1/clinical/plan-templates/` | pendiente |
@@ -184,7 +185,7 @@ comprobadas con `scripts/comparar-contrato` (181 de 181 peticiones iguales y las
 | GET PUT PATCH DELETE | `/api/v1/evolutions/<uuid:pk>/` | pendiente |
 | GET | `/api/v1/evolutions/<uuid:pk>/prescription-pdf/` | pendiente |
 | PATCH | `/api/v1/exam-requests/<uuid:pk>/report/` | pendiente |
-| GET PUT PATCH | `/api/v1/form033/<uuid:pk>/` | pendiente |
+| GET PUT PATCH | `/api/v1/form033/<uuid:pk>/` | igual a Django |
 | GET | `/api/v1/odontogram-states/` | pendiente |
 | GET | `/api/v1/patients/<uuid:pk>/alertas/` | igual a Django |
 | POST | `/api/v1/patients/<uuid:pk>/alertas/revisar/` | igual a Django |
@@ -194,11 +195,11 @@ comprobadas con `scripts/comparar-contrato` (181 de 181 peticiones iguales y las
 | GET | `/api/v1/patients/<uuid:pk>/clinical-record/export-pdf/` | pendiente |
 | GET POST | `/api/v1/patients/<uuid:pk>/consents/` | pendiente |
 | GET | `/api/v1/patients/<uuid:pk>/cpo-ceo/` | pendiente |
-| GET POST | `/api/v1/patients/<uuid:pk>/diagnoses/` | pendiente |
+| GET POST | `/api/v1/patients/<uuid:pk>/diagnoses/` | igual a Django |
 | GET POST | `/api/v1/patients/<uuid:pk>/evolutions/` | pendiente |
 | GET POST | `/api/v1/patients/<uuid:pk>/exam-requests/` | pendiente |
 | GET | `/api/v1/patients/<uuid:pk>/exam-requests/<uuid:exam_id>/pdf/` | pendiente |
-| GET POST | `/api/v1/patients/<uuid:pk>/form033/` | pendiente |
+| GET POST | `/api/v1/patients/<uuid:pk>/form033/` | igual a Django |
 | GET | `/api/v1/patients/<uuid:pk>/form033/export-pdf/` | pendiente |
 | GET | `/api/v1/patients/<uuid:pk>/form033/export-xlsx/` | pendiente |
 | GET | `/api/v1/patients/<uuid:pk>/odontogram/current/` | pendiente |

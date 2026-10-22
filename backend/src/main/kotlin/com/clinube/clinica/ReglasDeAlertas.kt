@@ -1,5 +1,6 @@
 package com.clinube.clinica
 
+import com.clinube.comun.python.Python
 import com.fasterxml.jackson.databind.JsonNode
 import java.text.Normalizer
 
@@ -22,8 +23,8 @@ import java.text.Normalizer
  * Por eso aquí no hay expresiones regulares de Java para `\b`, `\w` y `\s`:
  * en Python son las de `str.isalnum()` y `str.isspace()`, que no coinciden
  * del todo con ninguna clase de Java («²» es una letra o cifra en Python y
- * no en Java; «\u001c» es un espacio en Python y no en Java). Se escriben a
- * mano con la definición de Python.
+ * no en Java; «\u001c» es un espacio en Python y no en Java). Se usan las
+ * de [Python].
  */
 object ReglasDeAlertas {
 
@@ -38,18 +39,9 @@ object ReglasDeAlertas {
 
     // ── Texto como en Python ─────────────────────────────────────────
 
-    /** `str.isspace()` de Python, que es también su `\s`. */
-    fun esEspacio(c: Int): Boolean = c in 0x09..0x0d || c in 0x1c..0x20 || c == 0x85 || c == 0xa0 ||
-        c == 0x1680 || c in 0x2000..0x200a || c == 0x2028 || c == 0x2029 || c == 0x202f || c == 0x205f || c == 0x3000
-
-    /** `\w` de Python: `str.isalnum()` (letras y cualquier número) o el guion bajo. */
-    fun esPalabra(c: Int): Boolean = c == '_'.code || Character.isLetter(c) || when (Character.getType(c)) {
-        Character.DECIMAL_DIGIT_NUMBER.toInt(), Character.LETTER_NUMBER.toInt(), Character.OTHER_NUMBER.toInt() -> true
-        else -> false
-    }
-
-    /** `str.strip()` de Python. */
-    fun recortar(texto: String): String = texto.trim { esEspacio(it.code) }
+    private fun esEspacio(c: Int) = Python.esEspacio(c)
+    private fun esPalabra(c: Int) = Python.esPalabra(c)
+    fun recortar(texto: String) = Python.recortar(texto)
 
     /** En minúsculas y sin tildes: NFD y fuera las marcas que no ocupan espacio. */
     fun normalizar(texto: String?): String {
@@ -118,15 +110,7 @@ object ReglasDeAlertas {
         "cardiopatia congenita")
     val HEMORRAGICOS = listOf("hemofilia", "hemorrag", "coagulopat", "von willebrand", "trombocitopen")
 
-    /** La verdad de Python de un valor JSON: `0`, `""`, `[]`, `{}` y `null` son falsos. */
-    private fun verdad(v: JsonNode?): Boolean = when {
-        v == null || v.isNull -> false
-        v.isBoolean -> v.booleanValue()
-        v.isNumber -> v.decimalValue().signum() != 0
-        v.isTextual -> v.textValue().isNotEmpty()
-        v.isContainerNode -> v.size() > 0
-        else -> true
-    }
+    private fun verdad(v: JsonNode?) = Python.verdad(v)
 
     /**
      * Casillas marcadas en el formulario 033 (sección D) con su detalle

@@ -190,3 +190,37 @@ pegados a la palabra, casillas del 033 con valores de todos los tipos— y
 `ReglasDeAlertasTest` exige que Kotlin dé lo mismo en todos. Quitar un solo
 carácter de los espacios de Python hace fallar 45 casos: la prueba no es de
 adorno. Si cambian las reglas en Django, se vuelve a generar el fichero.
+
+## 15. Los campos de DRF se comparan con DRF caso a caso
+
+`scripts/casos-de-campos.py` pasa unos 7300 valores por los campos de DRF
+que usan las rutas portadas (texto, correo, decimal, entero, booleano, JSON,
+opción y fecha) y `CamposDrfTest` exige que `CamposDrf` dé el mismo valor o
+los mismos errores. Las reglas son de Python y no de Java, y no se adivinan:
+
+- `"36.50"` como texto tiene dos decimales y no vale en un
+  `DecimalField(max_digits=4, decimal_places=1)`; el número `36.50` es el
+  float 36.5 y sí; `"-0"` vale y responde «-0.0» (la base guarda 0.0).
+- `int()` acepta `"٣"`, `"1_000"` y `" 7 "`, pero no `"\u001c7"`;
+  `Decimal()` ignora TODOS los guiones bajos (`"1__0"` es 10).
+- El float 1e16 se escribe «1e+16» y 1e-5 «1e-05».
+
+La primera ejecución encontró dos fallos en código ya portado y dado por
+bueno: `DateField` solo aceptaba `AAAA-MM-DD`, y Django acepta también
+`20261020`, `2026-W43-3`, `2026-1-5` y cifras de otros alfabetos; y un
+`EmailField` que recibe una lista responde «Introduzca una dirección de
+correo electrónico válida.», no «No es una cadena válida.». Lo común está en
+`comun/python/Python.kt`.
+
+## 16. Los datos que Django mete con migraciones
+
+La V1 de Flyway es solo el esquema (`pg_dump --schema-only`). Los datos que
+crean las migraciones de Django no están: en una base nueva (las pruebas,
+una instalación desde cero) faltarían. El catálogo CIE-10 va ahora en la V2
+(`V2__catalogo_cie10.sql`, generada desde `clinical/0008_seed_cie10.py`, con
+`on conflict do nothing` para no tocar una base que ya viene de Django).
+
+**Pendiente de revisar** el resto de migraciones con `RunPython`, por si
+alguna crea filas que una base nueva necesite: `accounts/0009`, `agenda/0002`,
+`billing/0002`, `clinical/0011` y `0013`, `common/0005`, `0007`, `0008`,
+`0009` y `0011`.

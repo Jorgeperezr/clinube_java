@@ -28,6 +28,22 @@ object MensajesDeDjango {
 
     fun maximoDeCaracteres(n: Int) = "Asegúrese de que este campo no tenga más de $n caracteres."
     fun claveInexistente(clave: String) = "Clave primaria \"$clave\" inválida - objeto no existe."
+    const val CARACTERES_NULOS = "Los caracteres nulos no están permitidos."
+
+    /** Sin traducir en la versión de DRF de clinube. */
+    fun caracterSustituto(c: Int) = "Surrogate characters are not allowed: U+%X.".format(c)
+    const val CADENA_DEMASIADO_LARGA = "Cadena demasiado larga."
+    const val NUMERO_INVALIDO = "Se requiere un número válido."
+    const val ENTERO_INVALIDO = "Introduzca un número entero válido."
+    fun maximoDeDigitos(n: Int) = "Asegúrese de que no haya más de $n dígitos en total."
+    fun maximoDeDecimales(n: Int) = "Asegúrese de que no haya más de $n decimales."
+    fun maximoDeDigitosEnteros(n: Int) = "Asegúrese de que no haya más de $n dígitos en la parte entera."
+    fun menorOIgual(n: Long) = "Asegúrese de que este valor es menor o igual a $n."
+    fun mayorOIgual(n: Long) = "Asegúrese de que este valor es mayor o igual a $n."
+    const val JSON_INVALIDO = "El valor debe ser JSON válido."
+
+    /** `ChoiceField` de DRF (el de django-filter es [opcionNoValida]). */
+    fun eleccionNoValida(valor: String) = "\"$valor\" no es una elección válida."
 
     /** Con las comillas tipográficas de Django: «“abc” no es un UUID válido.». */
     fun uuidInvalido(texto: String) = "“$texto” no es un UUID válido."

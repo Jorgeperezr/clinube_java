@@ -11,7 +11,7 @@ import java.time.ZoneOffset
  * manda (`toISOString()`) lo lee cualquiera; lo que importa es lo demás,
  * comprobado contra Django:
  *
- *   · `DateField` acepta solo `AAAA-MM-DD`: con hora es «formato erróneo».
+ *   · `DateField`: ver [com.clinube.comun.python.Python.fecha].
  *   · `DateTimeField` usa `datetime.fromisoformat` de Python 3.12: el
  *     separador entre fecha y hora puede ser CUALQUIER carácter
  *     (`2030-01-02X10:00`), la zona puede ir `Z`, `+05:30` o `+0530`, los
@@ -24,18 +24,10 @@ import java.time.ZoneOffset
  */
 object FechasDePython {
 
-    private val FECHA = Regex("""^(\d{4})-(\d{2})-(\d{2})$""")
     private val FECHA_HORA = Regex(
         """^(\d{4})-(\d{2})-(\d{2})(?:.(\d{2})(?::(\d{2})(?::(\d{2})(?:[.,](\d+))?)?)?""" +
             """(Z|[+-]\d{2}(?::?\d{2}(?::?\d{2}(?:\.\d{1,6})?)?)?)?)?$""",
     )
-
-    /** `DateField` de DRF. Nula si no es una fecha válida. */
-    fun fecha(texto: String): LocalDate? {
-        val m = FECHA.matchEntire(texto) ?: return null
-        return runCatching { LocalDate.of(m.groupValues[1].toInt(), m.groupValues[2].toInt(), m.groupValues[3].toInt()) }
-            .getOrNull()
-    }
 
     /** `DateTimeField` de DRF. Nulo si no es válida. */
     fun fechaHora(texto: String, zonaDeLaClinica: ZoneId): OffsetDateTime? {
