@@ -246,3 +246,48 @@ caracteres (con lo que admite Python: «0x», guiones bajos). Antes solo se
 aceptaban las formas habituales; lo encontró la revisión adversarial de la
 pantalla de Pagos, junto con el «""» en un campo relacional (DRF lo trata
 como nulo) y el «-0.00» de un subtotal (`0 * Decimal("-5.00")`).
+
+## 19. Los papeles de finanzas: OpenPDF y Apache POI
+
+Django dibuja los PDF con reportlab y el Excel con openpyxl. En Java la
+librería de PDF más conocida, iText 7, es AGPL y queda fuera. **OpenPDF**
+(LGPL/MPL, el sucesor libre de iText 4) tiene las mismas piezas que Platypus
+—tablas con celdas, párrafos, eventos de página para el pie— y usa las mismas
+catorce fuentes estándar de PDF que reportlab, con las mismas métricas: un
+texto que cabe en reportlab cabe aquí. **Apache POI** (Apache 2.0) escribe el
+`.xlsx`.
+
+`comun/documentos/EstiloDeDocumento.kt` es la parte de
+`apps/common/document_style.py` que usan estos papeles (membrete, título con
+su número, secciones, cuadrícula de datos, tablas, firmas y pie), leyendo la
+misma configuración de la clínica.
+
+## 20. Un documento se compara por lo que dice
+
+Dos motores no dan los mismos bytes, y comparar la forma de la página
+(posiciones, tamaños) daría diferencias de décimas de punto sin
+importancia. El comparador extrae el texto de los dos PDF con OpenPDF
+(`scripts/TextoDePdf.java`) y compara sus palabras y cuántas veces sale cada
+una; del Excel, el valor de cada celda de cada hoja, leído con la biblioteca
+estándar de Python (sin openpyxl). Así se ve si falta una línea, un importe o
+una palabra, que es lo que importa en un recibo.
+
+El comprobante de cobro no se puede pedir a Django por la API (DIFERENCIAS
+§24), así que `scripts/comparar-comprobante.py` llama directamente a
+`documentos.comprobante_cobro` de Django con el mismo cobro y el número que le
+dio Kotlin.
+
+## 21. Las ids que genera cada servidor, en el comparador
+
+Las peticiones de finanzas encadenan altas: se crea una liquidación y luego
+se paga, se genera un rol y luego se anula. Cada servidor le da a lo que
+crea su propia id, así que el comparador guarda la de cada uno
+(`"guardar": {"liq-doctora": "id"}`) y la pone en las peticiones siguientes
+(`{guardado:liq-doctora}`), a cada servidor la suya. Las fechas van relativas
+a hoy en la clínica (`{hoy}`, `{hoy-3}`, `{mes}`, `{mes-1}`, `{primero}`),
+porque lo sembrado lo está: el comparador vale cualquier día.
+
+Cada servidor guarda los archivos que se suben en su propia carpeta temporal
+(`MEDIA_ROOT`); Django, con un ajuste propio del comparador
+(`scripts/django/ajustes_del_comparador.py`), para no escribir nada dentro de
+`clinube`.

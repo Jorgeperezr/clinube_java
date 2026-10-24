@@ -4,6 +4,13 @@
 spring:
   application:
     name: clinube
+  # Los comprobantes de los egresos llegan como multipart. Django no pone
+  # tope al archivo (lo rechaza su serializador, a partir de 8 MB, con su
+  # mensaje); Spring trae 1 MB por defecto, que cortaría antes con otro.
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 60MB
   threads:
     virtual:
       enabled: true
@@ -75,6 +82,8 @@ clinube:
   # en ella, aunque todo se guarde en UTC.
   zona: ${DJANGO_TIME_ZONE:America/Guayaquil}
   marca: Clinube
+  # Dónde se guardan los archivos que se suben (`MEDIA_ROOT` de Django).
+  media: ${MEDIA_ROOT:media}
   panel-url: ${PANEL_URL:}
   jwt:
     vida-acceso: PT30M

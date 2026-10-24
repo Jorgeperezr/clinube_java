@@ -78,6 +78,14 @@ class ExcepcionApi(
          */
         fun validacionGeneral(mensaje: String) = validacion(mapOf("non_field_errors" to listOf(mensaje)))
 
+        /**
+         * `raise ValidationError({"detail": texto})` en una vista: el
+         * manejador de Django saca `detail` a `message` y `details` queda
+         * vacío. DRF solo mete en una lista un texto suelto, no los valores
+         * de un diccionario: `message` es el texto tal cual.
+         */
+        fun validacionConDetalle(mensaje: String) = ExcepcionApi(HttpStatus.BAD_REQUEST, "invalid", mensaje)
+
         /** Token rechazado por la autenticación (cabecera `Authorization`). */
         fun tokenRechazado(motivo: String, claseDeToken: String = "AccessToken", tipo: String = "access") =
             ExcepcionApi(

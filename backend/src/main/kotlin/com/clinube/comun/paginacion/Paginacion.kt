@@ -89,7 +89,7 @@ data class Pagina<T>(
         }
 
         /** `parse_qs(consulta, keep_blank_values=True)` de Python. */
-        private fun leerConsulta(consulta: String?): LinkedHashMap<String, MutableList<String>> {
+        fun leerConsulta(consulta: String?): LinkedHashMap<String, MutableList<String>> {
             val parametros = LinkedHashMap<String, MutableList<String>>()
             consulta?.split("&")?.filter { it.isNotEmpty() }?.forEach { campo ->
                 val partes = campo.split("=", limit = 2)

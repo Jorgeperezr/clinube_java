@@ -244,7 +244,7 @@ def sembrar():
             c = Installment.objects.create(id=fijo(f"cuota-{p.national_id}-{n}"), tenant=demo, payment_plan=pp, patient=p, number=n,
                                            due_date=hoy + timedelta(days=dias), amount=Decimal(monto), status=estado)
             if pagado:
-                Payment.objects.create(tenant=demo, patient=p, installment=c, amount=Decimal(pagado),
+                Payment.objects.create(id=fijo(f"pago-{p.national_id}-{n}"), tenant=demo, patient=p, installment=c, amount=Decimal(pagado),
                                        method="cash", date=primero - timedelta(days=40), registered_by=admin)
             hechas.append(c)
         return hechas
@@ -366,11 +366,86 @@ def sembrar():
     MensajeConsultorio.objects.create(tenant=demo, patient=pacientes[2], texto="Hola", respuesta="Hola",
                                       respondido_por=admin, respondido_en=ahora)
 
+    # ── Finanzas: lo que pide la pantalla de Finanzas y el comprobante ──
+    from apps.finanzas import calculos
+    from apps.finanzas.models import (
+        CierreCaja, ConfiguracionFinanzas, Egreso, Liquidacion, PerfilLaboral, RolPagos, categoria, categorias_de,
+    )
+    recepcion = User.objects.get(email="recepcion@clinube.local")
+    auxiliar = User.objects.get(email="auxiliar@clinube.local")
+    ConfiguracionFinanzas.objects.create(id=fijo("config-finanzas"), tenant=demo, siguiente_comprobante=120)
+    categorias_de(demo)
+    PerfilLaboral.objects.create(id=fijo("perfil-doctora"), tenant=demo, usuario=doctora.user, modalidad="honorarios",
+                                 cedula="1712345678", cargo="Odontóloga", porcentaje=Decimal("40.00"))
+    PerfilLaboral.objects.create(id=fijo("perfil-doctor2"), tenant=demo, usuario=doctor2.user, modalidad="honorarios",
+                                 base_honorarios="fijo", monto_fijo=Decimal("500.00"), emite_factura=False)
+    PerfilLaboral.objects.create(id=fijo("perfil-recepcion"), tenant=demo, usuario=recepcion, modalidad="dependencia",
+                                 cedula="1700000001", cargo="Recepcionista", sueldo=Decimal("600.00"),
+                                 fecha_ingreso=hoy - timedelta(days=800), decimo_cuarto_mensual=True)
+    PerfilLaboral.objects.create(id=fijo("perfil-auxiliar"), tenant=demo, usuario=auxiliar, modalidad="dependencia",
+                                 sueldo=Decimal("482.00"), fecha_ingreso=hoy - timedelta(days=100))
+    fin_anterior = primero - timedelta(days=1)
+    inicio_anterior = fin_anterior.replace(day=1)
+
+    def cobro(nombre, p, monto, metodo, fecha, profesional=None, numero=None):
+        return Payment.objects.create(id=fijo(nombre), tenant=demo, patient=p, amount=Decimal(monto), method=metodo, date=fecha,
+                                      registered_by=admin, profesional=profesional, numero_comprobante=numero)
+    cobro("cobro-doctora-1", pacientes[15], "80.00", "cash", hoy, doctora.user)
+    cobro("cobro-doctora-2", pacientes[16], "120.00", "transfer", primero, doctora.user, numero=7)
+    cobro("cobro-doctora-anterior", pacientes[17], "200.00", "card", inicio_anterior + timedelta(days=4), doctora.user)
+    cobro("cobro-doctor2", pacientes[18], "65.40", "cash", hoy, doctor2.user)
+    cobro("cobro-sin-profesional", pacientes[19], "12.00", "transfer", hoy)
+
+    def egreso(nombre, clave, concepto, monto, fecha, **extra):
+        return Egreso.objects.create(id=fijo(nombre), tenant=demo, categoria=categoria(demo, clave), concepto=concepto,
+                                     monto=Decimal(monto), fecha=fecha, registrado_por=admin, **extra)
+    egreso("egreso-arriendo", "arriendo", "Arriendo del local", "800.00", primero, forma_pago="transferencia",
+           proveedor="Inmobiliaria Sur", proveedor_ruc="1790012345001", numero_factura="001-001-000000123")
+    egreso("egreso-luz", "servicios", "Luz eléctrica", "45.30", hoy)
+    egreso("egreso-laboratorio", "laboratorio", "Corona de la paciente Castro", "120.00", hoy, forma_pago="transferencia",
+           profesional=doctora.user, descontar_al_profesional=True)
+    egreso("egreso-por-pagar", "insumos", "Resinas y adhesivos", "230.00", hoy - timedelta(days=20), estado="por_pagar",
+           vence=hoy - timedelta(days=5), proveedor="Dental Quito")
+    egreso("egreso-por-pagar-futuro", "publicidad", "Campaña en redes", "60.00", hoy, estado="por_pagar",
+           vence=hoy + timedelta(days=10))
+    egreso("egreso-anulado", "otros", "Duplicado", "10.00", hoy, anulado=True, motivo_anulacion="Se apuntó dos veces")
+    egreso("egreso-anticipo", "sueldos", "Anticipo de Laura", "50.00", hoy, profesional=recepcion, descontar_al_profesional=True)
+    egreso("egreso-anterior", "insumos", "Guantes y mascarillas", "75.25", inicio_anterior + timedelta(days=9))
+    egreso("egreso-inventario", "insumos", "Compra de anestesia", "33.33", hoy, origen="inventario")
+
+    # El mes pasado, ya cerrado: la liquidación de la doctora y el rol de
+    # recepción, pagados (dejan pendientes el IESS y la retención al SRI), y
+    # el rol del auxiliar todavía en borrador.
+    r = calculos.liquidacion(demo, doctora.user, inicio_anterior, fin_anterior)
+    liq = Liquidacion.objects.create(id=fijo("liquidacion-1"), tenant=demo, numero=1, profesional=doctora.user,
+                                     desde=inicio_anterior, hasta=fin_anterior, creada_por=admin, **r)
+    liq.egreso = Egreso.objects.create(
+        id=fijo("egreso-liquidacion-1"), tenant=demo, fecha=fin_anterior, categoria=categoria(demo, "honorarios"),
+        concepto=f"Honorarios {doctora.user.full_name} — liquidación N.º 00001", monto=liq.a_pagar,
+        forma_pago="transferencia", profesional=doctora.user, origen="liquidacion", registrado_por=admin)
+    liq.estado = Liquidacion.Estado.PAGADA
+    liq.save()
+    for nombre, empleado, pagado in [("rol-recepcion-anterior", recepcion, True), ("rol-auxiliar-anterior", auxiliar, False)]:
+        calculo = calculos.rol(demo, empleado, inicio_anterior)
+        rol = RolPagos.objects.create(id=fijo(nombre), tenant=demo, empleado=empleado, mes=inicio_anterior, calculo=calculo,
+                                      neto=Decimal(calculo["neto"]), costo_empleador=Decimal(calculo["costo_empleador"]),
+                                      creado_por=admin)
+        if pagado:
+            rol.egreso = Egreso.objects.create(
+                id=fijo(f"egreso-{nombre}"), tenant=demo, fecha=fin_anterior, categoria=categoria(demo, "sueldos"),
+                concepto=f"Sueldo {empleado.full_name} — mes anterior", monto=rol.neto, forma_pago="transferencia",
+                profesional=empleado, origen="rol", registrado_por=admin)
+            rol.estado = RolPagos.Estado.PAGADO
+            rol.save()
+    CierreCaja.objects.create(id=fijo("cierre-ayer"), tenant=demo, fecha=hoy - timedelta(days=1), esperado=Decimal("95.00"),
+                              contado=Decimal("100.00"), diferencia=Decimal("5.00"), retirado=Decimal("20.00"),
+                              observaciones="Sobró", cerrado_por=recepcion)
+
     # ── Otra clínica, para comprobar que no se mezcla nada ───────────
     vecina = Tenant.objects.create(id=fijo("clinica-vecina"), name="Clínica Vecina")
     pv = Patient.objects.create(id=fijo("paciente-vecina"), tenant=vecina, first_name="Ana", last_name="Vecina", national_id="1700000000",
                                 birth_date=datetime(1970, hoy.month, min(hoy.day, 28)).date())
-    Payment.objects.create(tenant=vecina, patient=pv, amount=Decimal("5000.00"), method="cash", date=hoy)
+    Payment.objects.create(id=fijo("cobro-vecina"), tenant=vecina, patient=pv, amount=Decimal("5000.00"), method="cash", date=hoy)
     presupuesto_ajeno = Budget.objects.create(id=fijo("presupuesto-vecina"), tenant=vecina, patient=pv, status="approved",
                                               total_amount=Decimal("90"))
     plan_ajeno_pago = PaymentPlan.objects.create(id=fijo("plan-de-pago-vecina"), tenant=vecina, budget=presupuesto_ajeno,
@@ -400,6 +475,11 @@ def sembrar():
     ajeno = OdontogramState.objects.create(id=fijo("estado-vecina"), tenant=vecina, code="CARIES", label="Caries ajena",
                                            color="#123456", order=1)
     ToothRecord.objects.create(id=fijo("diente-vecina"), tenant=vecina, patient=pv, tooth_fdi_code="16", state=ajeno, date=hoy)
+
+    from apps.finanzas.models import CategoriaEgreso
+    ajena_de_gastos = CategoriaEgreso.objects.create(id=fijo("categoria-vecina"), tenant=vecina, nombre="Ajena", clave="otros")
+    Egreso.objects.create(id=fijo("egreso-vecina"), tenant=vecina, categoria=ajena_de_gastos, concepto="Ajeno",
+                          monto=Decimal("1.00"), fecha=hoy)
 
     print(f"Sembrado en {BASE}: {Patient.objects.filter(tenant=demo).count()} pacientes, "
           f"{Appointment.objects.filter(tenant=demo).count()} citas, hoy {hoy} en {zona}.")

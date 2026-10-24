@@ -23,6 +23,10 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-cache")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    // Los PDF (comprobantes, liquidaciones, roles) y el Excel del contador.
+    // OpenPDF es LGPL/MPL y POI, Apache: nada de iText 7, que es AGPL.
+    implementation("com.github.librepdf:openpdf:2.0.3")
+    implementation("org.apache.poi:poi-ooxml:5.3.0")
 
     implementation("org.flywaydb:flyway-core")
     runtimeOnly("org.flywaydb:flyway-database-postgresql")

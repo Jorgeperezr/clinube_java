@@ -36,6 +36,23 @@ object Python {
     }
 
     /** `\d` y `str.isdecimal()`: una cifra decimal de cualquier alfabeto. */
+    /**
+     * `str.isdigit()`: las cifras decimales de cualquier alfabeto y, además,
+     * las que Unicode marca como dígito sin serlo del todo (²,  ①, ₃…). Java
+     * no tiene la propiedad `Numeric_Type=Digit`; un «otro número» con valor
+     * de 0 a 9 es lo que más se le acerca.
+     */
+    fun esDigito(c: Int): Boolean = esCifra(c) ||
+        (Character.getType(c) == Character.OTHER_NUMBER.toInt() && Character.getNumericValue(c) in 0..9)
+
+    /** `a < b` entre textos de Python: por puntos de código, no por unidades UTF-16 ni por idioma. */
+    fun compararTextos(a: String, b: String): Int {
+        val x = a.codePoints().toArray()
+        val y = b.codePoints().toArray()
+        for (i in 0 until minOf(x.size, y.size)) if (x[i] != y[i]) return x[i].compareTo(y[i])
+        return x.size.compareTo(y.size)
+    }
+
     fun esCifra(c: Int): Boolean = Character.getType(c) == Character.DECIMAL_DIGIT_NUMBER.toInt()
 
     /** `str.strip()`. Los espacios de Python son todos del plano básico. */
@@ -246,6 +263,15 @@ object Python {
         val (a, mes, d) = (1..3).map { m.groupValues[it].codePoints().toArray().fold(0) { n, c -> n * 10 + Character.digit(c, 10) } }
         valida(a, mes, d)
     }
+
+    /**
+     * Si `parse_date` LANZA `ValueError` en vez de devolver `None`: el texto
+     * tiene la forma `\d{4}-\d{1,2}-\d{1,2}` pero no es un día (31 de
+     * febrero). DRF lo convierte en un error del campo; una vista que llama
+     * a `parse_date` a pelo responde 500.
+     */
+    fun fechaQueLanza(texto: String): Boolean =
+        isoformat(texto) == null && FECHA_DJANGO.matchEntire(texto) != null && fecha(texto) == null
 
     private val FECHA_DJANGO = Regex("""(\p{Nd}{4})-(\p{Nd}{1,2})-(\p{Nd}{1,2})\n?""")
 

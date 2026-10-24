@@ -433,3 +433,198 @@
 | línea con tratamiento decimal | `POST /api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/items/` | igual a Django |
 | presupuesto con las líneas raras | `GET /api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/` | igual a Django |
 | pago directo con cuota vacía | `POST /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/payments/` | igual a Django |
+| finanzas: resumen del mes | `GET /api/v1/finanzas/resumen/` | igual a Django |
+| finanzas: resumen del mes anterior | `GET /api/v1/finanzas/resumen/?mes={mes-1}` | igual a Django |
+| finanzas: resumen con el mes «2026-13» | `GET /api/v1/finanzas/resumen/?mes=2026-13` | igual a Django |
+| finanzas: resumen con el mes «abc» | `GET /api/v1/finanzas/resumen/?mes=abc` | igual a Django |
+| finanzas: resumen con el mes «2026» | `GET /api/v1/finanzas/resumen/?mes=2026` | igual a Django |
+| finanzas: resumen con el mes «2026-1-5» | `GET /api/v1/finanzas/resumen/?mes=2026-1-5` | igual a Django |
+| finanzas: resumen con el mes « 2026-10» | `GET /api/v1/finanzas/resumen/?mes= 2026-10` | igual a Django |
+| finanzas: resumen sin la función | `GET /api/v1/finanzas/resumen/` | igual a Django |
+| finanzas: resumen de recepción | `GET /api/v1/finanzas/resumen/` | igual a Django |
+| finanzas: configuración | `GET /api/v1/finanzas/configuracion/` | igual a Django |
+| finanzas: categorías | `GET /api/v1/finanzas/categorias/` | igual a Django |
+| finanzas: egresos | `GET /api/v1/finanzas/egresos/` | igual a Django |
+| finanzas: egresos del mes | `GET /api/v1/finanzas/egresos/?mes={mes}` | igual a Django |
+| finanzas: egresos del mes con los anulados | `GET /api/v1/finanzas/egresos/?mes={mes}&anulados=1` | igual a Django |
+| finanzas: cuentas por pagar (de cualquier mes) | `GET /api/v1/finanzas/egresos/?estado=por_pagar&mes={mes-1}` | igual a Django |
+| finanzas: egresos de una categoría | `GET /api/v1/finanzas/egresos/?categoria={guardado:cat-arriendo}&mes=` | igual a Django |
+| finanzas: un egreso | `GET /api/v1/finanzas/egresos/e0045330-1667-513a-92ff-2f14f295801c/` | igual a Django |
+| finanzas: un egreso que no existe | `GET /api/v1/finanzas/egresos/00000000-0000-4000-8000-000000000000/` | igual a Django |
+| finanzas: un egreso de otra clínica | `GET /api/v1/finanzas/egresos/1ce936a7-c589-535c-975a-1c889ad480a9/` | igual a Django |
+| finanzas: comprobante de un egreso sin archivo | `GET /api/v1/finanzas/egresos/5f9c243b-d6f9-546c-a9c7-d53d60baa96f/comprobante/` | igual a Django |
+| finanzas: caja de hoy | `GET /api/v1/finanzas/caja/` | igual a Django |
+| finanzas: caja de ayer | `GET /api/v1/finanzas/caja/?fecha={hoy-1}` | igual a Django |
+| finanzas: caja con fecha mala | `GET /api/v1/finanzas/caja/?fecha=ayer` | igual a Django |
+| finanzas: caja con fecha compacta | `GET /api/v1/finanzas/caja/?fecha=20261020` | igual a Django |
+| finanzas: equipo | `GET /api/v1/finanzas/equipo/` | igual a Django |
+| finanzas: equipo, sin la función | `GET /api/v1/finanzas/equipo/` | igual a Django |
+| finanzas: liquidaciones | `GET /api/v1/finanzas/liquidaciones/` | igual a Django |
+| finanzas: liquidaciones de la doctora | `GET /api/v1/finanzas/liquidaciones/?profesional=4584919b-4cbf-5952-8857-0fd8c0b1d818` | igual a Django |
+| finanzas: liquidación previa del mes | `GET /api/v1/finanzas/liquidaciones/previa/?profesional=4584919b-4cbf-5952-8857-0fd8c0b1d818&desde={primero}&hasta={hoy}` | igual a Django |
+| finanzas: liquidación previa con un anticipo | `GET /api/v1/finanzas/liquidaciones/previa/?profesional=4584919b-4cbf-5952-8857-0fd8c0b1d818&desde={primero}&hasta={hoy}&ajustes=-10.555` | igual a Django |
+| finanzas: liquidación previa con un bono | `GET /api/v1/finanzas/liquidaciones/previa/?profesional=4584919b-4cbf-5952-8857-0fd8c0b1d818&desde={primero}&hasta={hoy}&ajustes=25` | igual a Django |
+| finanzas: liquidación previa de un fijo | `GET /api/v1/finanzas/liquidaciones/previa/?profesional=92f26c47-86f7-5ae7-b7a9-eaf818139685&desde={primero}&hasta={hoy}` | igual a Django |
+| finanzas: liquidación previa desde antes de la primera | `GET /api/v1/finanzas/liquidaciones/previa/?profesional=4584919b-4cbf-5952-8857-0fd8c0b1d818&desde=2026-01-01&hasta={hoy}` | igual a Django |
+| finanzas: liquidación previa sin período | `GET /api/v1/finanzas/liquidaciones/previa/?profesional=4584919b-4cbf-5952-8857-0fd8c0b1d818&desde={primero}` | igual a Django |
+| finanzas: liquidación previa al revés | `GET /api/v1/finanzas/liquidaciones/previa/?profesional=4584919b-4cbf-5952-8857-0fd8c0b1d818&desde={hoy}&hasta={primero}` | igual a Django |
+| finanzas: liquidación previa con ajuste raro | `GET /api/v1/finanzas/liquidaciones/previa/?profesional=4584919b-4cbf-5952-8857-0fd8c0b1d818&desde={primero}&hasta={hoy}&ajustes=diez` | igual a Django |
+| finanzas: liquidación previa de alguien que no es un UUID | `GET /api/v1/finanzas/liquidaciones/previa/?profesional=xyz` | igual a Django |
+| finanzas: liquidación previa de alguien que no está | `GET /api/v1/finanzas/liquidaciones/previa/?profesional=00000000-0000-4000-8000-000000000000` | igual a Django |
+| finanzas: liquidación previa sin profesional | `GET /api/v1/finanzas/liquidaciones/previa/` | igual a Django |
+| finanzas: liquidación previa de otra clínica | `GET /api/v1/finanzas/liquidaciones/previa/?profesional=f9c446be-930a-516d-974f-05bfce1c3fb5&desde={primero}&hasta={hoy}` | igual a Django |
+| finanzas: roles | `GET /api/v1/finanzas/roles/` | igual a Django |
+| finanzas: roles del mes anterior | `GET /api/v1/finanzas/roles/?mes={mes-1}` | igual a Django |
+| finanzas: rol previo con horas | `GET /api/v1/finanzas/roles/previa/?empleado=22f0eb4e-baf2-588f-86f9-ba92a5e38f6a&mes={mes}&horas_suplementarias=10&horas_extraordinarias=4.5&otros_ingresos=25&anticipos=10&prestamos_iess=15.20&otros_descuentos=0.004` | igual a Django |
+| finanzas: rol previo de 20 días, sin fondos | `GET /api/v1/finanzas/roles/previa/?empleado=c65e9374-efaf-505c-a880-c689d7378e84&mes={mes}&dias_trabajados=20.9` | igual a Django |
+| finanzas: rol previo de un honorario | `GET /api/v1/finanzas/roles/previa/?empleado=4584919b-4cbf-5952-8857-0fd8c0b1d818` | igual a Django |
+| finanzas: rol previo con 31 días | `GET /api/v1/finanzas/roles/previa/?empleado=22f0eb4e-baf2-588f-86f9-ba92a5e38f6a&dias_trabajados=31` | igual a Django |
+| finanzas: rol previo con días negativos | `GET /api/v1/finanzas/roles/previa/?empleado=22f0eb4e-baf2-588f-86f9-ba92a5e38f6a&dias_trabajados=-1` | igual a Django |
+| finanzas: rol previo con demasiadas horas | `GET /api/v1/finanzas/roles/previa/?empleado=22f0eb4e-baf2-588f-86f9-ba92a5e38f6a&horas_suplementarias=150&horas_extraordinarias=60` | igual a Django |
+| finanzas: rol previo con mes malo | `GET /api/v1/finanzas/roles/previa/?empleado=22f0eb4e-baf2-588f-86f9-ba92a5e38f6a&mes=2026-13` | igual a Django |
+| finanzas: rol previo con valor raro | `GET /api/v1/finanzas/roles/previa/?empleado=22f0eb4e-baf2-588f-86f9-ba92a5e38f6a&anticipos=mucho` | igual a Django |
+| finanzas: rol previo sin empleado | `GET /api/v1/finanzas/roles/previa/` | igual a Django |
+| finanzas: obligaciones del mes anterior | `GET /api/v1/finanzas/obligaciones/?mes={mes-1}` | igual a Django |
+| finanzas: obligaciones del mes | `GET /api/v1/finanzas/obligaciones/` | igual a Django |
+| finanzas: obligaciones con mes malo | `GET /api/v1/finanzas/obligaciones/?mes=x` | igual a Django |
+| finanzas: décimo tercero | `GET /api/v1/finanzas/decimos/?tipo=tercero&anio={anio}` | igual a Django |
+| finanzas: décimo cuarto, sin año | `GET /api/v1/finanzas/decimos/?tipo=cuarto` | igual a Django |
+| finanzas: décimos con «tipo=quinto» | `GET /api/v1/finanzas/decimos/?tipo=quinto` | igual a Django |
+| finanzas: décimos con «tipo=tercero&anio=1999» | `GET /api/v1/finanzas/decimos/?tipo=tercero&anio=1999` | igual a Django |
+| finanzas: décimos con «tipo=tercero&anio=abc» | `GET /api/v1/finanzas/decimos/?tipo=tercero&anio=abc` | igual a Django |
+| finanzas: décimos con «tipo=tercero&anio=2026.0» | `GET /api/v1/finanzas/decimos/?tipo=tercero&anio=2026.0` | igual a Django |
+| finanzas: décimos con «» | `GET /api/v1/finanzas/decimos/?` | igual a Django |
+| finanzas: cobros del mes | `GET /api/v1/finanzas/cobros/?mes={mes}` | igual a Django |
+| finanzas: cobros del mes anterior | `GET /api/v1/finanzas/cobros/?mes={mes-1}` | igual a Django |
+| finanzas: Excel del mes anterior | `GET /api/v1/finanzas/exportar/?mes={mes-1}` | igual a Django |
+| finanzas: Excel con mes malo | `GET /api/v1/finanzas/exportar/?mes=octubre` | igual a Django |
+| finanzas: PDF de la liquidación | `GET /api/v1/finanzas/liquidaciones/1a65f65b-7543-5632-a0ca-3503ed469297/pdf/` | igual a Django |
+| finanzas: PDF de una liquidación que no existe | `GET /api/v1/finanzas/liquidaciones/00000000-0000-4000-8000-000000000000/pdf/` | igual a Django |
+| finanzas: PDF del rol | `GET /api/v1/finanzas/roles/7b501ac9-5944-5e99-b1d5-6ac0b9db0718/pdf/` | igual a Django |
+| finanzas: comprobante sin la función de cobros | `GET /api/v1/finanzas/cobros/c5124660-65fc-5a1d-a3b8-4a1d50eaea88/comprobante/` | igual a Django |
+| finanzas: cambiar la configuración | `PATCH /api/v1/finanzas/configuracion/` | igual a Django |
+| finanzas: configuración con porcentaje de más | `PATCH /api/v1/finanzas/configuracion/` | igual a Django |
+| finanzas: configuración con recargo de más | `PATCH /api/v1/finanzas/configuracion/` | igual a Django |
+| finanzas: configuración con salario cero | `PATCH /api/v1/finanzas/configuracion/` | igual a Django |
+| finanzas: configuración con región rara | `PATCH /api/v1/finanzas/configuracion/` | igual a Django |
+| finanzas: configuración con comprobante negativo | `PATCH /api/v1/finanzas/configuracion/` | igual a Django |
+| finanzas: configuración con salario enorme | `PATCH /api/v1/finanzas/configuracion/` | igual a Django |
+| finanzas: configuración con decimales de más | `PATCH /api/v1/finanzas/configuracion/` | igual a Django |
+| finanzas: configuración con una lista | `PATCH /api/v1/finanzas/configuracion/` | igual a Django |
+| finanzas: categoría nueva | `POST /api/v1/finanzas/categorias/` | igual a Django |
+| finanzas: categoría sin nombre | `POST /api/v1/finanzas/categorias/` | igual a Django |
+| finanzas: categoría con nombre largo | `POST /api/v1/finanzas/categorias/` | igual a Django |
+| finanzas: desactivar la categoría | `PATCH /api/v1/finanzas/categorias/{guardado:cat-nueva}/` | igual a Django |
+| finanzas: renombrar la categoría | `PUT /api/v1/finanzas/categorias/{guardado:cat-nueva}/` | igual a Django |
+| finanzas: reemplazar la categoría sin nombre | `PUT /api/v1/finanzas/categorias/{guardado:cat-nueva}/` | igual a Django |
+| finanzas: categoría que no existe | `PATCH /api/v1/finanzas/categorias/00000000-0000-4000-8000-000000000000/` | igual a Django |
+| finanzas: categorías después | `GET /api/v1/finanzas/categorias/` | igual a Django |
+| finanzas: egreso nuevo | `POST /api/v1/finanzas/egresos/` | igual a Django |
+| finanzas: cuenta por pagar sin vencimiento | `POST /api/v1/finanzas/egresos/` | igual a Django |
+| finanzas: egreso con vacío | `POST /api/v1/finanzas/egresos/` | igual a Django |
+| finanzas: egreso con monto cero | `POST /api/v1/finanzas/egresos/` | igual a Django |
+| finanzas: egreso con categoría de otra clínica | `POST /api/v1/finanzas/egresos/` | igual a Django |
+| finanzas: egreso con categoría que no existe | `POST /api/v1/finanzas/egresos/` | igual a Django |
+| finanzas: egreso con profesional de otra clínica | `POST /api/v1/finanzas/egresos/` | igual a Django |
+| finanzas: egreso con profesional que no existe | `POST /api/v1/finanzas/egresos/` | igual a Django |
+| finanzas: egreso con RUC corto | `POST /api/v1/finanzas/egresos/` | igual a Django |
+| finanzas: egreso con RUC con letras | `POST /api/v1/finanzas/egresos/` | igual a Django |
+| finanzas: egreso con forma rara | `POST /api/v1/finanzas/egresos/` | igual a Django |
+| finanzas: egreso con un archivo en JSON | `POST /api/v1/finanzas/egresos/` | igual a Django |
+| finanzas: egreso con anticipo de un rol pagado | `POST /api/v1/finanzas/egresos/` | igual a Django |
+| finanzas: egreso desde el formulario, con su factura | `POST /api/v1/finanzas/egresos/` | igual a Django |
+| finanzas: la factura subida | `GET /api/v1/finanzas/egresos/{guardado:egreso-factura}/comprobante/` | igual a Django |
+| finanzas: egreso desde el formulario, por pagar sin vence | `POST /api/v1/finanzas/egresos/` | igual a Django |
+| finanzas: egreso desde el formulario sin casilla | `POST /api/v1/finanzas/egresos/` | igual a Django |
+| finanzas: factura con otra extensión | `POST /api/v1/finanzas/egresos/` | igual a Django |
+| finanzas: factura vacía | `POST /api/v1/finanzas/egresos/` | igual a Django |
+| finanzas: formulario con errores | `POST /api/v1/finanzas/egresos/` | igual a Django |
+| finanzas: egreso en texto plano | `POST /api/v1/finanzas/egresos/` | igual a Django |
+| finanzas: corregir el concepto | `PATCH /api/v1/finanzas/egresos/{guardado:egreso-nuevo}/` | igual a Django |
+| finanzas: corregir desde el formulario | `PATCH /api/v1/finanzas/egresos/{guardado:egreso-factura}/` | igual a Django |
+| finanzas: la factura sigue | `GET /api/v1/finanzas/egresos/{guardado:egreso-factura}/comprobante/` | igual a Django |
+| finanzas: reemplazar sin campos | `PUT /api/v1/finanzas/egresos/{guardado:egreso-nuevo}/` | igual a Django |
+| finanzas: corregir un anulado | `PATCH /api/v1/finanzas/egresos/75419b4d-d177-5f91-b84b-ad7255957a3d/` | igual a Django |
+| finanzas: corregir un anulado con un monto malo | `PATCH /api/v1/finanzas/egresos/75419b4d-d177-5f91-b84b-ad7255957a3d/` | igual a Django |
+| finanzas: corregir el pago de una liquidación | `PATCH /api/v1/finanzas/egresos/f2c73ae6-89e3-58be-b238-65ca07fec3e0/` | igual a Django |
+| finanzas: corregir una compra de inventario | `PATCH /api/v1/finanzas/egresos/f4e6948e-ec09-5261-b3fb-a4e412bd6461/` | igual a Django |
+| finanzas: pagar una cuenta | `POST /api/v1/finanzas/egresos/0fe27653-c618-5cb5-ad7d-eef0c7f7045b/pagar/` | igual a Django |
+| finanzas: pagarla otra vez | `POST /api/v1/finanzas/egresos/0fe27653-c618-5cb5-ad7d-eef0c7f7045b/pagar/` | igual a Django |
+| finanzas: pagar un anulado | `POST /api/v1/finanzas/egresos/75419b4d-d177-5f91-b84b-ad7255957a3d/pagar/` | igual a Django |
+| finanzas: pagar con una forma rara | `POST /api/v1/finanzas/egresos/51d4de89-776f-5437-a77a-dd7b3b42c888/pagar/` | igual a Django |
+| finanzas: pagar con su forma y fecha | `POST /api/v1/finanzas/egresos/51d4de89-776f-5437-a77a-dd7b3b42c888/pagar/` | igual a Django |
+| finanzas: anular sin motivo | `POST /api/v1/finanzas/egresos/5f9c243b-d6f9-546c-a9c7-d53d60baa96f/anular/` | igual a Django |
+| finanzas: anular con motivo en blanco | `POST /api/v1/finanzas/egresos/5f9c243b-d6f9-546c-a9c7-d53d60baa96f/anular/` | igual a Django |
+| finanzas: anular | `POST /api/v1/finanzas/egresos/5f9c243b-d6f9-546c-a9c7-d53d60baa96f/anular/` | igual a Django |
+| finanzas: anular el pago de un rol | `POST /api/v1/finanzas/egresos/b479edd6-e749-5900-9359-01a5f8ca381c/anular/` | igual a Django |
+| finanzas: anular uno que no existe | `POST /api/v1/finanzas/egresos/00000000-0000-4000-8000-000000000000/anular/` | igual a Django |
+| finanzas: cerrar la caja | `POST /api/v1/finanzas/caja/` | igual a Django |
+| finanzas: cerrar la caja con retirar de más | `POST /api/v1/finanzas/caja/` | igual a Django |
+| finanzas: cerrar la caja con contado negativo | `POST /api/v1/finanzas/caja/` | igual a Django |
+| finanzas: cerrar la caja con un día que no llega | `POST /api/v1/finanzas/caja/` | igual a Django |
+| finanzas: cerrar la caja con contado raro | `POST /api/v1/finanzas/caja/` | igual a Django |
+| finanzas: cerrar la caja con sin contado | `POST /api/v1/finanzas/caja/` | igual a Django |
+| finanzas: cerrar la caja con fecha mala | `POST /api/v1/finanzas/caja/` | igual a Django |
+| finanzas: corregir el cierre | `POST /api/v1/finanzas/caja/` | igual a Django |
+| finanzas: cerrar un día pasado | `POST /api/v1/finanzas/caja/` | igual a Django |
+| finanzas: caja después de cerrar | `GET /api/v1/finanzas/caja/` | igual a Django |
+| finanzas: perfil con cédula corta | `PATCH /api/v1/finanzas/equipo/c65e9374-efaf-505c-a880-c689d7378e84/` | igual a Django |
+| finanzas: perfil con porcentaje de más | `PATCH /api/v1/finanzas/equipo/c65e9374-efaf-505c-a880-c689d7378e84/` | igual a Django |
+| finanzas: perfil con modalidad rara | `PATCH /api/v1/finanzas/equipo/c65e9374-efaf-505c-a880-c689d7378e84/` | igual a Django |
+| finanzas: perfil con fecha mala | `PATCH /api/v1/finanzas/equipo/c65e9374-efaf-505c-a880-c689d7378e84/` | igual a Django |
+| finanzas: cambiar un perfil | `PATCH /api/v1/finanzas/equipo/c65e9374-efaf-505c-a880-c689d7378e84/` | igual a Django |
+| finanzas: perfil nuevo | `PATCH /api/v1/finanzas/equipo/a35f7a96-7c8b-4954-8f61-0596bd5118ad/` | igual a Django |
+| finanzas: perfil de otra clínica | `PATCH /api/v1/finanzas/equipo/f9c446be-930a-516d-974f-05bfce1c3fb5/` | igual a Django |
+| finanzas: equipo después | `GET /api/v1/finanzas/equipo/` | igual a Django |
+| finanzas: liquidar a la doctora | `POST /api/v1/finanzas/liquidaciones/` | igual a Django |
+| finanzas: liquidarla otra vez | `POST /api/v1/finanzas/liquidaciones/` | igual a Django |
+| finanzas: liquidar un fijo | `POST /api/v1/finanzas/liquidaciones/` | igual a Django |
+| finanzas: liquidar al revés | `POST /api/v1/finanzas/liquidaciones/` | igual a Django |
+| finanzas: liquidar a alguien con un número | `POST /api/v1/finanzas/liquidaciones/` | igual a Django |
+| finanzas: corregir un gasto ya descontado | `PATCH /api/v1/finanzas/egresos/08002062-a33d-512b-8536-1f8ba3ac411b/` | igual a Django |
+| finanzas: anular un gasto ya descontado | `POST /api/v1/finanzas/egresos/08002062-a33d-512b-8536-1f8ba3ac411b/anular/` | igual a Django |
+| finanzas: reasignar un cobro ya liquidado | `PATCH /api/v1/finanzas/cobros/1880f81b-f035-51ea-bce7-e4319f30d164/` | igual a Django |
+| finanzas: reasignar un cobro libre | `PATCH /api/v1/finanzas/cobros/91038bd6-fb7d-53ce-b390-a28bf58dbec0/` | igual a Django |
+| finanzas: quitarle el profesional | `PATCH /api/v1/finanzas/cobros/91038bd6-fb7d-53ce-b390-a28bf58dbec0/` | igual a Django |
+| finanzas: reasignar a alguien raro | `PATCH /api/v1/finanzas/cobros/91038bd6-fb7d-53ce-b390-a28bf58dbec0/` | igual a Django |
+| finanzas: reasignar a otra clínica | `PATCH /api/v1/finanzas/cobros/91038bd6-fb7d-53ce-b390-a28bf58dbec0/` | igual a Django |
+| finanzas: reasignar un cobro que no existe | `PATCH /api/v1/finanzas/cobros/00000000-0000-4000-8000-000000000000/` | igual a Django |
+| finanzas: pagar la liquidación | `POST /api/v1/finanzas/liquidaciones/{guardado:liq-doctora}/pagar/` | igual a Django |
+| finanzas: pagarla otra vez | `POST /api/v1/finanzas/liquidaciones/{guardado:liq-doctora}/pagar/` | igual a Django |
+| finanzas: pagar con forma rara | `POST /api/v1/finanzas/liquidaciones/{guardado:liq-fijo}/pagar/` | igual a Django |
+| finanzas: anular el fijo | `POST /api/v1/finanzas/liquidaciones/{guardado:liq-fijo}/anular/` | igual a Django |
+| finanzas: anularlo otra vez | `POST /api/v1/finanzas/liquidaciones/{guardado:liq-fijo}/anular/` | igual a Django |
+| finanzas: PDF de la liquidación del mes | `GET /api/v1/finanzas/liquidaciones/{guardado:liq-doctora}/pdf/` | igual a Django |
+| finanzas: anular la del mes pasado | `POST /api/v1/finanzas/liquidaciones/1a65f65b-7543-5632-a0ca-3503ed469297/anular/` | igual a Django |
+| finanzas: liquidaciones después | `GET /api/v1/finanzas/liquidaciones/` | igual a Django |
+| finanzas: rol de recepción | `POST /api/v1/finanzas/roles/` | igual a Django |
+| finanzas: rehacer el rol | `POST /api/v1/finanzas/roles/` | igual a Django |
+| finanzas: rehacer un rol pagado | `POST /api/v1/finanzas/roles/` | igual a Django |
+| finanzas: rol con mes raro | `POST /api/v1/finanzas/roles/` | igual a Django |
+| finanzas: generar los roles | `POST /api/v1/finanzas/roles/generar/` | igual a Django |
+| finanzas: generarlos otra vez | `POST /api/v1/finanzas/roles/generar/` | igual a Django |
+| finanzas: generar con mes malo | `POST /api/v1/finanzas/roles/generar/` | igual a Django |
+| finanzas: roles del mes | `GET /api/v1/finanzas/roles/?mes={mes}` | igual a Django |
+| finanzas: pagar el rol | `POST /api/v1/finanzas/roles/{guardado:rol-recepcion}/pagar/` | igual a Django |
+| finanzas: pagarlo otra vez | `POST /api/v1/finanzas/roles/{guardado:rol-recepcion}/pagar/` | igual a Django |
+| finanzas: pagar un rol con forma rara | `POST /api/v1/finanzas/roles/c621c027-5ce6-5051-823a-4cce2ad82a36/pagar/` | igual a Django |
+| finanzas: anular el rol | `POST /api/v1/finanzas/roles/c621c027-5ce6-5051-823a-4cce2ad82a36/anular/` | igual a Django |
+| finanzas: anularlo otra vez | `POST /api/v1/finanzas/roles/c621c027-5ce6-5051-823a-4cce2ad82a36/anular/` | igual a Django |
+| finanzas: anular un rol que no existe | `POST /api/v1/finanzas/roles/00000000-0000-4000-8000-000000000000/anular/` | igual a Django |
+| finanzas: PDF del rol del mes | `GET /api/v1/finanzas/roles/{guardado:rol-recepcion}/pdf/` | igual a Django |
+| finanzas: PDF del rol generado | `GET /api/v1/finanzas/roles/{guardado:rol-auxiliar}/pdf/` | igual a Django |
+| finanzas: pagar el IESS del mes pasado | `POST /api/v1/finanzas/obligaciones/` | igual a Django |
+| finanzas: pagarlo otra vez | `POST /api/v1/finanzas/obligaciones/` | igual a Django |
+| finanzas: pagar el SRI anulado | `POST /api/v1/finanzas/obligaciones/` | igual a Django |
+| finanzas: pagar el IESS con forma rara | `POST /api/v1/finanzas/obligaciones/` | igual a Django |
+| finanzas: pagar el IESS del mes | `POST /api/v1/finanzas/obligaciones/` | igual a Django |
+| finanzas: pagar el SRI del mes | `POST /api/v1/finanzas/obligaciones/` | igual a Django |
+| finanzas: obligaciones después | `GET /api/v1/finanzas/obligaciones/` | igual a Django |
+| finanzas: pagar el décimo tercero a una persona | `POST /api/v1/finanzas/decimos/` | igual a Django |
+| finanzas: pagarlo a todos | `POST /api/v1/finanzas/decimos/` | igual a Django |
+| finanzas: pagarlo otra vez | `POST /api/v1/finanzas/decimos/` | igual a Django |
+| finanzas: décimo cuarto en la costa | `GET /api/v1/finanzas/decimos/?tipo=cuarto&anio={anio}` | igual a Django |
+| finanzas: resumen después | `GET /api/v1/finanzas/resumen/` | igual a Django |
+| finanzas: egresos después | `GET /api/v1/finanzas/egresos/?anulados=1` | igual a Django |
+| finanzas: cobros después | `GET /api/v1/finanzas/cobros/` | igual a Django |
+| finanzas: Excel del mes | `GET /api/v1/finanzas/exportar/` | igual a Django |

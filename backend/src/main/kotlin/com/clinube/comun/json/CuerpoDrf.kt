@@ -74,8 +74,13 @@ object CuerpoDrf {
  * Cada lectura devuelve `Leido.Ausente` si el campo no llegó (y no es
  * obligatorio, o es una actualización parcial) o `Leido.Valor(x)`, donde
  * `x` puede ser nulo si el campo admite nulos y llegó nulo.
+ *
+ * Con `html` el cuerpo es un formulario (multipart o urlencoded), y DRF
+ * lee distinto (`Field.get_value` con `html.is_html_input`): un "" en un
+ * campo que admite nulos es nulo, y un `BooleanField` que no llega es
+ * `False` (una casilla sin marcar no se envía).
  */
-class CamposDrf(private val datos: ObjectNode, private val parcial: Boolean = false) {
+class CamposDrf(private val datos: ObjectNode, private val parcial: Boolean = false, private val html: Boolean = false) {
 
     sealed interface Leido<out T> {
         data object Ausente : Leido<Nothing>
@@ -98,12 +103,13 @@ class CamposDrf(private val datos: ObjectNode, private val parcial: Boolean = fa
      * (`validate_empty_values` de DRF). Devuelve el nodo si hay que seguir
      * mirándolo, o el resultado ya decidido.
      */
-    private fun vacio(campo: String, requerido: Boolean, nulo: Boolean): Pair<JsonNode?, Leido<Nothing>?> {
+    private fun vacio(campo: String, requerido: Boolean, nulo: Boolean, enBlanco: Boolean = false): Pair<JsonNode?, Leido<Nothing>?> {
         val valor = datos.get(campo)
         if (valor == null || valor.isMissingNode) {
             if (requerido && !parcial) error(campo, MensajesDeDjango.CAMPO_REQUERIDO)
             return null to Leido.Ausente
         }
+        if (html && nulo && !enBlanco && valor.isTextual && valor.textValue().isEmpty()) return null to Leido.Valor(null)
         if (valor.isNull) {
             if (!nulo) {
                 error(campo, MensajesDeDjango.CAMPO_NULO)
@@ -127,7 +133,7 @@ class CamposDrf(private val datos: ObjectNode, private val parcial: Boolean = fa
         nulo: Boolean = false,
         correo: Boolean = false,
     ): Leido<String> {
-        val (valor, decidido) = vacio(campo, requerido, nulo)
+        val (valor, decidido) = vacio(campo, requerido, nulo, enBlanco)
         if (decidido != null) return decidido
         valor!!
         // `str(data).strip() == ''` va antes que el tipo: «[]» no está en blanco, es inválido.
@@ -280,6 +286,7 @@ class CamposDrf(private val datos: ObjectNode, private val parcial: Boolean = fa
      * «1»… En uno que admite nulos, «null» o "" es nulo.
      */
     fun booleano(campo: String, requerido: Boolean = false, nulo: Boolean = false): Leido<Boolean> {
+        if (html && !parcial && datos.get(campo) == null) return Leido.Valor(false)
         val (valor, decidido) = vacio(campo, requerido, nulo)
         if (decidido != null) return decidido
         valor!!

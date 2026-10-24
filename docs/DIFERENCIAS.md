@@ -348,13 +348,98 @@ para cobros (las encontró la revisión de esta ronda):
   permiso que manda JSON roto recibe aquí el 400 de JSON y en Django el 403.
 - **Solo se aceptan cuerpos JSON**: Django acepta también formularios
   (`application/x-www-form-urlencoded` y `multipart/form-data`); aquí son un
-  415. El panel y la app mandan siempre JSON.
+  415. El panel y la app mandan siempre JSON, salvo en un sitio: **el alta y
+  la edición de egresos** (`/finanzas/egresos/`), que van como formulario con
+  la factura del proveedor. Esas dos rutas sí leen los tres formatos, con las
+  reglas de DRF para los formularios (ver §26).
 
 ## 23. Lo que la pantalla de Pagos aún no tiene
 
-- **El comprobante del cobro** (`GET /finanzas/cobros/{id}/comprobante/`, el
-  PDF que numera el cobro) es del módulo de finanzas, sin portar.
 - **La tarea diaria que marca las cuotas vencidas** (`mark_overdue_installments`,
   Celery, 00:30): no hay tareas programadas en Kotlin todavía. El estado de
   cuenta no depende de ella (calcula lo vencido con la fecha), pero la columna
   «Estado» de una cuota se queda en «Pendiente» hasta que la tarea exista.
+
+## 24. El comprobante de cobro: en Django no funciona (diferencia DELIBERADA)
+
+`GET /finanzas/cobros/{id}/comprobante/` responde **500 siempre** en Django
+con PostgreSQL. `ComprobanteCobroView` bloquea el pago con
+`select_for_update()` y en la misma consulta se trae con `select_related` el
+profesional y la cuota, que pueden ser nulos (`LEFT OUTER JOIN`), y
+PostgreSQL lo rechaza: «FOR UPDATE cannot be applied to the nullable side of
+an outer join». Pasa con cualquier cobro, también con el de otra clínica
+(la consulta revienta antes del 404). Sus pruebas no lo ven porque corren
+con SQLite, que no tiene `FOR UPDATE`.
+
+Aquí el comprobante funciona: bloquea solo el pago y el contador de la
+clínica, numera la primera vez (y renumera un 0, como el `if not` de Django),
+y el PDF dice lo mismo que el que dibuja `documentos.comprobante_cobro`.
+Como por la API no se puede comparar, `scripts/comparar-comprobante.py` le
+pide a Django que lo dibuje con su código y su número, y compara los dos
+papeles palabra por palabra.
+
+**Conviene corregirlo en Django**: `select_for_update(of=("self",))`.
+
+## 25. Los PDF y el Excel de finanzas: lo que dicen, no sus bytes
+
+El comprobante, la liquidación y el rol de pagos se dibujan con OpenPDF, no
+con reportlab, y el Excel con Apache POI, no con openpyxl. No pueden salir
+byte a byte iguales; el comparador compara las **palabras** de cada PDF y el
+**valor de cada celda** del Excel, y las cabeceras (`Content-Type`,
+`Content-Disposition`, el nombre del archivo).
+
+- La letra es la Helvetica estándar sin incrustar, como reportlab, con la
+  codificación Windows-1252. El signo menos «−» (U+2212) de «(−) Descuentos»
+  no está en ella: reportlab lo escribe como guion, y aquí también.
+- De la apariencia de documentos de la clínica (`DocumentAppearance`) se
+  usan la hoja, los márgenes, la tipografía, la paleta, la marca, el
+  membrete, las tablas y el pie. Faltan la marca de agua, la alineación
+  centrada o a la derecha del membrete y el logotipo cuando Django lo tiene
+  en su almacenamiento y no en `MEDIA_ROOT`.
+- El extractor de texto junta a veces dos celdas vecinas del PDF de reportlab
+  («%)$39,38Anticipos»); si las letras son las mismas, el comparador no lo
+  cuenta como diferencia.
+
+## 26. Finanzas: donde Django da un 500
+
+Las vistas de finanzas leen a mano parte de lo que reciben (`_decimal`,
+`_fecha`, `mes_de`, `request.data.get`) y no protegen todos los casos. Aquí
+responden con el mismo código, 500, pero el cuerpo es el JSON de error de
+Kotlin y no la página de Django:
+
+- **Un mes que no se entiende** en `egresos/`, `cobros/` y `roles/` (allí
+  `mes_de` no está dentro de un `try`), o **una categoría o un profesional que
+  no son un UUID** en los filtros de `egresos/` y `liquidaciones/`.
+- **Un día que no existe** («2026-02-30») donde la vista llama a
+  `parse_date` a pelo: Django lanza `ValueError`. Y una fecha que no se
+  entiende al pagar un egreso, una liquidación, un rol o una obligación: la
+  fecha queda nula y la base la rechaza.
+- **`NaN` o `Infinity`** en un importe: son `Decimal` válidos en Python, pero
+  la primera cuenta o comparación con ellos revienta. Aquí revienta al leerlos.
+- **Un cuerpo que no es un objeto** (una lista, `null`) en las vistas que hacen
+  `request.data.get(...)`; o un motivo, una nota o unas observaciones que no
+  son texto.
+- **`GET /finanzas/cobros/{id}/` y `PATCH /finanzas/cobros/`**: la misma vista
+  atiende las dos rutas y cada método espera la otra (falta o sobra el `pk`).
+- **Una categoría que no existe** cuando se paga algo que crea su egreso (una
+  clínica que creó una categoría propia antes de abrir la lista, y así nunca
+  recibió las de serie).
+
+## 27. Finanzas: los archivos subidos
+
+- **Dónde se guardan**: en la carpeta `MEDIA_ROOT` (por defecto `media/`
+  junto al servidor). En producción Django los guarda en Google Cloud
+  Storage; Kotlin, todavía no.
+- **El nombre** es el de Django: `get_valid_filename` (espacios a «_», fuera
+  lo raro), y si ya existe, «_» y siete letras al azar, recortando la raíz si
+  no cabe en los 100 caracteres de la columna. Un egreso sin factura guarda
+  `""`, no `NULL`, como Django.
+- **El tope**: Spring corta en 50 MB (413) lo que Django dejaría pasar para
+  rechazarlo después con su mensaje («El archivo pasa de 8 MB.»). Entre 8 y
+  50 MB, el mismo mensaje.
+- **El tipo del archivo** al descargarlo sale de una tabla fija (la de Python
+  para las extensiones admitidas); Django lo adivina con `mimetypes`, que en
+  algunos sistemas mira también las tablas del sistema operativo.
+- **Un formulario** se lee como DRF: un campo vacío que admite nulos es nulo
+  (un vencimiento vacío, un profesional vacío, la factura como texto vacío,
+  que la borra) y una casilla que no llega es «no».

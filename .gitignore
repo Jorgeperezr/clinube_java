@@ -28,3 +28,7 @@ movil/.dart_tool/
 .idea/
 *.iml
 .vscode/
+
+# Los archivos que se suben al servidor en desarrollo (MEDIA_ROOT)
+backend/media/
+media/

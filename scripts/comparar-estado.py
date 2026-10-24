@@ -26,9 +26,17 @@ RESUMENES = {
                        from patients_medicalbackground order by patient_id""",
     "avisos": """select patient_id, version, medio, registrado_por_id, tenant_id
                  from patients_avisoprivacidadentregado order by patient_id, version""",
-    "auditoria": """select action, entity_type,
-                    case when action in ('accept_terms', 'apply_plan_template', 'generate_budget_from_plan') then 'id generado'
-                         else entity_id end as entity_id,
+    # Los ids que genera cada servidor no pueden coincidir: los de las filas
+    # nuevas de finanzas (y los que van en las rutas de finanzas que las
+    # usan) se cambian por un marcador.
+    "auditoria": """select action,
+                    case when entity_type like '/api/v1/finanzas/%'
+                         then regexp_replace(entity_type, '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}', '{id}', 'g')
+                         else entity_type end as entity_type,
+                    case when action in ('accept_terms', 'apply_plan_template', 'generate_budget_from_plan', 'create_expense',
+                                         'update_expense', 'close_cash', 'update_work_profile', 'create_settlement',
+                                         'pay_settlement', 'void_settlement', 'save_payroll', 'pay_payroll', 'pay_obligation')
+                         then 'id generado' else entity_id end as entity_id,
                     ip_address is null as sin_ip, metadata, user_id, tenant_id, count(*) as filas
                     from accounts_auditlog group by 1, 2, 3, 4, 5, 6, 7
                     -- `5::text` ordenaría por la constante «5»: hay que nombrar la columna.
@@ -80,6 +88,36 @@ RESUMENES = {
     "pagos": """select patient_id, installment_id, amount::text, method, date, registered_by_id, profesional_id,
                 numero_comprobante, tenant_id from billing_payment
                 order by patient_id, date, amount, method, installment_id""",
+    "configuración de finanzas": """select tenant_id, salario_basico::text, aporte_personal_iess::text, aporte_patronal_iess::text,
+                                    aporte_iece_secap::text, fondos_reserva::text, retencion_honorarios::text, siguiente_comprobante,
+                                    region, recargo_suplementarias::text, recargo_extraordinarias::text
+                                    from finanzas_configuracionfinanzas order by tenant_id""",
+    "categorías de egreso": """select tenant_id, nombre, clave, activa, orden from finanzas_categoriaegreso
+                               order by tenant_id, orden, nombre, clave""",
+    "egresos": """select e.tenant_id, e.fecha, c.nombre as categoria, e.concepto, e.monto::text, e.forma_pago, e.estado, e.vence,
+                  e.proveedor, e.proveedor_ruc, e.numero_factura, e.comprobante, e.descontar_al_profesional, e.profesional_id,
+                  e.origen, e.periodo, e.registrado_por_id, e.anulado, e.motivo_anulacion
+                  from finanzas_egreso e join finanzas_categoriaegreso c on c.id = e.categoria_id
+                  order by e.tenant_id, e.fecha, e.concepto, e.monto, e.estado, e.anulado, e.origen""",
+    "cierres de caja": """select tenant_id, fecha, saldo_inicial::text, cobros_efectivo::text, egresos_efectivo::text, esperado::text,
+                          contado::text, diferencia::text, retirado::text, observaciones, cerrado_por_id
+                          from finanzas_cierrecaja order by tenant_id, fecha""",
+    "perfiles laborales": """select tenant_id, usuario_id, modalidad, cedula, cargo, base_honorarios, porcentaje::text, monto_fijo::text,
+                             emite_factura, sueldo::text, fecha_ingreso, decimo_tercero_mensual, decimo_cuarto_mensual,
+                             fondos_reserva_mensual from finanzas_perfillaboral order by usuario_id""",
+    # Los cobros y los descuentos pueden haberlos creado las peticiones: sin su id.
+    "liquidaciones": """select tenant_id, numero, profesional_id, desde, hasta, base::text, porcentaje::text, honorario::text,
+                        descuentos::text, ajustes::text, retencion_porcentaje::text, retencion::text, a_pagar::text,
+                        detalle->'modalidad' as modalidad,
+                        (select coalesce(jsonb_agg(c - 'id'), '[]') from jsonb_array_elements(detalle->'cobros') c) as cobros_sin_id,
+                        jsonb_array_length(detalle->'cobros_ids') as liquidados,
+                        (select coalesce(jsonb_agg(d - 'id'), '[]') from jsonb_array_elements(detalle->'descuentos') d) as descuentos_sin_id,
+                        jsonb_array_length(detalle->'descuentos_ids') as descontados, nota, estado, egreso_id is null as sin_egreso,
+                        creada_por_id from finanzas_liquidacion order by tenant_id, numero""",
+    "roles de pagos": """select tenant_id, empleado_id, mes, dias_trabajados, horas_extra::text, horas_suplementarias::text,
+                         horas_extraordinarias::text, otros_ingresos::text, anticipos::text, prestamos_iess::text,
+                         otros_descuentos::text, calculo, neto::text, costo_empleador::text, estado, egreso_id is null as sin_egreso,
+                         creado_por_id from finanzas_rolpagos order by tenant_id, empleado_id, mes, estado""",
     "marca": "select tenant_id, theme, paleta, temas, display_name from configuration_clinicbranding order by tenant_id",
     "configuración": """select platform_name, canal_codigo_paciente, funciones_publicadas, google_client_id
                         from common_platformconfiguration""",

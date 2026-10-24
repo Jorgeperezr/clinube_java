@@ -9,8 +9,10 @@ diferencia entre los dos últimos importa:
 | **hecha** | Implementada y con sus pruebas en verde. **No basta:** las pruebas propias pueden pasar y la respuesta no ser la de Django. |
 | **igual a Django** | Comprobada con `scripts/comparar-contrato`: mismo código HTTP, mismas claves, mismo orden, mismos valores. |
 
-**62 de 202** igual a Django (30 %), y **5 más en parte** (falta un método o una exportación),
-comprobadas con `scripts/comparar-contrato` (433 de 433 peticiones iguales y las 21 tablas tocadas idénticas en las dos bases, informe en `docs/contrato/INFORME-COMPARADOR.md`).
+**90 de 202** igual a Django (45 %), **5 más en parte** (falta un método o una exportación) y
+**1 hecha** que no se puede comparar por la API (el comprobante de cobro: en Django falla siempre),
+comprobadas con `scripts/comparar-contrato` (628 de 628 peticiones iguales, las 28 tablas tocadas idénticas en las dos bases
+y los comprobantes de Kotlin con las mismas palabras que los que dibuja Django; informe en `docs/contrato/INFORME-COMPARADOR.md`).
 
 > **Estado a 2026-10-23:** el servidor compila sin errores ni avisos y la
 > suite pasa entera dos veces (169 pruebas en UTC y 169 en
@@ -30,7 +32,11 @@ comprobadas con `scripts/comparar-contrato` (433 de 433 peticiones iguales y las
 > confirmar, marcar la llegada, iniciar y finalizar la atención y crear una
 > cita; y en **Pagos**, del presupuesto generado desde el plan hasta una cuota
 > cobrada (aprobarlo, generar el plan de cuotas y cobrar), con el cobro visible
-> en la pestaña Cobros de la ficha. De la ficha faltan la receta en PDF, los documentos, los
+> en la pestaña Cobros de la ficha; y en **Finanzas**, el resumen del mes, un
+> egreso registrado y corregido desde su formulario (multipart), el
+> comprobante de cobro en PDF numerado desde la pestaña Cobros, el perfil de
+> honorarios de una doctora y su liquidación, la caja, el IESS y los décimos y
+> los ajustes. De la ficha faltan la receta en PDF, los documentos, los
 > consentimientos, los cobros, las exportaciones del 033 a PDF y Excel, y
 > WhatsApp (fase 13).
 
@@ -253,39 +259,39 @@ comprobadas con `scripts/comparar-contrato` (433 de 433 peticiones iguales y las
 | GET PUT PATCH | `/api/v1/products/<uuid:pk>/` | pendiente |
 | GET POST | `/api/v1/products/<uuid:pk>/batches/` | pendiente |
 
-### Fase 9 · `finanzas` — Finanzas (0/29)
+### Fase 9 · `finanzas` — Finanzas (29/29: 28 igual a Django y el comprobante hecho)
 
 | Métodos | Ruta | Estado |
 |---|---|---|
-| GET POST | `/api/v1/finanzas/caja/` | pendiente |
-| GET POST | `/api/v1/finanzas/categorias/` | pendiente |
-| PUT PATCH | `/api/v1/finanzas/categorias/<uuid:pk>/` | pendiente |
-| GET PATCH | `/api/v1/finanzas/cobros/` | pendiente |
-| GET PATCH | `/api/v1/finanzas/cobros/<uuid:pk>/` | pendiente |
-| GET | `/api/v1/finanzas/cobros/<uuid:pk>/comprobante/` | pendiente |
-| GET PATCH | `/api/v1/finanzas/configuracion/` | pendiente |
-| GET POST | `/api/v1/finanzas/decimos/` | pendiente |
-| GET POST | `/api/v1/finanzas/egresos/` | pendiente |
-| GET PUT PATCH | `/api/v1/finanzas/egresos/<uuid:pk>/` | pendiente |
-| POST | `/api/v1/finanzas/egresos/<uuid:pk>/anular/` | pendiente |
-| GET | `/api/v1/finanzas/egresos/<uuid:pk>/comprobante/` | pendiente |
-| POST | `/api/v1/finanzas/egresos/<uuid:pk>/pagar/` | pendiente |
-| GET | `/api/v1/finanzas/equipo/` | pendiente |
-| PATCH | `/api/v1/finanzas/equipo/<uuid:pk>/` | pendiente |
-| GET | `/api/v1/finanzas/exportar/` | pendiente |
-| GET POST | `/api/v1/finanzas/liquidaciones/` | pendiente |
-| POST | `/api/v1/finanzas/liquidaciones/<uuid:pk>/anular/` | pendiente |
-| POST | `/api/v1/finanzas/liquidaciones/<uuid:pk>/pagar/` | pendiente |
-| GET | `/api/v1/finanzas/liquidaciones/<uuid:pk>/pdf/` | pendiente |
-| GET | `/api/v1/finanzas/liquidaciones/previa/` | pendiente |
-| GET POST | `/api/v1/finanzas/obligaciones/` | pendiente |
-| GET | `/api/v1/finanzas/resumen/` | pendiente |
-| GET POST | `/api/v1/finanzas/roles/` | pendiente |
-| POST | `/api/v1/finanzas/roles/<uuid:pk>/anular/` | pendiente |
-| POST | `/api/v1/finanzas/roles/<uuid:pk>/pagar/` | pendiente |
-| GET | `/api/v1/finanzas/roles/<uuid:pk>/pdf/` | pendiente |
-| POST | `/api/v1/finanzas/roles/generar/` | pendiente |
-| GET | `/api/v1/finanzas/roles/previa/` | pendiente |
+| GET POST | `/api/v1/finanzas/caja/` | igual a Django |
+| GET POST | `/api/v1/finanzas/categorias/` | igual a Django |
+| PUT PATCH | `/api/v1/finanzas/categorias/<uuid:pk>/` | igual a Django |
+| GET PATCH | `/api/v1/finanzas/cobros/` | igual a Django |
+| GET PATCH | `/api/v1/finanzas/cobros/<uuid:pk>/` | igual a Django |
+| GET | `/api/v1/finanzas/cobros/<uuid:pk>/comprobante/` | hecha: en Django da 500 siempre (DIFERENCIAS §24); su PDF, comparado con el que dibuja Django |
+| GET PATCH | `/api/v1/finanzas/configuracion/` | igual a Django |
+| GET POST | `/api/v1/finanzas/decimos/` | igual a Django |
+| GET POST | `/api/v1/finanzas/egresos/` | igual a Django |
+| GET PUT PATCH | `/api/v1/finanzas/egresos/<uuid:pk>/` | igual a Django |
+| POST | `/api/v1/finanzas/egresos/<uuid:pk>/anular/` | igual a Django |
+| GET | `/api/v1/finanzas/egresos/<uuid:pk>/comprobante/` | igual a Django |
+| POST | `/api/v1/finanzas/egresos/<uuid:pk>/pagar/` | igual a Django |
+| GET | `/api/v1/finanzas/equipo/` | igual a Django |
+| PATCH | `/api/v1/finanzas/equipo/<uuid:pk>/` | igual a Django |
+| GET | `/api/v1/finanzas/exportar/` | igual a Django |
+| GET POST | `/api/v1/finanzas/liquidaciones/` | igual a Django |
+| POST | `/api/v1/finanzas/liquidaciones/<uuid:pk>/anular/` | igual a Django |
+| POST | `/api/v1/finanzas/liquidaciones/<uuid:pk>/pagar/` | igual a Django |
+| GET | `/api/v1/finanzas/liquidaciones/<uuid:pk>/pdf/` | igual a Django |
+| GET | `/api/v1/finanzas/liquidaciones/previa/` | igual a Django |
+| GET POST | `/api/v1/finanzas/obligaciones/` | igual a Django |
+| GET | `/api/v1/finanzas/resumen/` | igual a Django |
+| GET POST | `/api/v1/finanzas/roles/` | igual a Django |
+| POST | `/api/v1/finanzas/roles/<uuid:pk>/anular/` | igual a Django |
+| POST | `/api/v1/finanzas/roles/<uuid:pk>/pagar/` | igual a Django |
+| GET | `/api/v1/finanzas/roles/<uuid:pk>/pdf/` | igual a Django |
+| POST | `/api/v1/finanzas/roles/generar/` | igual a Django |
+| GET | `/api/v1/finanzas/roles/previa/` | igual a Django |
 
 ### Fase 10 · `app_paciente` — App del paciente (1/16)
 

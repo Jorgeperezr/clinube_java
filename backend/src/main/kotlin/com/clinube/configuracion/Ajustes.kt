@@ -19,6 +19,8 @@ data class Ajustes(
     val zona: String = "America/Guayaquil",
     val marca: String = "Clinube",
     val panelUrl: String = "",
+    /** `MEDIA_ROOT`: la carpeta de los archivos subidos (comprobantes de egresos). */
+    val media: String = "media",
     val jwt: Jwt = Jwt(),
     val cors: Cors = Cors(),
 ) {

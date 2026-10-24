@@ -85,7 +85,11 @@ abstract class PruebaDeIntegracion {
             registro.add("spring.datasource.url") { postgres.jdbcUrl }
             registro.add("spring.datasource.username") { postgres.username }
             registro.add("spring.datasource.password") { postgres.password }
+            // Los archivos que suben las pruebas, en una carpeta propia y desechable.
+            registro.add("clinube.media") { MEDIA.toString() }
         }
+
+        val MEDIA: java.nio.file.Path = java.nio.file.Files.createTempDirectory("clinube-pruebas-media")
     }
 }
 

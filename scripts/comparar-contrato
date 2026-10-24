@@ -20,6 +20,10 @@ fi
 
 pids=()
 registros="$(mktemp -d)"
+# Los archivos que se suben (facturas de los egresos), cada servidor en su
+# carpeta y las dos vacías: con nombres repetidos de otra pasada, cada uno
+# añadiría su sufijo al azar y la columna no coincidiría.
+mkdir -p "$registros/media-django" "$registros/media-kotlin"
 # `bootRun` arranca la aplicación en otra JVM, hija del demonio de Gradle:
 # matar el proceso lanzado no basta. Se para también lo que siga escuchando
 # en los dos puertos, para no dejar un servidor huérfano ocupando el 8000.
@@ -53,12 +57,14 @@ echo "→ Django en el 8010"
 ( cd "$clinube/django-api" && \
   POSTGRES_HOST=localhost POSTGRES_DB="$base_django" POSTGRES_USER=clinica POSTGRES_PASSWORD=clinica \
   DJANGO_DEBUG=True DJANGO_LOG_LEVEL=WARNING \
+  PYTHONPATH="$raiz/scripts/django" DJANGO_SETTINGS_MODULE=ajustes_del_comparador \
+  MEDIA_DEL_COMPARADOR="$registros/media-django" \
   exec "$clinube/.venv/bin/python" manage.py runserver 127.0.0.1:8010 --noreload >"$registros/django.log" 2>&1 ) &
 pids+=($!)
 
 echo "→ Kotlin en el 8000"
 ( cd "$raiz" && POSTGRES_HOST=localhost POSTGRES_DB="$base_kotlin" POSTGRES_USER=clinica \
-  POSTGRES_PASSWORD=clinica exec "$GRADLE" --quiet :backend:bootRun >"$registros/kotlin.log" 2>&1 ) &
+  POSTGRES_PASSWORD=clinica MEDIA_ROOT="$registros/media-kotlin" exec "$GRADLE" --quiet :backend:bootRun >"$registros/kotlin.log" 2>&1 ) &
 pids+=($!)
 
 esperar http://127.0.0.1:8010 || { tail -20 "$registros/django.log"; exit 1; }
@@ -73,4 +79,9 @@ resultado=$?
 echo
 echo "→ Estado de las dos bases después de las mismas peticiones"
 python3 "$raiz/scripts/comparar-estado.py" "$base_django" "$base_kotlin" || resultado=1
+
+# Después del estado: pedirle el comprobante a Kotlin lo numera.
+echo
+echo "→ El comprobante de cobro, dibujado por Django y servido por Kotlin"
+BASE="$base_django" CLINUBE="$clinube" "$clinube/.venv/bin/python" "$raiz/scripts/comparar-comprobante.py" || resultado=1
 exit $resultado

@@ -3933,6 +3933,2654 @@
         "id",
         "created_at"
       ]
+    },
+    {
+      "nombre": "finanzas: resumen del mes",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/resumen/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: resumen del mes anterior",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/resumen/?mes={mes-1}",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: resumen con el mes «2026-13»",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/resumen/?mes=2026-13",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: resumen con el mes «abc»",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/resumen/?mes=abc",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: resumen con el mes «2026»",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/resumen/?mes=2026",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: resumen con el mes «2026-1-5»",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/resumen/?mes=2026-1-5",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: resumen con el mes « 2026-10»",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/resumen/?mes= 2026-10",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: resumen sin la función",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/resumen/",
+      "usuario": "doctora",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: resumen de recepción",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/resumen/",
+      "usuario": "recepcion",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: configuración",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/configuracion/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: categorías",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/categorias/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "guardar": {
+        "cat-arriendo": "[clave=arriendo].id",
+        "cat-insumos": "[clave=insumos].id",
+        "cat-otros": "[clave=otros].id"
+      }
+    },
+    {
+      "nombre": "finanzas: egresos",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/egresos/",
+      "usuario": "admin",
+      "volatiles": [
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: egresos del mes",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/egresos/?mes={mes}",
+      "usuario": "admin",
+      "volatiles": [
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: egresos del mes con los anulados",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/egresos/?mes={mes}&anulados=1",
+      "usuario": "admin",
+      "volatiles": [
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: cuentas por pagar (de cualquier mes)",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/egresos/?estado=por_pagar&mes={mes-1}",
+      "usuario": "admin",
+      "volatiles": [
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: egresos de una categoría",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/egresos/?categoria={guardado:cat-arriendo}&mes=",
+      "usuario": "admin",
+      "volatiles": [
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: un egreso",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/egresos/e0045330-1667-513a-92ff-2f14f295801c/",
+      "usuario": "admin",
+      "volatiles": [
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: un egreso que no existe",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/egresos/00000000-0000-4000-8000-000000000000/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: un egreso de otra clínica",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/egresos/1ce936a7-c589-535c-975a-1c889ad480a9/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: comprobante de un egreso sin archivo",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/egresos/5f9c243b-d6f9-546c-a9c7-d53d60baa96f/comprobante/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: caja de hoy",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/caja/",
+      "usuario": "admin",
+      "volatiles": [
+        "updated_at",
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: caja de ayer",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/caja/?fecha={hoy-1}",
+      "usuario": "admin",
+      "volatiles": [
+        "updated_at",
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: caja con fecha mala",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/caja/?fecha=ayer",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: caja con fecha compacta",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/caja/?fecha=20261020",
+      "usuario": "admin",
+      "volatiles": [
+        "updated_at",
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: equipo",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/equipo/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: equipo, sin la función",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/equipo/",
+      "usuario": "auxiliar",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: liquidaciones",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/liquidaciones/",
+      "usuario": "admin",
+      "volatiles": [
+        "created_at",
+        "descuentos_ids",
+        "egreso",
+        "id",
+        "cobros_ids"
+      ]
+    },
+    {
+      "nombre": "finanzas: liquidaciones de la doctora",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/liquidaciones/?profesional=4584919b-4cbf-5952-8857-0fd8c0b1d818",
+      "usuario": "admin",
+      "volatiles": [
+        "created_at",
+        "descuentos_ids",
+        "egreso",
+        "id",
+        "cobros_ids"
+      ]
+    },
+    {
+      "nombre": "finanzas: liquidación previa del mes",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/liquidaciones/previa/?profesional=4584919b-4cbf-5952-8857-0fd8c0b1d818&desde={primero}&hasta={hoy}",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso",
+        "id",
+        "cobros_ids"
+      ]
+    },
+    {
+      "nombre": "finanzas: liquidación previa con un anticipo",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/liquidaciones/previa/?profesional=4584919b-4cbf-5952-8857-0fd8c0b1d818&desde={primero}&hasta={hoy}&ajustes=-10.555",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso",
+        "id",
+        "cobros_ids"
+      ]
+    },
+    {
+      "nombre": "finanzas: liquidación previa con un bono",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/liquidaciones/previa/?profesional=4584919b-4cbf-5952-8857-0fd8c0b1d818&desde={primero}&hasta={hoy}&ajustes=25",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso",
+        "id",
+        "cobros_ids"
+      ]
+    },
+    {
+      "nombre": "finanzas: liquidación previa de un fijo",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/liquidaciones/previa/?profesional=92f26c47-86f7-5ae7-b7a9-eaf818139685&desde={primero}&hasta={hoy}",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso",
+        "id",
+        "cobros_ids"
+      ]
+    },
+    {
+      "nombre": "finanzas: liquidación previa desde antes de la primera",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/liquidaciones/previa/?profesional=4584919b-4cbf-5952-8857-0fd8c0b1d818&desde=2026-01-01&hasta={hoy}",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso",
+        "id",
+        "cobros_ids"
+      ]
+    },
+    {
+      "nombre": "finanzas: liquidación previa sin período",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/liquidaciones/previa/?profesional=4584919b-4cbf-5952-8857-0fd8c0b1d818&desde={primero}",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso",
+        "id",
+        "cobros_ids"
+      ]
+    },
+    {
+      "nombre": "finanzas: liquidación previa al revés",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/liquidaciones/previa/?profesional=4584919b-4cbf-5952-8857-0fd8c0b1d818&desde={hoy}&hasta={primero}",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso",
+        "id",
+        "cobros_ids"
+      ]
+    },
+    {
+      "nombre": "finanzas: liquidación previa con ajuste raro",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/liquidaciones/previa/?profesional=4584919b-4cbf-5952-8857-0fd8c0b1d818&desde={primero}&hasta={hoy}&ajustes=diez",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso",
+        "id",
+        "cobros_ids"
+      ]
+    },
+    {
+      "nombre": "finanzas: liquidación previa de alguien que no es un UUID",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/liquidaciones/previa/?profesional=xyz",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso",
+        "id",
+        "cobros_ids"
+      ]
+    },
+    {
+      "nombre": "finanzas: liquidación previa de alguien que no está",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/liquidaciones/previa/?profesional=00000000-0000-4000-8000-000000000000",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso",
+        "id",
+        "cobros_ids"
+      ]
+    },
+    {
+      "nombre": "finanzas: liquidación previa sin profesional",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/liquidaciones/previa/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso",
+        "id",
+        "cobros_ids"
+      ]
+    },
+    {
+      "nombre": "finanzas: liquidación previa de otra clínica",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/liquidaciones/previa/?profesional=f9c446be-930a-516d-974f-05bfce1c3fb5&desde={primero}&hasta={hoy}",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso",
+        "id",
+        "cobros_ids"
+      ]
+    },
+    {
+      "nombre": "finanzas: roles",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/roles/",
+      "usuario": "admin",
+      "volatiles": [
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: roles del mes anterior",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/roles/?mes={mes-1}",
+      "usuario": "admin",
+      "volatiles": [
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: rol previo con horas",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/roles/previa/?empleado=22f0eb4e-baf2-588f-86f9-ba92a5e38f6a&mes={mes}&horas_suplementarias=10&horas_extraordinarias=4.5&otros_ingresos=25&anticipos=10&prestamos_iess=15.20&otros_descuentos=0.004",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: rol previo de 20 días, sin fondos",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/roles/previa/?empleado=c65e9374-efaf-505c-a880-c689d7378e84&mes={mes}&dias_trabajados=20.9",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: rol previo de un honorario",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/roles/previa/?empleado=4584919b-4cbf-5952-8857-0fd8c0b1d818",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: rol previo con 31 días",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/roles/previa/?empleado=22f0eb4e-baf2-588f-86f9-ba92a5e38f6a&dias_trabajados=31",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: rol previo con días negativos",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/roles/previa/?empleado=22f0eb4e-baf2-588f-86f9-ba92a5e38f6a&dias_trabajados=-1",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: rol previo con demasiadas horas",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/roles/previa/?empleado=22f0eb4e-baf2-588f-86f9-ba92a5e38f6a&horas_suplementarias=150&horas_extraordinarias=60",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: rol previo con mes malo",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/roles/previa/?empleado=22f0eb4e-baf2-588f-86f9-ba92a5e38f6a&mes=2026-13",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: rol previo con valor raro",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/roles/previa/?empleado=22f0eb4e-baf2-588f-86f9-ba92a5e38f6a&anticipos=mucho",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: rol previo sin empleado",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/roles/previa/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: obligaciones del mes anterior",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/obligaciones/?mes={mes-1}",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: obligaciones del mes",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/obligaciones/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: obligaciones con mes malo",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/obligaciones/?mes=x",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: décimo tercero",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/decimos/?tipo=tercero&anio={anio}",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: décimo cuarto, sin año",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/decimos/?tipo=cuarto",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: décimos con «tipo=quinto»",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/decimos/?tipo=quinto",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: décimos con «tipo=tercero&anio=1999»",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/decimos/?tipo=tercero&anio=1999",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: décimos con «tipo=tercero&anio=abc»",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/decimos/?tipo=tercero&anio=abc",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: décimos con «tipo=tercero&anio=2026.0»",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/decimos/?tipo=tercero&anio=2026.0",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: décimos con «»",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/decimos/?",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: cobros del mes",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/cobros/?mes={mes}",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso",
+        "id",
+        "cobros_ids"
+      ]
+    },
+    {
+      "nombre": "finanzas: cobros del mes anterior",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/cobros/?mes={mes-1}",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso",
+        "id",
+        "cobros_ids"
+      ]
+    },
+    {
+      "nombre": "finanzas: Excel del mes anterior",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/exportar/?mes={mes-1}",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: Excel con mes malo",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/exportar/?mes=octubre",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: PDF de la liquidación",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/liquidaciones/1a65f65b-7543-5632-a0ca-3503ed469297/pdf/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso",
+        "id",
+        "cobros_ids"
+      ]
+    },
+    {
+      "nombre": "finanzas: PDF de una liquidación que no existe",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/liquidaciones/00000000-0000-4000-8000-000000000000/pdf/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso",
+        "id",
+        "cobros_ids"
+      ]
+    },
+    {
+      "nombre": "finanzas: PDF del rol",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/roles/7b501ac9-5944-5e99-b1d5-6ac0b9db0718/pdf/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: comprobante sin la función de cobros",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/cobros/c5124660-65fc-5a1d-a3b8-4a1d50eaea88/comprobante/",
+      "usuario": "doctora",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso",
+        "id",
+        "cobros_ids"
+      ]
+    },
+    {
+      "nombre": "finanzas: cambiar la configuración",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/finanzas/configuracion/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "salario_basico": "500",
+        "region": "costa",
+        "otra": 1
+      }
+    },
+    {
+      "nombre": "finanzas: configuración con porcentaje de más",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/finanzas/configuracion/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "aporte_personal_iess": "150",
+        "fondos_reserva": "101"
+      }
+    },
+    {
+      "nombre": "finanzas: configuración con recargo de más",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/finanzas/configuracion/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "recargo_suplementarias": "301"
+      }
+    },
+    {
+      "nombre": "finanzas: configuración con salario cero",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/finanzas/configuracion/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "salario_basico": "0"
+      }
+    },
+    {
+      "nombre": "finanzas: configuración con región rara",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/finanzas/configuracion/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "region": "norte"
+      }
+    },
+    {
+      "nombre": "finanzas: configuración con comprobante negativo",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/finanzas/configuracion/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "siguiente_comprobante": -1
+      }
+    },
+    {
+      "nombre": "finanzas: configuración con salario enorme",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/finanzas/configuracion/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "salario_basico": "1234567.00"
+      }
+    },
+    {
+      "nombre": "finanzas: configuración con decimales de más",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/finanzas/configuracion/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "fondos_reserva": "8.333"
+      }
+    },
+    {
+      "nombre": "finanzas: configuración con una lista",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/finanzas/configuracion/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": [
+        "x"
+      ]
+    },
+    {
+      "nombre": "finanzas: categoría nueva",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/categorias/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "nombre": " Capacitación ",
+        "orden": 5
+      },
+      "guardar": {
+        "cat-nueva": "id"
+      }
+    },
+    {
+      "nombre": "finanzas: categoría sin nombre",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/categorias/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "activa": "sí"
+      }
+    },
+    {
+      "nombre": "finanzas: categoría con nombre largo",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/categorias/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "nombre": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "orden": 40000
+      }
+    },
+    {
+      "nombre": "finanzas: desactivar la categoría",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/finanzas/categorias/{guardado:cat-nueva}/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "activa": false,
+        "clave": "otra"
+      }
+    },
+    {
+      "nombre": "finanzas: renombrar la categoría",
+      "metodo": "PUT",
+      "ruta": "/api/v1/finanzas/categorias/{guardado:cat-nueva}/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "nombre": "Cursos"
+      }
+    },
+    {
+      "nombre": "finanzas: reemplazar la categoría sin nombre",
+      "metodo": "PUT",
+      "ruta": "/api/v1/finanzas/categorias/{guardado:cat-nueva}/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {}
+    },
+    {
+      "nombre": "finanzas: categoría que no existe",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/finanzas/categorias/00000000-0000-4000-8000-000000000000/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "activa": true
+      }
+    },
+    {
+      "nombre": "finanzas: categorías después",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/categorias/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: egreso nuevo",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/egresos/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ],
+      "guardar": {
+        "egreso-nuevo": "id"
+      },
+      "cuerpo": {
+        "fecha": "{hoy}",
+        "categoria": "{guardado:cat-insumos}",
+        "concepto": "Fresas",
+        "monto": "18.5",
+        "forma_pago": "tarjeta"
+      }
+    },
+    {
+      "nombre": "finanzas: cuenta por pagar sin vencimiento",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/egresos/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "fecha": "{hoy-2}",
+        "categoria": "{guardado:cat-insumos}",
+        "concepto": "Algodón",
+        "monto": 9,
+        "estado": "por_pagar",
+        "vence": null,
+        "proveedor_ruc": " 1712345678 "
+      }
+    },
+    {
+      "nombre": "finanzas: egreso con vacío",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/egresos/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {}
+    },
+    {
+      "nombre": "finanzas: egreso con monto cero",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/egresos/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "fecha": "{hoy}",
+        "categoria": "{guardado:cat-insumos}",
+        "concepto": "x",
+        "monto": "0"
+      }
+    },
+    {
+      "nombre": "finanzas: egreso con categoría de otra clínica",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/egresos/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "fecha": "{hoy}",
+        "categoria": "1e47113a-c580-51ca-816d-8a815eca93ad",
+        "concepto": "x",
+        "monto": "1"
+      }
+    },
+    {
+      "nombre": "finanzas: egreso con categoría que no existe",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/egresos/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "fecha": "{hoy}",
+        "categoria": "00000000-0000-4000-8000-000000000000",
+        "concepto": "x",
+        "monto": "1"
+      }
+    },
+    {
+      "nombre": "finanzas: egreso con profesional de otra clínica",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/egresos/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "fecha": "{hoy}",
+        "categoria": "{guardado:cat-insumos}",
+        "concepto": "x",
+        "monto": "1",
+        "profesional": "f9c446be-930a-516d-974f-05bfce1c3fb5"
+      }
+    },
+    {
+      "nombre": "finanzas: egreso con profesional que no existe",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/egresos/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "fecha": "{hoy}",
+        "categoria": "{guardado:cat-insumos}",
+        "concepto": "x",
+        "monto": "1",
+        "profesional": "00000000-0000-4000-8000-000000000000"
+      }
+    },
+    {
+      "nombre": "finanzas: egreso con RUC corto",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/egresos/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "fecha": "{hoy}",
+        "categoria": "{guardado:cat-insumos}",
+        "concepto": "x",
+        "monto": "1",
+        "proveedor_ruc": "123"
+      }
+    },
+    {
+      "nombre": "finanzas: egreso con RUC con letras",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/egresos/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "fecha": "{hoy}",
+        "categoria": "{guardado:cat-insumos}",
+        "concepto": "x",
+        "monto": "1",
+        "proveedor_ruc": "17900123450a1"
+      }
+    },
+    {
+      "nombre": "finanzas: egreso con forma rara",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/egresos/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "fecha": "{hoy}",
+        "categoria": "{guardado:cat-insumos}",
+        "concepto": "x",
+        "monto": "1",
+        "forma_pago": "bitcoin"
+      }
+    },
+    {
+      "nombre": "finanzas: egreso con un archivo en JSON",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/egresos/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "fecha": "{hoy}",
+        "categoria": "{guardado:cat-insumos}",
+        "concepto": "x",
+        "monto": "1",
+        "comprobante": "f.pdf"
+      }
+    },
+    {
+      "nombre": "finanzas: egreso con anticipo de un rol pagado",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/egresos/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "fecha": "{inicio-anterior}",
+        "categoria": "{guardado:cat-otros}",
+        "concepto": "Anticipo",
+        "monto": "5",
+        "profesional": "22f0eb4e-baf2-588f-86f9-ba92a5e38f6a",
+        "descontar_al_profesional": true
+      }
+    },
+    {
+      "nombre": "finanzas: egreso desde el formulario, con su factura",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/egresos/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ],
+      "guardar": {
+        "egreso-factura": "id"
+      },
+      "multipart": {
+        "campos": {
+          "fecha": "{hoy}",
+          "categoria": "{guardado:cat-insumos}",
+          "concepto": "Guantes de nitrilo",
+          "monto": "42.10",
+          "forma_pago": "efectivo",
+          "estado": "pagado",
+          "proveedor": "Dental Quito",
+          "proveedor_ruc": "1790011122001",
+          "numero_factura": "001-002-000000456",
+          "profesional": "",
+          "descontar_al_profesional": "false"
+        },
+        "archivos": {
+          "comprobante": {
+            "nombre": "factura 456.pdf",
+            "tipo": "application/pdf",
+            "contenido": "%PDF-1.4 factura de prueba"
+          }
+        }
+      }
+    },
+    {
+      "nombre": "finanzas: la factura subida",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/egresos/{guardado:egreso-factura}/comprobante/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: egreso desde el formulario, por pagar sin vence",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/egresos/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ],
+      "multipart": {
+        "campos": {
+          "fecha": "{hoy}",
+          "categoria": "{guardado:cat-insumos}",
+          "concepto": "Sin vence",
+          "monto": "3",
+          "forma_pago": "efectivo",
+          "estado": "por_pagar",
+          "proveedor": "",
+          "proveedor_ruc": "",
+          "numero_factura": "",
+          "profesional": "",
+          "descontar_al_profesional": "false",
+          "vence": ""
+        }
+      }
+    },
+    {
+      "nombre": "finanzas: egreso desde el formulario sin casilla",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/egresos/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ],
+      "multipart": {
+        "campos": {
+          "fecha": "{hoy}",
+          "categoria": "{guardado:cat-insumos}",
+          "concepto": "Sin casilla",
+          "monto": "4",
+          "forma_pago": "efectivo",
+          "estado": "pagado",
+          "proveedor": "",
+          "proveedor_ruc": "",
+          "numero_factura": "",
+          "profesional": "4584919b-4cbf-5952-8857-0fd8c0b1d818"
+        }
+      }
+    },
+    {
+      "nombre": "finanzas: factura con otra extensión",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/egresos/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ],
+      "multipart": {
+        "campos": {
+          "fecha": "{hoy}",
+          "categoria": "{guardado:cat-insumos}",
+          "concepto": "x",
+          "monto": "1",
+          "forma_pago": "efectivo",
+          "estado": "pagado",
+          "proveedor": "",
+          "proveedor_ruc": "",
+          "numero_factura": "",
+          "profesional": "",
+          "descontar_al_profesional": "false"
+        },
+        "archivos": {
+          "comprobante": {
+            "nombre": "virus.exe",
+            "contenido": "MZ"
+          }
+        }
+      }
+    },
+    {
+      "nombre": "finanzas: factura vacía",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/egresos/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ],
+      "multipart": {
+        "campos": {
+          "fecha": "{hoy}",
+          "categoria": "{guardado:cat-insumos}",
+          "concepto": "x",
+          "monto": "1",
+          "forma_pago": "efectivo",
+          "estado": "pagado",
+          "proveedor": "",
+          "proveedor_ruc": "",
+          "numero_factura": "",
+          "profesional": "",
+          "descontar_al_profesional": "false"
+        },
+        "archivos": {
+          "comprobante": {
+            "nombre": "vacia.pdf",
+            "contenido": ""
+          }
+        }
+      }
+    },
+    {
+      "nombre": "finanzas: formulario con errores",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/egresos/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ],
+      "multipart": {
+        "campos": {
+          "fecha": "",
+          "categoria": "",
+          "concepto": "",
+          "monto": "",
+          "forma_pago": "efectivo",
+          "estado": "pagado",
+          "proveedor": "",
+          "proveedor_ruc": "",
+          "numero_factura": "",
+          "profesional": "",
+          "descontar_al_profesional": "false"
+        }
+      }
+    },
+    {
+      "nombre": "finanzas: egreso en texto plano",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/egresos/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "crudo": "hola",
+      "tipo": "text/plain"
+    },
+    {
+      "nombre": "finanzas: corregir el concepto",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/finanzas/egresos/{guardado:egreso-nuevo}/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "concepto": "Fresas de diamante"
+      }
+    },
+    {
+      "nombre": "finanzas: corregir desde el formulario",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/finanzas/egresos/{guardado:egreso-factura}/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ],
+      "multipart": {
+        "campos": {
+          "fecha": "{hoy-1}",
+          "categoria": "{guardado:cat-insumos}",
+          "concepto": "Guantes de nitrilo (caja)",
+          "monto": "42.1",
+          "forma_pago": "efectivo",
+          "estado": "por_pagar",
+          "proveedor": "Dental Quito",
+          "proveedor_ruc": "1790011122001",
+          "numero_factura": "001-002-000000456",
+          "profesional": "4584919b-4cbf-5952-8857-0fd8c0b1d818",
+          "descontar_al_profesional": "true"
+        }
+      }
+    },
+    {
+      "nombre": "finanzas: la factura sigue",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/egresos/{guardado:egreso-factura}/comprobante/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: reemplazar sin campos",
+      "metodo": "PUT",
+      "ruta": "/api/v1/finanzas/egresos/{guardado:egreso-nuevo}/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "concepto": "x"
+      }
+    },
+    {
+      "nombre": "finanzas: corregir un anulado",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/finanzas/egresos/75419b4d-d177-5f91-b84b-ad7255957a3d/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "concepto": "x"
+      }
+    },
+    {
+      "nombre": "finanzas: corregir un anulado con un monto malo",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/finanzas/egresos/75419b4d-d177-5f91-b84b-ad7255957a3d/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "monto": "-1"
+      }
+    },
+    {
+      "nombre": "finanzas: corregir el pago de una liquidación",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/finanzas/egresos/f2c73ae6-89e3-58be-b238-65ca07fec3e0/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso",
+        "id",
+        "cobros_ids"
+      ],
+      "cuerpo": {
+        "concepto": "x"
+      }
+    },
+    {
+      "nombre": "finanzas: corregir una compra de inventario",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/finanzas/egresos/f4e6948e-ec09-5261-b3fb-a4e412bd6461/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "monto": "30"
+      }
+    },
+    {
+      "nombre": "finanzas: pagar una cuenta",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/egresos/0fe27653-c618-5cb5-ad7d-eef0c7f7045b/pagar/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "forma_pago": "cheque"
+      }
+    },
+    {
+      "nombre": "finanzas: pagarla otra vez",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/egresos/0fe27653-c618-5cb5-ad7d-eef0c7f7045b/pagar/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {}
+    },
+    {
+      "nombre": "finanzas: pagar un anulado",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/egresos/75419b4d-d177-5f91-b84b-ad7255957a3d/pagar/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {}
+    },
+    {
+      "nombre": "finanzas: pagar con una forma rara",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/egresos/51d4de89-776f-5437-a77a-dd7b3b42c888/pagar/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "forma_pago": "oro"
+      }
+    },
+    {
+      "nombre": "finanzas: pagar con su forma y fecha",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/egresos/51d4de89-776f-5437-a77a-dd7b3b42c888/pagar/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "forma_pago": "",
+        "fecha": "{hoy-1}"
+      }
+    },
+    {
+      "nombre": "finanzas: anular sin motivo",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/egresos/5f9c243b-d6f9-546c-a9c7-d53d60baa96f/anular/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {}
+    },
+    {
+      "nombre": "finanzas: anular con motivo en blanco",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/egresos/5f9c243b-d6f9-546c-a9c7-d53d60baa96f/anular/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "motivo": "   "
+      }
+    },
+    {
+      "nombre": "finanzas: anular",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/egresos/5f9c243b-d6f9-546c-a9c7-d53d60baa96f/anular/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "motivo": " Era de otra clínica "
+      }
+    },
+    {
+      "nombre": "finanzas: anular el pago de un rol",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/egresos/b479edd6-e749-5900-9359-01a5f8ca381c/anular/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "motivo": "x"
+      }
+    },
+    {
+      "nombre": "finanzas: anular uno que no existe",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/egresos/00000000-0000-4000-8000-000000000000/anular/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "motivo": "x"
+      }
+    },
+    {
+      "nombre": "finanzas: cerrar la caja",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/caja/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "updated_at",
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "contado": "150"
+      }
+    },
+    {
+      "nombre": "finanzas: cerrar la caja con retirar de más",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/caja/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "contado": "160",
+        "retirado": "200"
+      }
+    },
+    {
+      "nombre": "finanzas: cerrar la caja con contado negativo",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/caja/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "contado": "-1"
+      }
+    },
+    {
+      "nombre": "finanzas: cerrar la caja con un día que no llega",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/caja/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "fecha": "{hoy+1}",
+        "contado": 1
+      }
+    },
+    {
+      "nombre": "finanzas: cerrar la caja con contado raro",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/caja/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "contado": "abc"
+      }
+    },
+    {
+      "nombre": "finanzas: cerrar la caja con sin contado",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/caja/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "retirado": "5"
+      }
+    },
+    {
+      "nombre": "finanzas: cerrar la caja con fecha mala",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/caja/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "fecha": "mañana",
+        "contado": "1"
+      }
+    },
+    {
+      "nombre": "finanzas: corregir el cierre",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/caja/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "updated_at",
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "contado": "170.555",
+        "retirado": 50,
+        "observaciones": "Depósito en el banco"
+      }
+    },
+    {
+      "nombre": "finanzas: cerrar un día pasado",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/caja/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "updated_at",
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "fecha": "{hoy-3}",
+        "contado": "0"
+      }
+    },
+    {
+      "nombre": "finanzas: caja después de cerrar",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/caja/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "updated_at",
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: perfil con cédula corta",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/finanzas/equipo/c65e9374-efaf-505c-a880-c689d7378e84/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "cedula": "123"
+      }
+    },
+    {
+      "nombre": "finanzas: perfil con porcentaje de más",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/finanzas/equipo/c65e9374-efaf-505c-a880-c689d7378e84/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "porcentaje": "101"
+      }
+    },
+    {
+      "nombre": "finanzas: perfil con modalidad rara",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/finanzas/equipo/c65e9374-efaf-505c-a880-c689d7378e84/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "modalidad": "contrato"
+      }
+    },
+    {
+      "nombre": "finanzas: perfil con fecha mala",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/finanzas/equipo/c65e9374-efaf-505c-a880-c689d7378e84/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "fecha_ingreso": "ayer"
+      }
+    },
+    {
+      "nombre": "finanzas: cambiar un perfil",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/finanzas/equipo/c65e9374-efaf-505c-a880-c689d7378e84/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "cedula": "1700000002",
+        "cargo": "Asistente",
+        "fondos_reserva_mensual": false,
+        "sueldo": "500"
+      }
+    },
+    {
+      "nombre": "finanzas: perfil nuevo",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/finanzas/equipo/a35f7a96-7c8b-4954-8f61-0596bd5118ad/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "modalidad": "ninguna",
+        "fecha_ingreso": null
+      }
+    },
+    {
+      "nombre": "finanzas: perfil de otra clínica",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/finanzas/equipo/f9c446be-930a-516d-974f-05bfce1c3fb5/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {}
+    },
+    {
+      "nombre": "finanzas: equipo después",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/equipo/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: liquidar a la doctora",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/liquidaciones/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "descuentos_ids",
+        "egreso",
+        "cobros_ids"
+      ],
+      "guardar": {
+        "liq-doctora": "id"
+      },
+      "cuerpo": {
+        "profesional": "4584919b-4cbf-5952-8857-0fd8c0b1d818",
+        "desde": "{primero}",
+        "hasta": "{hoy}",
+        "ajustes": "15",
+        "nota": "Bono por puntualidad"
+      }
+    },
+    {
+      "nombre": "finanzas: liquidarla otra vez",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/liquidaciones/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso",
+        "id",
+        "cobros_ids"
+      ],
+      "cuerpo": {
+        "profesional": "4584919b-4cbf-5952-8857-0fd8c0b1d818",
+        "desde": "{hoy}",
+        "hasta": "{hoy}"
+      }
+    },
+    {
+      "nombre": "finanzas: liquidar un fijo",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/liquidaciones/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "descuentos_ids",
+        "egreso",
+        "cobros_ids"
+      ],
+      "guardar": {
+        "liq-fijo": "id"
+      },
+      "cuerpo": {
+        "profesional": "92f26c47-86f7-5ae7-b7a9-eaf818139685",
+        "desde": "{primero}",
+        "hasta": "{hoy}"
+      }
+    },
+    {
+      "nombre": "finanzas: liquidar al revés",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/liquidaciones/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso",
+        "id",
+        "cobros_ids"
+      ],
+      "cuerpo": {
+        "profesional": "92f26c47-86f7-5ae7-b7a9-eaf818139685",
+        "desde": "{hoy}",
+        "hasta": "{primero}"
+      }
+    },
+    {
+      "nombre": "finanzas: liquidar a alguien con un número",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/liquidaciones/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso",
+        "id",
+        "cobros_ids"
+      ],
+      "cuerpo": {
+        "profesional": 5
+      }
+    },
+    {
+      "nombre": "finanzas: corregir un gasto ya descontado",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/finanzas/egresos/08002062-a33d-512b-8536-1f8ba3ac411b/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "concepto": "x"
+      }
+    },
+    {
+      "nombre": "finanzas: anular un gasto ya descontado",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/egresos/08002062-a33d-512b-8536-1f8ba3ac411b/anular/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "motivo": "x"
+      }
+    },
+    {
+      "nombre": "finanzas: reasignar un cobro ya liquidado",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/finanzas/cobros/1880f81b-f035-51ea-bce7-e4319f30d164/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso",
+        "id",
+        "cobros_ids"
+      ],
+      "cuerpo": {
+        "profesional": "92f26c47-86f7-5ae7-b7a9-eaf818139685"
+      }
+    },
+    {
+      "nombre": "finanzas: reasignar un cobro libre",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/finanzas/cobros/91038bd6-fb7d-53ce-b390-a28bf58dbec0/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso",
+        "id",
+        "cobros_ids"
+      ],
+      "cuerpo": {
+        "profesional": "4584919b-4cbf-5952-8857-0fd8c0b1d818"
+      }
+    },
+    {
+      "nombre": "finanzas: quitarle el profesional",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/finanzas/cobros/91038bd6-fb7d-53ce-b390-a28bf58dbec0/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso",
+        "id",
+        "cobros_ids"
+      ],
+      "cuerpo": {
+        "profesional": ""
+      }
+    },
+    {
+      "nombre": "finanzas: reasignar a alguien raro",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/finanzas/cobros/91038bd6-fb7d-53ce-b390-a28bf58dbec0/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso",
+        "id",
+        "cobros_ids"
+      ],
+      "cuerpo": {
+        "profesional": "xyz"
+      }
+    },
+    {
+      "nombre": "finanzas: reasignar a otra clínica",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/finanzas/cobros/91038bd6-fb7d-53ce-b390-a28bf58dbec0/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso",
+        "id",
+        "cobros_ids"
+      ],
+      "cuerpo": {
+        "profesional": "f9c446be-930a-516d-974f-05bfce1c3fb5"
+      }
+    },
+    {
+      "nombre": "finanzas: reasignar un cobro que no existe",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/finanzas/cobros/00000000-0000-4000-8000-000000000000/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso",
+        "id",
+        "cobros_ids"
+      ],
+      "cuerpo": {}
+    },
+    {
+      "nombre": "finanzas: pagar la liquidación",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/liquidaciones/{guardado:liq-doctora}/pagar/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "descuentos_ids",
+        "egreso",
+        "cobros_ids"
+      ],
+      "cuerpo": {
+        "forma_pago": "transferencia",
+        "fecha": "{hoy}"
+      }
+    },
+    {
+      "nombre": "finanzas: pagarla otra vez",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/liquidaciones/{guardado:liq-doctora}/pagar/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso",
+        "id",
+        "cobros_ids"
+      ],
+      "cuerpo": {}
+    },
+    {
+      "nombre": "finanzas: pagar con forma rara",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/liquidaciones/{guardado:liq-fijo}/pagar/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso",
+        "id",
+        "cobros_ids"
+      ],
+      "cuerpo": {
+        "forma_pago": "x"
+      }
+    },
+    {
+      "nombre": "finanzas: anular el fijo",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/liquidaciones/{guardado:liq-fijo}/anular/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "descuentos_ids",
+        "egreso",
+        "cobros_ids"
+      ]
+    },
+    {
+      "nombre": "finanzas: anularlo otra vez",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/liquidaciones/{guardado:liq-fijo}/anular/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso",
+        "id",
+        "cobros_ids"
+      ]
+    },
+    {
+      "nombre": "finanzas: PDF de la liquidación del mes",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/liquidaciones/{guardado:liq-doctora}/pdf/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso",
+        "id",
+        "cobros_ids"
+      ]
+    },
+    {
+      "nombre": "finanzas: anular la del mes pasado",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/liquidaciones/1a65f65b-7543-5632-a0ca-3503ed469297/anular/",
+      "usuario": "admin",
+      "volatiles": [
+        "created_at",
+        "descuentos_ids",
+        "egreso",
+        "id",
+        "cobros_ids"
+      ]
+    },
+    {
+      "nombre": "finanzas: liquidaciones después",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/liquidaciones/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "descuentos_ids",
+        "egreso",
+        "cobros_ids"
+      ]
+    },
+    {
+      "nombre": "finanzas: rol de recepción",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/roles/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ],
+      "guardar": {
+        "rol-recepcion": "id"
+      },
+      "cuerpo": {
+        "empleado": "22f0eb4e-baf2-588f-86f9-ba92a5e38f6a",
+        "mes": "{mes}",
+        "horas_suplementarias": "10",
+        "otros_ingresos": "25"
+      }
+    },
+    {
+      "nombre": "finanzas: rehacer el rol",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/roles/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "empleado": "22f0eb4e-baf2-588f-86f9-ba92a5e38f6a",
+        "mes": "{mes}",
+        "dias_trabajados": 28,
+        "horas_suplementarias": "10.5",
+        "prestamos_iess": "12"
+      }
+    },
+    {
+      "nombre": "finanzas: rehacer un rol pagado",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/roles/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "empleado": "22f0eb4e-baf2-588f-86f9-ba92a5e38f6a",
+        "mes": "{mes-1}"
+      }
+    },
+    {
+      "nombre": "finanzas: rol con mes raro",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/roles/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "empleado": "22f0eb4e-baf2-588f-86f9-ba92a5e38f6a",
+        "mes": 202610
+      }
+    },
+    {
+      "nombre": "finanzas: generar los roles",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/roles/generar/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "mes": "{mes}"
+      }
+    },
+    {
+      "nombre": "finanzas: generarlos otra vez",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/roles/generar/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "mes": "{mes}"
+      }
+    },
+    {
+      "nombre": "finanzas: generar con mes malo",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/roles/generar/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "mes": "x"
+      }
+    },
+    {
+      "nombre": "finanzas: roles del mes",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/roles/?mes={mes}",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ],
+      "guardar": {
+        "rol-auxiliar": "[empleado_nombre=Carlos Auxiliar].id"
+      }
+    },
+    {
+      "nombre": "finanzas: pagar el rol",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/roles/{guardado:rol-recepcion}/pagar/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "forma_pago": "efectivo"
+      }
+    },
+    {
+      "nombre": "finanzas: pagarlo otra vez",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/roles/{guardado:rol-recepcion}/pagar/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {}
+    },
+    {
+      "nombre": "finanzas: pagar un rol con forma rara",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/roles/c621c027-5ce6-5051-823a-4cce2ad82a36/pagar/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "forma_pago": "nope"
+      }
+    },
+    {
+      "nombre": "finanzas: anular el rol",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/roles/c621c027-5ce6-5051-823a-4cce2ad82a36/anular/",
+      "usuario": "admin",
+      "volatiles": [
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: anularlo otra vez",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/roles/c621c027-5ce6-5051-823a-4cce2ad82a36/anular/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: anular un rol que no existe",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/roles/00000000-0000-4000-8000-000000000000/anular/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: PDF del rol del mes",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/roles/{guardado:rol-recepcion}/pdf/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: PDF del rol generado",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/roles/{guardado:rol-auxiliar}/pdf/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: pagar el IESS del mes pasado",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/obligaciones/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "tipo": "iess",
+        "mes": "{mes-1}"
+      }
+    },
+    {
+      "nombre": "finanzas: pagarlo otra vez",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/obligaciones/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "tipo": "iess",
+        "mes": "{mes-1}"
+      }
+    },
+    {
+      "nombre": "finanzas: pagar el SRI anulado",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/obligaciones/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "tipo": "sri",
+        "mes": "{mes-1}"
+      }
+    },
+    {
+      "nombre": "finanzas: pagar el IESS con forma rara",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/obligaciones/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "tipo": "iess",
+        "forma_pago": "x"
+      }
+    },
+    {
+      "nombre": "finanzas: pagar el IESS del mes",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/obligaciones/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "tipo": "iess",
+        "fecha": "{hoy}"
+      }
+    },
+    {
+      "nombre": "finanzas: pagar el SRI del mes",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/obligaciones/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "tipo": "sri",
+        "forma_pago": "cheque"
+      }
+    },
+    {
+      "nombre": "finanzas: obligaciones después",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/obligaciones/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: pagar el décimo tercero a una persona",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/decimos/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "tipo": "tercero",
+        "anio": "{anio}",
+        "empleado": "22f0eb4e-baf2-588f-86f9-ba92a5e38f6a"
+      }
+    },
+    {
+      "nombre": "finanzas: pagarlo a todos",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/decimos/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "tipo": "tercero",
+        "anio": "{anio}",
+        "forma_pago": "efectivo"
+      }
+    },
+    {
+      "nombre": "finanzas: pagarlo otra vez",
+      "metodo": "POST",
+      "ruta": "/api/v1/finanzas/decimos/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ],
+      "cuerpo": {
+        "tipo": "tercero",
+        "anio": "{anio}"
+      }
+    },
+    {
+      "nombre": "finanzas: décimo cuarto en la costa",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/decimos/?tipo=cuarto&anio={anio}",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: resumen después",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/resumen/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: egresos después",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/egresos/?anulados=1",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at",
+        "descuentos_ids",
+        "egreso"
+      ]
+    },
+    {
+      "nombre": "finanzas: cobros después",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/cobros/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso",
+        "id",
+        "cobros_ids"
+      ]
+    },
+    {
+      "nombre": "finanzas: Excel del mes",
+      "metodo": "GET",
+      "ruta": "/api/v1/finanzas/exportar/",
+      "usuario": "admin",
+      "volatiles": [
+        "descuentos_ids",
+        "egreso"
+      ]
     }
   ]
 }
