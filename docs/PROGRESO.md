@@ -9,9 +9,9 @@ diferencia entre los dos últimos importa:
 | **hecha** | Implementada y con sus pruebas en verde. **No basta:** las pruebas propias pueden pasar y la respuesta no ser la de Django. |
 | **igual a Django** | Comprobada con `scripts/comparar-contrato`: mismo código HTTP, mismas claves, mismo orden, mismos valores. |
 
-**90 de 202** igual a Django (45 %), **5 más en parte** (falta un método o una exportación) y
+**100 de 202** igual a Django (50 %), **4 más en parte** (falta un método o una exportación) y
 **1 hecha** que no se puede comparar por la API (el comprobante de cobro: en Django falla siempre),
-comprobadas con `scripts/comparar-contrato` (628 de 628 peticiones iguales, las 28 tablas tocadas idénticas en las dos bases
+comprobadas con `scripts/comparar-contrato` (687 de 687 peticiones iguales, las 30 tablas tocadas idénticas en las dos bases
 y los comprobantes de Kotlin con las mismas palabras que los que dibuja Django; informe en `docs/contrato/INFORME-COMPARADOR.md`).
 
 > **Estado a 2026-10-23:** el servidor compila sin errores ni avisos y la
@@ -36,7 +36,9 @@ y los comprobantes de Kotlin con las mismas palabras que los que dibuja Django; 
 > egreso registrado y corregido desde su formulario (multipart), el
 > comprobante de cobro en PDF numerado desde la pestaña Cobros, el perfil de
 > honorarios de una doctora y su liquidación, la caja, el IESS y los décimos y
-> los ajustes. De la ficha faltan la receta en PDF, los documentos, los
+> los ajustes; en **Inventario**, un lote con su compra (que queda como
+> egreso de insumos); y en **Reportes**, ingresos, producción por doctor,
+> actividad de citas, morosidad y las descargas en Excel. De la ficha faltan la receta en PDF, los documentos, los
 > consentimientos, los cobros, las exportaciones del 033 a PDF y Excel, y
 > WhatsApp (fase 13).
 
@@ -226,7 +228,7 @@ y los comprobantes de Kotlin con las mismas palabras que los que dibuja Django; 
 | POST | `/api/v1/treatment-plans/<uuid:pk>/generate-budget/` | igual a Django |
 | POST | `/api/v1/treatment-plans/<uuid:pk>/items/` | igual a Django, salvo el tratamiento de otra clínica (diferencia deliberada) |
 
-### Fase 7 · `billing` — Cobros (12/17)
+### Fase 7 · `billing` — Cobros (17/17)
 
 | Métodos | Ruta | Estado |
 |---|---|---|
@@ -234,30 +236,30 @@ y los comprobantes de Kotlin con las mismas palabras que los que dibuja Django; 
 | POST | `/api/v1/budgets/<uuid:pk>/approve/` | igual a Django |
 | POST | `/api/v1/budgets/<uuid:pk>/generate-payment-plan/` | igual a Django |
 | POST | `/api/v1/budgets/<uuid:pk>/items/` | igual a Django, salvo el tratamiento de otra clínica (diferencia deliberada) |
-| GET POST | `/api/v1/doctors/<uuid:pk>/fees/` | pendiente |
+| GET POST | `/api/v1/doctors/<uuid:pk>/fees/` | igual a Django (salvo el doctor o el tratamiento de otra clínica: DIFERENCIAS §28) |
 | POST | `/api/v1/installments/<uuid:pk>/pay/` | igual a Django |
 | GET | `/api/v1/patients/<uuid:pk>/account-statement/` | igual a Django |
 | GET POST | `/api/v1/patients/<uuid:pk>/budgets/` | igual a Django |
 | GET POST | `/api/v1/patients/<uuid:pk>/payments/` | igual a Django, salvo la cuota de otra clínica (diferencia deliberada) |
 | GET | `/api/v1/patients/birthdays/` | igual a Django |
 | GET | `/api/v1/payment-plans/<uuid:pk>/installments/` | igual a Django |
-| GET | `/api/v1/reports/appointments-summary/` | pendiente |
+| GET | `/api/v1/reports/appointments-summary/` | igual a Django |
 | GET | `/api/v1/reports/delinquency/` | igual a Django |
-| GET | `/api/v1/reports/financial/` | igual a Django salvo `?export=excel` (pendiente: responde 501) |
-| GET | `/api/v1/reports/inventory/` | pendiente |
-| GET | `/api/v1/reports/new-patients/` | pendiente |
-| GET | `/api/v1/reports/production-by-doctor/` | pendiente |
+| GET | `/api/v1/reports/financial/` | igual a Django, también `?export=excel` |
+| GET | `/api/v1/reports/inventory/` | igual a Django |
+| GET | `/api/v1/reports/new-patients/` | igual a Django |
+| GET | `/api/v1/reports/production-by-doctor/` | igual a Django |
 
-### Fase 8 · `inventory` — Inventario y reportes (1/6)
+### Fase 8 · `inventory` — Inventario y reportes (6/6)
 
 | Métodos | Ruta | Estado |
 |---|---|---|
-| GET | `/api/v1/inventory/alerts/expiring/` | pendiente |
+| GET | `/api/v1/inventory/alerts/expiring/` | igual a Django |
 | GET | `/api/v1/inventory/alerts/low-stock/` | igual a Django |
-| GET | `/api/v1/inventory/movements/` | pendiente |
-| GET POST | `/api/v1/products/` | pendiente |
-| GET PUT PATCH | `/api/v1/products/<uuid:pk>/` | pendiente |
-| GET POST | `/api/v1/products/<uuid:pk>/batches/` | pendiente |
+| GET | `/api/v1/inventory/movements/` | igual a Django |
+| GET POST | `/api/v1/products/` | igual a Django |
+| GET PUT PATCH | `/api/v1/products/<uuid:pk>/` | igual a Django |
+| GET POST | `/api/v1/products/<uuid:pk>/batches/` | igual a Django |
 
 ### Fase 9 · `finanzas` — Finanzas (29/29: 28 igual a Django y el comprobante hecho)
 

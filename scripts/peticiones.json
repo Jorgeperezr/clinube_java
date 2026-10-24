@@ -6581,6 +6581,575 @@
         "descuentos_ids",
         "egreso"
       ]
+    },
+    {
+      "nombre": "inventario: productos",
+      "metodo": "GET",
+      "ruta": "/api/v1/products/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "batch",
+        "date"
+      ]
+    },
+    {
+      "nombre": "inventario: productos inactivos",
+      "metodo": "GET",
+      "ruta": "/api/v1/products/?is_active=false",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "batch",
+        "date"
+      ]
+    },
+    {
+      "nombre": "inventario: productos activos en mayúsculas",
+      "metodo": "GET",
+      "ruta": "/api/v1/products/?is_active=TRUE",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "batch",
+        "date"
+      ]
+    },
+    {
+      "nombre": "inventario: productos con un filtro raro",
+      "metodo": "GET",
+      "ruta": "/api/v1/products/?is_active=si",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "batch",
+        "date"
+      ]
+    },
+    {
+      "nombre": "inventario: productos, página que no hay",
+      "metodo": "GET",
+      "ruta": "/api/v1/products/?page=9",
+      "usuario": "admin",
+      "volatiles": []
+    },
+    {
+      "nombre": "inventario: productos desde la doctora",
+      "metodo": "GET",
+      "ruta": "/api/v1/products/",
+      "usuario": "doctora",
+      "volatiles": [
+        "id",
+        "batch",
+        "date"
+      ]
+    },
+    {
+      "nombre": "inventario: un producto",
+      "metodo": "GET",
+      "ruta": "/api/v1/products/5daee53b-6a4b-5c54-86cc-a5578f3e0442/",
+      "usuario": "admin",
+      "volatiles": []
+    },
+    {
+      "nombre": "inventario: un producto, sin la función",
+      "metodo": "GET",
+      "ruta": "/api/v1/products/5daee53b-6a4b-5c54-86cc-a5578f3e0442/",
+      "usuario": "doctora",
+      "volatiles": []
+    },
+    {
+      "nombre": "inventario: un producto que no existe",
+      "metodo": "GET",
+      "ruta": "/api/v1/products/00000000-0000-4000-8000-000000000000/",
+      "usuario": "admin",
+      "volatiles": []
+    },
+    {
+      "nombre": "inventario: producto nuevo",
+      "metodo": "POST",
+      "ruta": "/api/v1/products/",
+      "usuario": "auxiliar",
+      "volatiles": [
+        "id",
+        "batch",
+        "date"
+      ],
+      "guardar": {
+        "producto-nuevo": "id"
+      },
+      "cuerpo": {
+        "name": " Hilo dental ",
+        "unit": "rollo",
+        "min_stock": "3"
+      }
+    },
+    {
+      "nombre": "inventario: producto sin nombre",
+      "metodo": "POST",
+      "ruta": "/api/v1/products/",
+      "usuario": "auxiliar",
+      "volatiles": [],
+      "cuerpo": {
+        "unit": ""
+      }
+    },
+    {
+      "nombre": "inventario: producto con nombre largo",
+      "metodo": "POST",
+      "ruta": "/api/v1/products/",
+      "usuario": "auxiliar",
+      "volatiles": [],
+      "cuerpo": {
+        "name": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "min_stock": "1.234"
+      }
+    },
+    {
+      "nombre": "inventario: producto desde la doctora",
+      "metodo": "POST",
+      "ruta": "/api/v1/products/",
+      "usuario": "doctora",
+      "volatiles": [],
+      "cuerpo": {
+        "name": "x"
+      }
+    },
+    {
+      "nombre": "inventario: corregir el producto",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/products/{guardado:producto-nuevo}/",
+      "usuario": "auxiliar",
+      "volatiles": [
+        "id",
+        "batch",
+        "date"
+      ],
+      "cuerpo": {
+        "min_stock": 5,
+        "is_active": false
+      }
+    },
+    {
+      "nombre": "inventario: reemplazar sin nombre",
+      "metodo": "PUT",
+      "ruta": "/api/v1/products/{guardado:producto-nuevo}/",
+      "usuario": "auxiliar",
+      "volatiles": [],
+      "cuerpo": {
+        "unit": "caja"
+      }
+    },
+    {
+      "nombre": "inventario: reemplazar el producto",
+      "metodo": "PUT",
+      "ruta": "/api/v1/products/{guardado:producto-nuevo}/",
+      "usuario": "auxiliar",
+      "volatiles": [
+        "id",
+        "batch",
+        "date"
+      ],
+      "cuerpo": {
+        "name": "Hilo dental encerado"
+      }
+    },
+    {
+      "nombre": "inventario: lotes",
+      "metodo": "GET",
+      "ruta": "/api/v1/products/5daee53b-6a4b-5c54-86cc-a5578f3e0442/batches/",
+      "usuario": "admin",
+      "volatiles": []
+    },
+    {
+      "nombre": "inventario: lotes de un producto que no existe",
+      "metodo": "GET",
+      "ruta": "/api/v1/products/00000000-0000-4000-8000-000000000000/batches/",
+      "usuario": "admin",
+      "volatiles": []
+    },
+    {
+      "nombre": "inventario: lote con su compra",
+      "metodo": "POST",
+      "ruta": "/api/v1/products/5daee53b-6a4b-5c54-86cc-a5578f3e0442/batches/",
+      "usuario": "auxiliar",
+      "volatiles": [
+        "id"
+      ],
+      "cuerpo": {
+        "product": "5daee53b-6a4b-5c54-86cc-a5578f3e0442",
+        "batch_number": "L4",
+        "quantity": "4",
+        "expiration_date": "{hoy+10}",
+        "costo_total": "25.50",
+        "proveedor": "Dental Quito",
+        "proveedor_ruc": " 1790011122001 ",
+        "numero_factura": "001-001-000000777",
+        "forma_pago": "tarjeta"
+      }
+    },
+    {
+      "nombre": "inventario: lote sin costo",
+      "metodo": "POST",
+      "ruta": "/api/v1/products/5daee53b-6a4b-5c54-86cc-a5578f3e0442/batches/",
+      "usuario": "auxiliar",
+      "volatiles": [
+        "id"
+      ],
+      "cuerpo": {
+        "product": "5daee53b-6a4b-5c54-86cc-a5578f3e0442",
+        "batch_number": "L5",
+        "quantity": 1.5
+      }
+    },
+    {
+      "nombre": "inventario: lote con costo cero",
+      "metodo": "POST",
+      "ruta": "/api/v1/products/5daee53b-6a4b-5c54-86cc-a5578f3e0442/batches/",
+      "usuario": "auxiliar",
+      "volatiles": [
+        "id"
+      ],
+      "cuerpo": {
+        "product": "5daee53b-6a4b-5c54-86cc-a5578f3e0442",
+        "batch_number": "L6",
+        "quantity": "2",
+        "costo_total": "0"
+      }
+    },
+    {
+      "nombre": "inventario: lote sin cantidad y forma rara",
+      "metodo": "POST",
+      "ruta": "/api/v1/products/5daee53b-6a4b-5c54-86cc-a5578f3e0442/batches/",
+      "usuario": "auxiliar",
+      "volatiles": [
+        "id"
+      ],
+      "cuerpo": {
+        "product": "5daee53b-6a4b-5c54-86cc-a5578f3e0442",
+        "batch_number": "L7",
+        "costo_total": 3,
+        "forma_pago": "bitcoin"
+      }
+    },
+    {
+      "nombre": "inventario: lote vacío",
+      "metodo": "POST",
+      "ruta": "/api/v1/products/5daee53b-6a4b-5c54-86cc-a5578f3e0442/batches/",
+      "usuario": "auxiliar",
+      "volatiles": [],
+      "cuerpo": {}
+    },
+    {
+      "nombre": "inventario: lote con costo negativo",
+      "metodo": "POST",
+      "ruta": "/api/v1/products/5daee53b-6a4b-5c54-86cc-a5578f3e0442/batches/",
+      "usuario": "auxiliar",
+      "volatiles": [],
+      "cuerpo": {
+        "product": "5daee53b-6a4b-5c54-86cc-a5578f3e0442",
+        "batch_number": "L8",
+        "costo_total": "-1",
+        "expiration_date": "mañana"
+      }
+    },
+    {
+      "nombre": "inventario: lote de un producto que no existe",
+      "metodo": "POST",
+      "ruta": "/api/v1/products/00000000-0000-4000-8000-000000000000/batches/",
+      "usuario": "auxiliar",
+      "volatiles": [],
+      "cuerpo": {
+        "product": "5daee53b-6a4b-5c54-86cc-a5578f3e0442",
+        "batch_number": "L9"
+      }
+    },
+    {
+      "nombre": "inventario: lote con otro producto en el cuerpo",
+      "metodo": "POST",
+      "ruta": "/api/v1/products/5daee53b-6a4b-5c54-86cc-a5578f3e0442/batches/",
+      "usuario": "auxiliar",
+      "volatiles": [],
+      "cuerpo": {
+        "product": "00000000-0000-4000-8000-000000000000",
+        "batch_number": "L9"
+      }
+    },
+    {
+      "nombre": "inventario: lotes después",
+      "metodo": "GET",
+      "ruta": "/api/v1/products/5daee53b-6a4b-5c54-86cc-a5578f3e0442/batches/",
+      "usuario": "admin",
+      "volatiles": [
+        "id"
+      ]
+    },
+    {
+      "nombre": "inventario: por vencer",
+      "metodo": "GET",
+      "ruta": "/api/v1/inventory/alerts/expiring/",
+      "usuario": "admin",
+      "volatiles": [
+        "batch_id"
+      ]
+    },
+    {
+      "nombre": "inventario: por vencer en 200 días",
+      "metodo": "GET",
+      "ruta": "/api/v1/inventory/alerts/expiring/?days=200",
+      "usuario": "admin",
+      "volatiles": [
+        "batch_id"
+      ]
+    },
+    {
+      "nombre": "inventario: por vencer con días raros",
+      "metodo": "GET",
+      "ruta": "/api/v1/inventory/alerts/expiring/?days=abc",
+      "usuario": "admin",
+      "volatiles": [
+        "batch_id"
+      ]
+    },
+    {
+      "nombre": "inventario: por vencer en días negativos",
+      "metodo": "GET",
+      "ruta": "/api/v1/inventory/alerts/expiring/?days=-3",
+      "usuario": "admin",
+      "volatiles": [
+        "batch_id"
+      ]
+    },
+    {
+      "nombre": "inventario: movimientos",
+      "metodo": "GET",
+      "ruta": "/api/v1/inventory/movements/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "batch",
+        "date"
+      ]
+    },
+    {
+      "nombre": "inventario: movimientos de un producto",
+      "metodo": "GET",
+      "ruta": "/api/v1/inventory/movements/?product=5daee53b-6a4b-5c54-86cc-a5578f3e0442",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "batch",
+        "date"
+      ]
+    },
+    {
+      "nombre": "inventario: entradas por compra",
+      "metodo": "GET",
+      "ruta": "/api/v1/inventory/movements/?movement_type=in&reason=purchase",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "batch",
+        "date"
+      ]
+    },
+    {
+      "nombre": "inventario: movimientos con filtros raros",
+      "metodo": "GET",
+      "ruta": "/api/v1/inventory/movements/?movement_type=x&product=abc&reason=robo",
+      "usuario": "admin",
+      "volatiles": []
+    },
+    {
+      "nombre": "inventario: movimientos de un producto que no está",
+      "metodo": "GET",
+      "ruta": "/api/v1/inventory/movements/?product=00000000-0000-4000-8000-000000000000",
+      "usuario": "admin",
+      "volatiles": []
+    },
+    {
+      "nombre": "reportes: producción por doctor",
+      "metodo": "GET",
+      "ruta": "/api/v1/reports/production-by-doctor/",
+      "usuario": "admin",
+      "volatiles": []
+    },
+    {
+      "nombre": "reportes: producción de la doctora",
+      "metodo": "GET",
+      "ruta": "/api/v1/reports/production-by-doctor/",
+      "usuario": "doctora",
+      "volatiles": []
+    },
+    {
+      "nombre": "reportes: producción de un doctor",
+      "metodo": "GET",
+      "ruta": "/api/v1/reports/production-by-doctor/?doctor_id=db326626-1f49-5458-b448-7b9e96fa589e",
+      "usuario": "admin",
+      "volatiles": []
+    },
+    {
+      "nombre": "reportes: producción, desde recepción",
+      "metodo": "GET",
+      "ruta": "/api/v1/reports/production-by-doctor/",
+      "usuario": "recepcion",
+      "volatiles": []
+    },
+    {
+      "nombre": "reportes: pacientes nuevos",
+      "metodo": "GET",
+      "ruta": "/api/v1/reports/new-patients/",
+      "usuario": "admin",
+      "volatiles": []
+    },
+    {
+      "nombre": "reportes: pacientes nuevos desde ayer",
+      "metodo": "GET",
+      "ruta": "/api/v1/reports/new-patients/?date_from={hoy-1}&date_to={hoy}",
+      "usuario": "admin",
+      "volatiles": []
+    },
+    {
+      "nombre": "reportes: pacientes nuevos de antes",
+      "metodo": "GET",
+      "ruta": "/api/v1/reports/new-patients/?date_to=2020-01-01",
+      "usuario": "admin",
+      "volatiles": []
+    },
+    {
+      "nombre": "reportes: pacientes nuevos en Excel",
+      "metodo": "GET",
+      "ruta": "/api/v1/reports/new-patients/?date_from={hoy-1}&export=excel",
+      "usuario": "admin",
+      "volatiles": []
+    },
+    {
+      "nombre": "reportes: inventario",
+      "metodo": "GET",
+      "ruta": "/api/v1/reports/inventory/",
+      "usuario": "admin",
+      "volatiles": []
+    },
+    {
+      "nombre": "reportes: inventario en Excel",
+      "metodo": "GET",
+      "ruta": "/api/v1/reports/inventory/?export=excel",
+      "usuario": "admin",
+      "volatiles": []
+    },
+    {
+      "nombre": "reportes: inventario sin la función",
+      "metodo": "GET",
+      "ruta": "/api/v1/reports/inventory/",
+      "usuario": "doctora",
+      "volatiles": []
+    },
+    {
+      "nombre": "reportes: citas",
+      "metodo": "GET",
+      "ruta": "/api/v1/reports/appointments-summary/",
+      "usuario": "admin",
+      "volatiles": []
+    },
+    {
+      "nombre": "reportes: citas de hoy",
+      "metodo": "GET",
+      "ruta": "/api/v1/reports/appointments-summary/?date_from={hoy}&date_to={hoy}",
+      "usuario": "admin",
+      "volatiles": []
+    },
+    {
+      "nombre": "reportes: citas de un día sin citas",
+      "metodo": "GET",
+      "ruta": "/api/v1/reports/appointments-summary/?date_from=2020-01-01&date_to=2020-01-01",
+      "usuario": "admin",
+      "volatiles": []
+    },
+    {
+      "nombre": "reportes: ingresos en Excel",
+      "metodo": "GET",
+      "ruta": "/api/v1/reports/financial/?export=excel",
+      "usuario": "admin",
+      "volatiles": []
+    },
+    {
+      "nombre": "reportes: ingresos del mes en Excel",
+      "metodo": "GET",
+      "ruta": "/api/v1/reports/financial/?date_from={primero}&date_to={hoy}&export=excel",
+      "usuario": "admin",
+      "volatiles": []
+    },
+    {
+      "nombre": "tarifas: las de la doctora",
+      "metodo": "GET",
+      "ruta": "/api/v1/doctors/db326626-1f49-5458-b448-7b9e96fa589e/fees/",
+      "usuario": "admin",
+      "volatiles": []
+    },
+    {
+      "nombre": "tarifas: nueva",
+      "metodo": "POST",
+      "ruta": "/api/v1/doctors/db326626-1f49-5458-b448-7b9e96fa589e/fees/",
+      "usuario": "admin",
+      "volatiles": [
+        "id"
+      ],
+      "cuerpo": {
+        "doctor": "db326626-1f49-5458-b448-7b9e96fa589e",
+        "treatment": "d4fe3e13-6604-5bd6-8514-67b39cd915ca",
+        "fee_type": "fixed",
+        "value": "30"
+      }
+    },
+    {
+      "nombre": "tarifas: con otro doctor en el cuerpo",
+      "metodo": "POST",
+      "ruta": "/api/v1/doctors/db326626-1f49-5458-b448-7b9e96fa589e/fees/",
+      "usuario": "admin",
+      "volatiles": [
+        "id"
+      ],
+      "cuerpo": {
+        "doctor": "33030969-3883-589d-bc77-8a3916a2253c",
+        "fee_type": "percentage",
+        "value": 10.5
+      }
+    },
+    {
+      "nombre": "tarifas: vacía",
+      "metodo": "POST",
+      "ruta": "/api/v1/doctors/db326626-1f49-5458-b448-7b9e96fa589e/fees/",
+      "usuario": "admin",
+      "volatiles": [],
+      "cuerpo": {}
+    },
+    {
+      "nombre": "tarifas: con tipo raro",
+      "metodo": "POST",
+      "ruta": "/api/v1/doctors/db326626-1f49-5458-b448-7b9e96fa589e/fees/",
+      "usuario": "admin",
+      "volatiles": [],
+      "cuerpo": {
+        "doctor": "db326626-1f49-5458-b448-7b9e96fa589e",
+        "fee_type": "comision",
+        "value": "1.234"
+      }
+    },
+    {
+      "nombre": "tarifas: desde la doctora",
+      "metodo": "GET",
+      "ruta": "/api/v1/doctors/db326626-1f49-5458-b448-7b9e96fa589e/fees/",
+      "usuario": "doctora",
+      "volatiles": []
+    },
+    {
+      "nombre": "tarifas: después",
+      "metodo": "GET",
+      "ruta": "/api/v1/doctors/db326626-1f49-5458-b448-7b9e96fa589e/fees/",
+      "usuario": "admin",
+      "volatiles": [
+        "id"
+      ]
     }
   ]
 }

@@ -443,3 +443,23 @@ Kotlin y no la página de Django:
 - **Un formulario** se lee como DRF: un campo vacío que admite nulos es nulo
   (un vencimiento vacío, un profesional vacío, la factura como texto vacío,
   que la borra) y una casilla que no llega es «no».
+
+## 28. Tarifas de los doctores: lo ajeno, aquí no (diferencia DELIBERADA)
+
+`POST /doctors/{id}/fees/`:
+
+- **El doctor de la ruta** tiene que ser de la clínica: si no existe, Django
+  da 500 (la base rechaza la regla); si es de otra clínica, Django la apunta
+  en esta. Aquí, en los dos casos, «No Doctor matches the given query.» (404).
+- **El tratamiento** tiene que ser de la clínica: Django lo busca en todas.
+
+El `doctor` del cuerpo sigue siendo obligatorio y vale de cualquier clínica,
+como en Django: manda el de la ruta.
+
+## 29. Reportes e inventario: donde Django da un 500
+
+- Un `doctor_id` que no es un UUID en la producción por doctor, o una fecha que
+  no se entiende en los reportes de pacientes nuevos y de citas: Django da 500,
+  y aquí también (con el cuerpo de error de Kotlin).
+- Un plazo enorme en las alertas de vencimiento (`?days=99999999999`): Django
+  da 500 al sumar los días; aquí, una fecha fuera de rango, también 500.

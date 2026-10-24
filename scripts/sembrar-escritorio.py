@@ -352,6 +352,14 @@ def sembrar():
     gasa = Product.objects.create(tenant=demo, name="Gasa", min_stock=Decimal("5"))
     Batch.objects.create(tenant=demo, product=gasa, batch_number="A", quantity=Decimal("30"))
     Batch.objects.create(tenant=demo, product=gasa, batch_number="B", quantity=Decimal("20"))
+    # Uno vencido hace días y otro vencido pero ya sin existencias (no avisa).
+    Batch.objects.create(id=fijo("lote-vencido"), tenant=demo, product=gasa, batch_number="V", quantity=Decimal("2"),
+                         expiration_date=hoy - timedelta(days=5))
+    Batch.objects.create(tenant=demo, product=gasa, batch_number="Z", quantity=Decimal("0"), expiration_date=hoy - timedelta(days=1))
+    from apps.billing.models import DoctorFee
+    DoctorFee.objects.create(id=fijo("tarifa-doctora"), tenant=demo, doctor=doctora, fee_type="percentage", value=Decimal("35.00"))
+    DoctorFee.objects.create(id=fijo("tarifa-doctora-resina"), tenant=demo, doctor=doctora, treatment=resina, fee_type="fixed",
+                             value=Decimal("12.5"))
     Product.objects.create(tenant=demo, name="Guantes", min_stock=Decimal("10"))       # sin lotes: «0»
     Product.objects.create(tenant=demo, name="Composite", min_stock=Decimal("0"))      # 0 <= 0: bajo
     Product.objects.create(tenant=demo, name="Retirado", min_stock=Decimal("99"), is_active=False)

@@ -30,7 +30,7 @@ RESUMENES = {
     # nuevas de finanzas (y los que van en las rutas de finanzas que las
     # usan) se cambian por un marcador.
     "auditoria": """select action,
-                    case when entity_type like '/api/v1/finanzas/%'
+                    case when entity_type like '/api/v1/finanzas/%' or entity_type like '/api/v1/products/%'
                          then regexp_replace(entity_type, '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}', '{id}', 'g')
                          else entity_type end as entity_type,
                     case when action in ('accept_terms', 'apply_plan_template', 'generate_budget_from_plan', 'create_expense',
@@ -71,10 +71,16 @@ RESUMENES = {
     "líneas de plan": """select p.patient_id, i.treatment_id, i.tooth_fdi_code, i."order", i.status, i.estimated_price::text,
                          i.price_is_manual from clinical_treatmentplanitem i join clinical_treatmentplan p on p.id = i.treatment_plan_id
                          order by p.patient_id, i."order", i.tooth_fdi_code, i.status, i.estimated_price""",
+    "productos": """select tenant_id, name, unit, min_stock::text, is_active from inventory_product
+                    order by tenant_id, name, unit, min_stock, is_active""",
+    "tarifas de doctores": """select tenant_id, doctor_id, treatment_id, fee_type, value::text from billing_doctorfee
+                              order by doctor_id, fee_type, value, treatment_id""",
     "lotes": "select product_id, batch_number, quantity::text, expiration_date from inventory_batch order by product_id, batch_number",
-    "movimientos": """select product_id, batch_id, movement_type, quantity::text, reason,
-                      related_treatment_plan_item_id is not null as de_tratamiento, tenant_id, count(*) as filas
-                      from inventory_inventorymovement group by 1, 2, 3, 4, 5, 6, 7 order by 1, 2, 3, 4, 5, 6, 7""",
+    # El lote, por su número: los lotes nuevos tienen la id de cada servidor.
+    "movimientos": """select m.product_id, b.batch_number, m.movement_type, m.quantity::text, m.reason,
+                      m.related_treatment_plan_item_id is not null as de_tratamiento, m.tenant_id, count(*) as filas
+                      from inventory_inventorymovement m left join inventory_batch b on b.id = m.batch_id
+                      group by 1, 2, 3, 4, 5, 6, 7 order by 1, 2, 3, 4, 5, 6, 7""",
     "plantillas": """select t.name, t.description, t.is_active, t.tenant_id, i.treatment_id, i."order", i.notes
                      from clinical_treatmentplantemplate t left join clinical_treatmentplantemplateitem i on i.template_id = t.id
                      order by t.tenant_id, t.name, i."order", i.notes, i.treatment_id""",

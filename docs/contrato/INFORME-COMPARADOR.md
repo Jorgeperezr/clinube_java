@@ -628,3 +628,62 @@
 | finanzas: egresos después | `GET /api/v1/finanzas/egresos/?anulados=1` | igual a Django |
 | finanzas: cobros después | `GET /api/v1/finanzas/cobros/` | igual a Django |
 | finanzas: Excel del mes | `GET /api/v1/finanzas/exportar/` | igual a Django |
+| inventario: productos | `GET /api/v1/products/` | igual a Django |
+| inventario: productos inactivos | `GET /api/v1/products/?is_active=false` | igual a Django |
+| inventario: productos activos en mayúsculas | `GET /api/v1/products/?is_active=TRUE` | igual a Django |
+| inventario: productos con un filtro raro | `GET /api/v1/products/?is_active=si` | igual a Django |
+| inventario: productos, página que no hay | `GET /api/v1/products/?page=9` | igual a Django |
+| inventario: productos desde la doctora | `GET /api/v1/products/` | igual a Django |
+| inventario: un producto | `GET /api/v1/products/5daee53b-6a4b-5c54-86cc-a5578f3e0442/` | igual a Django |
+| inventario: un producto, sin la función | `GET /api/v1/products/5daee53b-6a4b-5c54-86cc-a5578f3e0442/` | igual a Django |
+| inventario: un producto que no existe | `GET /api/v1/products/00000000-0000-4000-8000-000000000000/` | igual a Django |
+| inventario: producto nuevo | `POST /api/v1/products/` | igual a Django |
+| inventario: producto sin nombre | `POST /api/v1/products/` | igual a Django |
+| inventario: producto con nombre largo | `POST /api/v1/products/` | igual a Django |
+| inventario: producto desde la doctora | `POST /api/v1/products/` | igual a Django |
+| inventario: corregir el producto | `PATCH /api/v1/products/{guardado:producto-nuevo}/` | igual a Django |
+| inventario: reemplazar sin nombre | `PUT /api/v1/products/{guardado:producto-nuevo}/` | igual a Django |
+| inventario: reemplazar el producto | `PUT /api/v1/products/{guardado:producto-nuevo}/` | igual a Django |
+| inventario: lotes | `GET /api/v1/products/5daee53b-6a4b-5c54-86cc-a5578f3e0442/batches/` | igual a Django |
+| inventario: lotes de un producto que no existe | `GET /api/v1/products/00000000-0000-4000-8000-000000000000/batches/` | igual a Django |
+| inventario: lote con su compra | `POST /api/v1/products/5daee53b-6a4b-5c54-86cc-a5578f3e0442/batches/` | igual a Django |
+| inventario: lote sin costo | `POST /api/v1/products/5daee53b-6a4b-5c54-86cc-a5578f3e0442/batches/` | igual a Django |
+| inventario: lote con costo cero | `POST /api/v1/products/5daee53b-6a4b-5c54-86cc-a5578f3e0442/batches/` | igual a Django |
+| inventario: lote sin cantidad y forma rara | `POST /api/v1/products/5daee53b-6a4b-5c54-86cc-a5578f3e0442/batches/` | igual a Django |
+| inventario: lote vacío | `POST /api/v1/products/5daee53b-6a4b-5c54-86cc-a5578f3e0442/batches/` | igual a Django |
+| inventario: lote con costo negativo | `POST /api/v1/products/5daee53b-6a4b-5c54-86cc-a5578f3e0442/batches/` | igual a Django |
+| inventario: lote de un producto que no existe | `POST /api/v1/products/00000000-0000-4000-8000-000000000000/batches/` | igual a Django |
+| inventario: lote con otro producto en el cuerpo | `POST /api/v1/products/5daee53b-6a4b-5c54-86cc-a5578f3e0442/batches/` | igual a Django |
+| inventario: lotes después | `GET /api/v1/products/5daee53b-6a4b-5c54-86cc-a5578f3e0442/batches/` | igual a Django |
+| inventario: por vencer | `GET /api/v1/inventory/alerts/expiring/` | igual a Django |
+| inventario: por vencer en 200 días | `GET /api/v1/inventory/alerts/expiring/?days=200` | igual a Django |
+| inventario: por vencer con días raros | `GET /api/v1/inventory/alerts/expiring/?days=abc` | igual a Django |
+| inventario: por vencer en días negativos | `GET /api/v1/inventory/alerts/expiring/?days=-3` | igual a Django |
+| inventario: movimientos | `GET /api/v1/inventory/movements/` | igual a Django |
+| inventario: movimientos de un producto | `GET /api/v1/inventory/movements/?product=5daee53b-6a4b-5c54-86cc-a5578f3e0442` | igual a Django |
+| inventario: entradas por compra | `GET /api/v1/inventory/movements/?movement_type=in&reason=purchase` | igual a Django |
+| inventario: movimientos con filtros raros | `GET /api/v1/inventory/movements/?movement_type=x&product=abc&reason=robo` | igual a Django |
+| inventario: movimientos de un producto que no está | `GET /api/v1/inventory/movements/?product=00000000-0000-4000-8000-000000000000` | igual a Django |
+| reportes: producción por doctor | `GET /api/v1/reports/production-by-doctor/` | igual a Django |
+| reportes: producción de la doctora | `GET /api/v1/reports/production-by-doctor/` | igual a Django |
+| reportes: producción de un doctor | `GET /api/v1/reports/production-by-doctor/?doctor_id=db326626-1f49-5458-b448-7b9e96fa589e` | igual a Django |
+| reportes: producción, desde recepción | `GET /api/v1/reports/production-by-doctor/` | igual a Django |
+| reportes: pacientes nuevos | `GET /api/v1/reports/new-patients/` | igual a Django |
+| reportes: pacientes nuevos desde ayer | `GET /api/v1/reports/new-patients/?date_from={hoy-1}&date_to={hoy}` | igual a Django |
+| reportes: pacientes nuevos de antes | `GET /api/v1/reports/new-patients/?date_to=2020-01-01` | igual a Django |
+| reportes: pacientes nuevos en Excel | `GET /api/v1/reports/new-patients/?date_from={hoy-1}&export=excel` | igual a Django |
+| reportes: inventario | `GET /api/v1/reports/inventory/` | igual a Django |
+| reportes: inventario en Excel | `GET /api/v1/reports/inventory/?export=excel` | igual a Django |
+| reportes: inventario sin la función | `GET /api/v1/reports/inventory/` | igual a Django |
+| reportes: citas | `GET /api/v1/reports/appointments-summary/` | igual a Django |
+| reportes: citas de hoy | `GET /api/v1/reports/appointments-summary/?date_from={hoy}&date_to={hoy}` | igual a Django |
+| reportes: citas de un día sin citas | `GET /api/v1/reports/appointments-summary/?date_from=2020-01-01&date_to=2020-01-01` | igual a Django |
+| reportes: ingresos en Excel | `GET /api/v1/reports/financial/?export=excel` | igual a Django |
+| reportes: ingresos del mes en Excel | `GET /api/v1/reports/financial/?date_from={primero}&date_to={hoy}&export=excel` | igual a Django |
+| tarifas: las de la doctora | `GET /api/v1/doctors/db326626-1f49-5458-b448-7b9e96fa589e/fees/` | igual a Django |
+| tarifas: nueva | `POST /api/v1/doctors/db326626-1f49-5458-b448-7b9e96fa589e/fees/` | igual a Django |
+| tarifas: con otro doctor en el cuerpo | `POST /api/v1/doctors/db326626-1f49-5458-b448-7b9e96fa589e/fees/` | igual a Django |
+| tarifas: vacía | `POST /api/v1/doctors/db326626-1f49-5458-b448-7b9e96fa589e/fees/` | igual a Django |
+| tarifas: con tipo raro | `POST /api/v1/doctors/db326626-1f49-5458-b448-7b9e96fa589e/fees/` | igual a Django |
+| tarifas: desde la doctora | `GET /api/v1/doctors/db326626-1f49-5458-b448-7b9e96fa589e/fees/` | igual a Django |
+| tarifas: después | `GET /api/v1/doctors/db326626-1f49-5458-b448-7b9e96fa589e/fees/` | igual a Django |

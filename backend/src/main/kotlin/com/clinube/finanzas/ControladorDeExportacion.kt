@@ -1,6 +1,6 @@
 package com.clinube.finanzas
 
-import com.clinube.comun.documentos.EstilosDeDocumento
+import com.clinube.comun.documentos.HojasDeCalculo
 import com.clinube.comun.python.Python
 import com.clinube.comun.seguridad.Permisos
 import com.clinube.comun.sql.Filas.fecha
@@ -41,40 +41,12 @@ class ControladorDeExportacion(
     private val permisos: Permisos,
     private val finanzas: Finanzas,
     private val calculos: CalculosDeFinanzas,
-    private val estilos: EstilosDeDocumento,
+    private val hojas: HojasDeCalculo,
     private val jdbc: NamedParameterJdbcTemplate,
     private val json: ObjectMapper,
 ) {
 
     private val clinica get() = finanzas.clinica
-
-    /** `xlsx_theme()`: los colores y la letra de los documentos, en lo que entiende una hoja de cálculo. */
-    private data class Tema(val fondoCabecera: String, val letraCabecera: String, val letraCuerpo: String, val fuente: String, val cuerpo: Double)
-
-    private fun tema(): Tema {
-        val fila = jdbc.query(
-            "select tables::text as t, palette::text as p, typography::text as ty from configuration_documentappearance where tenant_id = :clinica order by id limit 1",
-            mapOf("clinica" to clinica),
-        ) { f, _ -> Triple(json.readTree(f.getString("t")), json.readTree(f.getString("p")), json.readTree(f.getString("ty"))) }.firstOrNull()
-        fun hex6(valor: String?, reserva: String): String {
-            val crudo = valor?.trim().orEmpty().ifEmpty { reserva }.trimStart('#')
-            return if (crudo.length == 6) crudo.uppercase() else reserva.trimStart('#').uppercase()
-        }
-        val tablas = fila?.first
-        val paleta = fila?.second
-        val letra = fila?.third
-        fun de(n: com.fasterxml.jackson.databind.JsonNode?, clave: String) = n?.get(clave)?.takeIf { it.isTextual }?.textValue().orEmpty()
-        val primario = de(paleta, "primary").ifEmpty { estilos.de(clinica).let { "#%06x".format(it.primario.rgb and 0xFFFFFF) } }
-        val familia = de(letra, "family").ifEmpty { "Helvetica" }
-        return Tema(
-            fondoCabecera = hex6(de(tablas, "header_bg").ifEmpty { if (paleta?.has("table_header_bg") == true) de(paleta, "table_header_bg") else "#0e5c63" }
-                .ifEmpty { primario }, EstilosDeDocumento.PRIMARIO_DE_RESERVA),
-            letraCabecera = hex6(de(paleta, "table_header_text").ifEmpty { "#ffffff" }, "#FFFFFF"),
-            letraCuerpo = hex6(de(letra, "color").ifEmpty { "#1f2937" }, "#1F2937"),
-            fuente = mapOf("Helvetica" to "Arial", "Times" to "Times New Roman", "Courier" to "Courier New")[familia] ?: "Calibri",
-            cuerpo = letra?.get("size_pt")?.asDouble() ?: 10.0,
-        )
-    }
 
     /** Un número de la hoja: como `float(Decimal)`. */
     private class Numero(val valor: Double)
@@ -82,7 +54,7 @@ class ControladorDeExportacion(
     private fun n(valor: BigDecimal) = Numero(valor.toDouble())
 
     /** `_hoja`: cabecera de color, cuerpo, totales en negrita, anchos según el texto y la primera fila fija. */
-    private fun hoja(libro: XSSFWorkbook, titulo: String, encabezado: List<String>, filas: List<List<Any>>, t: Tema, totales: List<Any>? = null) {
+    private fun hoja(libro: XSSFWorkbook, titulo: String, encabezado: List<String>, filas: List<List<Any>>, t: HojasDeCalculo.Tema, totales: List<Any>? = null) {
         val hoja = libro.createSheet(titulo.take(31))
         fun fuente(gruesa: Boolean, color: String?) = libro.createFont().apply {
             fontName = t.fuente; fontHeightInPoints = t.cuerpo.toInt().toShort(); bold = gruesa
@@ -151,7 +123,7 @@ class ControladorDeExportacion(
     }
 
     private fun libroDelMes(desde: LocalDate, hasta: LocalDate): ByteArray {
-        val t = tema()
+        val t = hojas.tema(clinica)
         val libro = XSSFWorkbook()
         val p = mapOf("clinica" to clinica, "desde" to desde, "hasta" to hasta)
 

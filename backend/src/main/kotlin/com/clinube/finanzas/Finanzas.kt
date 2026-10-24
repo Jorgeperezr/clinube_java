@@ -290,6 +290,7 @@ class Finanzas(
     fun crearEgreso(
         fecha: LocalDate, categoria: UUID?, concepto: String, monto: BigDecimal, forma: String,
         profesional: UUID? = null, origen: String = "", periodo: LocalDate? = null, proveedor: String = "",
+        proveedorRuc: String = "", numeroFactura: String = "",
     ): UUID {
         // Sin la categoría (una clínica que creó las suyas antes de abrir la
         // lista de serie), Django intenta guardar un nulo y la base lo rechaza.
@@ -300,11 +301,11 @@ class Finanzas(
             """insert into finanzas_egreso (id, created_at, updated_at, fecha, concepto, monto, forma_pago, estado, vence, proveedor,
                proveedor_ruc, numero_factura, comprobante, descontar_al_profesional, origen, anulado, motivo_anulacion, categoria_id,
                profesional_id, registrado_por_id, tenant_id, periodo)
-               values (:id, :ahora, :ahora, :fecha, :concepto, :monto, :forma, 'pagado', null, :proveedor, '', '', '', false, :origen,
+               values (:id, :ahora, :ahora, :fecha, :concepto, :monto, :forma, 'pagado', null, :proveedor, :ruc, :factura, '', false, :origen,
                false, '', :categoria, :profesional, :usuario, :clinica, :periodo)""",
             mapOf(
                 "id" to id, "ahora" to ahora, "fecha" to fecha, "concepto" to concepto, "monto" to monto, "forma" to forma,
-                "proveedor" to proveedor, "origen" to origen, "categoria" to categoria, "profesional" to profesional,
+                "proveedor" to proveedor, "ruc" to proveedorRuc, "factura" to numeroFactura, "origen" to origen, "categoria" to categoria, "profesional" to profesional,
                 "usuario" to contexto.usuario?.id, "clinica" to clinica, "periodo" to periodo,
             ),
         )

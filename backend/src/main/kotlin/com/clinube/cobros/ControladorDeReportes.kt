@@ -7,7 +7,7 @@ import com.clinube.comun.sql.Filas.decimal
 import com.clinube.comun.sql.Filas.fecha
 import com.clinube.comun.sql.Filas.uuid
 import com.clinube.comun.tiempo.ZonaDeLaClinica
-import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -24,6 +24,7 @@ class ControladorDeReportes(
     private val contexto: ContextoDeLaPeticion,
     private val jdbc: NamedParameterJdbcTemplate,
     private val zona: ZonaDeLaClinica,
+    private val actividad: ControladorDeReportesDeActividad,
 ) {
 
     companion object {
@@ -54,19 +55,17 @@ class ControladorDeReportes(
      * Django (`GROUP BY method` sin `ORDER BY`), para que las formas de pago
      * salgan en el mismo orden.
      *
-     * La exportación a Excel (`?export=excel`) aún no está portada: responde
-     * 501 en vez de devolver el JSON como si nada.
+     * Con `?export=excel`, el Excel de los cobros del período.
      */
     @GetMapping("/api/v1/reports/financial/")
     fun ingresos(
         @RequestParam(name = "date_from", required = false) desde: String?,
         @RequestParam(name = "date_to", required = false) hasta: String?,
         @RequestParam(required = false) export: String?,
-    ): Map<String, Any?> {
+    ): ResponseEntity<Any> {
         permisos.exigir(Permisos.funcion("reportes"), Permisos.funcionalidad("reportes"))
         if (export == "excel") {
-            throw ExcepcionApi(HttpStatus.NOT_IMPLEMENTED, "not_implemented",
-                "La exportación a Excel todavía no está disponible en este servidor.")
+            return actividad.ingresosEnExcel(desde?.takeIf { it.isNotEmpty() }?.let(::fechaDeDjango), hasta?.takeIf { it.isNotEmpty() }?.let(::fechaDeDjango))
         }
         val parametros = mutableMapOf<String, Any?>("clinica" to contexto.clinica?.id)
         var filtro = "tenant_id = :clinica"
@@ -80,7 +79,7 @@ class ControladorDeReportes(
         jdbc.query("select method, sum(amount) as subtotal from billing_payment where $filtro group by method", parametros) { fila ->
             porMetodo[fila.getString("method")] = dinero(fila.getBigDecimal("subtotal"))
         }
-        return linkedMapOf("total_income" to dinero(total), "by_method" to porMetodo, "payment_count" to cuantos)
+        return ResponseEntity.ok(linkedMapOf("total_income" to dinero(total), "by_method" to porMetodo, "payment_count" to cuantos))
     }
 
     /**
