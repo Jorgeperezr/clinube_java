@@ -362,3 +362,74 @@
 | cancelar | `POST /api/v1/appointments/35fa5eb9-7647-580c-b5bd-7bbe514b6cce/cancel/` | igual a Django |
 | baja, recepción | `DELETE /api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/` | igual a Django |
 | ficha tras la baja | `GET /api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/` | igual a Django |
+| presupuestos del paciente | `GET /api/v1/patients/04efc017-d7d3-546e-9b43-46b5a47e9002/budgets/` | igual a Django |
+| presupuestos, auxiliar | `GET /api/v1/patients/04efc017-d7d3-546e-9b43-46b5a47e9002/budgets/` | igual a Django |
+| presupuestos de otra clínica | `GET /api/v1/patients/92f3248c-fcd2-5d23-991f-58410f9ce47c/budgets/` | igual a Django |
+| presupuesto nuevo como el panel | `POST /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/budgets/` | igual a Django |
+| presupuesto nuevo con otro paciente en el cuerpo | `POST /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/budgets/` | igual a Django |
+| presupuesto sin paciente | `POST /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/budgets/` | igual a Django |
+| presupuesto con paciente ajeno | `POST /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/budgets/` | igual a Django |
+| presupuesto con paciente inexistente | `POST /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/budgets/` | igual a Django |
+| presupuesto de un paciente de baja | `POST /api/v1/patients/f392b107-da73-5a13-948a-727cbcaa6cb2/budgets/` | igual a Django |
+| presupuesto, auxiliar | `POST /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/budgets/` | igual a Django |
+| ver presupuesto | `GET /api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/` | igual a Django |
+| ver presupuesto, doctora sin la función | `GET /api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/` | igual a Django |
+| ver presupuesto ajeno | `GET /api/v1/budgets/dd678dd2-d565-50a0-91ea-d6618b72cf29/` | igual a Django |
+| patch de presupuesto | `PATCH /api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/` | igual a Django |
+| put de presupuesto sin paciente | `PUT /api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/` | igual a Django |
+| línea de presupuesto como el panel | `POST /api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/items/` | igual a Django |
+| línea de presupuesto con cantidad | `POST /api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/items/` | igual a Django |
+| línea de presupuesto con todo mal | `POST /api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/items/` | igual a Django |
+| línea de presupuesto sin precio | `POST /api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/items/` | igual a Django |
+| línea en presupuesto ajeno | `POST /api/v1/budgets/dd678dd2-d565-50a0-91ea-d6618b72cf29/items/` | igual a Django |
+| presupuesto tras las líneas | `GET /api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/` | igual a Django |
+| plan de un presupuesto sin aprobar | `POST /api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/generate-payment-plan/` | igual a Django |
+| aprobar presupuesto | `POST /api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/approve/` | igual a Django |
+| aprobar un rechazado | `POST /api/v1/budgets/3a315ead-9b9a-5b84-a2b2-db888512420d/approve/` | igual a Django |
+| aprobar ajeno | `POST /api/v1/budgets/dd678dd2-d565-50a0-91ea-d6618b72cf29/approve/` | igual a Django |
+| aprobar, doctora | `POST /api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/approve/` | igual a Django |
+| plan con datos malos | `POST /api/v1/budgets/6c51e480-c019-51bd-9f65-d8f57aa71c68/generate-payment-plan/` | igual a Django |
+| plan sin datos | `POST /api/v1/budgets/6c51e480-c019-51bd-9f65-d8f57aa71c68/generate-payment-plan/` | igual a Django |
+| plan de 3 cuotas desde un 31 | `POST /api/v1/budgets/6c51e480-c019-51bd-9f65-d8f57aa71c68/generate-payment-plan/` | igual a Django |
+| plan otra vez | `POST /api/v1/budgets/6c51e480-c019-51bd-9f65-d8f57aa71c68/generate-payment-plan/` | igual a Django |
+| plan de total cero | `POST /api/v1/budgets/d5ae5000-5476-5981-824e-2273ebe07e88/generate-payment-plan/` | igual a Django |
+| plan del presupuesto aprobado en el panel | `POST /api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/generate-payment-plan/` | igual a Django |
+| presupuesto con su plan | `GET /api/v1/budgets/6c51e480-c019-51bd-9f65-d8f57aa71c68/` | igual a Django |
+| cuotas de un plan | `GET /api/v1/payment-plans/8f75e6fe-9903-577a-b2a2-267890d61c2f/installments/` | igual a Django |
+| cuotas de un plan, auxiliar | `GET /api/v1/payment-plans/8f75e6fe-9903-577a-b2a2-267890d61c2f/installments/` | igual a Django |
+| cuotas de un plan ajeno | `GET /api/v1/payment-plans/0bf53add-40e8-5a33-8324-42fd4ee7bad0/installments/` | igual a Django |
+| pagar parte de una cuota | `POST /api/v1/installments/ff59ba29-e1f6-5420-8747-1eba430b217f/pay/` | igual a Django |
+| pagar el resto de la cuota | `POST /api/v1/installments/ff59ba29-e1f6-5420-8747-1eba430b217f/pay/` | igual a Django |
+| pagar de más una cuota pagada | `POST /api/v1/installments/fb16ca87-e75d-5b1a-8812-fb2df7135da9/pay/` | igual a Django |
+| pagar con todo mal | `POST /api/v1/installments/a368806d-34f2-5dd3-86fa-01329071ef27/pay/` | igual a Django |
+| pagar con profesional de otra clínica | `POST /api/v1/installments/a368806d-34f2-5dd3-86fa-01329071ef27/pay/` | igual a Django |
+| pagar con profesional recepción | `POST /api/v1/installments/a368806d-34f2-5dd3-86fa-01329071ef27/pay/` | igual a Django |
+| pagar sin datos | `POST /api/v1/installments/a368806d-34f2-5dd3-86fa-01329071ef27/pay/` | igual a Django |
+| pagar cuota ajena | `POST /api/v1/installments/4f8608e4-aff3-524a-84e4-e2f6fe87ca0e/pay/` | igual a Django |
+| pagar, doctora | `POST /api/v1/installments/a368806d-34f2-5dd3-86fa-01329071ef27/pay/` | igual a Django |
+| cuotas tras pagar | `GET /api/v1/payment-plans/8f75e6fe-9903-577a-b2a2-267890d61c2f/installments/` | igual a Django |
+| pagos del paciente | `GET /api/v1/patients/e94cdd80-71c7-5e48-ba65-27d342d0cf1e/payments/` | igual a Django |
+| pagos, doctora | `GET /api/v1/patients/e94cdd80-71c7-5e48-ba65-27d342d0cf1e/payments/` | igual a Django |
+| pago directo | `POST /api/v1/patients/98bda393-fdd2-510c-b7fc-5934d5e02762/payments/` | igual a Django |
+| pago directo a una cuota | `POST /api/v1/patients/98bda393-fdd2-510c-b7fc-5934d5e02762/payments/` | igual a Django |
+| pago directo con todo mal | `POST /api/v1/patients/98bda393-fdd2-510c-b7fc-5934d5e02762/payments/` | igual a Django |
+| pago directo vacío | `POST /api/v1/patients/98bda393-fdd2-510c-b7fc-5934d5e02762/payments/` | igual a Django |
+| pago directo a un paciente de baja | `POST /api/v1/patients/f392b107-da73-5a13-948a-727cbcaa6cb2/payments/` | igual a Django |
+| pago directo a un paciente ajeno | `POST /api/v1/patients/92f3248c-fcd2-5d23-991f-58410f9ce47c/payments/` | igual a Django |
+| pagos tras los cobros | `GET /api/v1/patients/98bda393-fdd2-510c-b7fc-5934d5e02762/payments/` | igual a Django |
+| estado de cuenta | `GET /api/v1/patients/e94cdd80-71c7-5e48-ba65-27d342d0cf1e/account-statement/` | igual a Django |
+| estado de cuenta con saldo a favor | `GET /api/v1/patients/98bda393-fdd2-510c-b7fc-5934d5e02762/account-statement/` | igual a Django |
+| estado de cuenta sin cuotas | `GET /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/account-statement/` | igual a Django |
+| estado de cuenta, auxiliar | `GET /api/v1/patients/e94cdd80-71c7-5e48-ba65-27d342d0cf1e/account-statement/` | igual a Django |
+| estado de cuenta de un paciente de baja | `GET /api/v1/patients/f392b107-da73-5a13-948a-727cbcaa6cb2/account-statement/` | igual a Django |
+| línea con subtotal -0.00 | `POST /api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/items/` | igual a Django |
+| línea con precio -0 | `POST /api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/items/` | igual a Django |
+| línea con tratamiento entre llaves y sin guiones | `POST /api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/items/` | igual a Django |
+| línea con tratamiento urn:uuid | `POST /api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/items/` | igual a Django |
+| línea con tratamiento con 0x y guiones raros | `POST /api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/items/` | igual a Django |
+| línea con tratamiento vacío | `POST /api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/items/` | igual a Django |
+| línea con tratamiento numérico | `POST /api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/items/` | igual a Django |
+| línea con tratamiento negativo | `POST /api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/items/` | igual a Django |
+| línea con tratamiento decimal | `POST /api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/items/` | igual a Django |
+| presupuesto con las líneas raras | `GET /api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/` | igual a Django |
+| pago directo con cuota vacía | `POST /api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/payments/` | igual a Django |

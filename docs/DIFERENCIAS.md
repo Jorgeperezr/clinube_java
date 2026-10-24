@@ -314,3 +314,47 @@ plan). Cambian los casos en que Django se cae con un 500:
   un número o es negativo, Django 500, aquí 400 «Orden inválido.».
 - **Aplicar una plantilla con un `template_id` que no es un UUID**: Django
   500, aquí el 404 «Plantilla no encontrada.».
+
+## 20. Cobros: lo ajeno, aquí no (diferencia DELIBERADA)
+
+- **Una línea de presupuesto con el tratamiento de otra clínica**: Django la
+  acepta (`Treatment.objects.all()`); aquí, «objeto no existe».
+- **Un pago directo con la cuota de otra clínica**
+  (`POST /patients/{id}/payments/`): igual, Django busca la cuota en todas.
+
+**Conviene corregirlo también en Django.**
+
+## 21. Cobros: donde Django da un 500
+
+Las respuestas y el estado de la base son iguales a Django en el comparador
+(433 peticiones, 21 tablas). Quedan distintos los casos en que Django se cae:
+
+- **Importes que no caben** en el serializador: un subtotal de línea de más de
+  12 cifras, o lo pagado de una cuota de más de 10 (pagar dos veces
+  99 999 999,99). Django da 500 —y en el pago deshace lo hecho—; aquí se
+  responde y el pago queda guardado.
+- **Un plan de cuotas que pasaría del año 9999**: Django 500 (y deshace);
+  aquí se crea con fechas del año 10000.
+- **El superadministrador sin clínica** en las listas de cobros: Django 500,
+  aquí una lista vacía.
+
+## 22. Todas las rutas: el cuerpo de la petición
+
+Dos diferencias de Spring que valen para TODAS las rutas portadas, no solo
+para cobros (las encontró la revisión de esta ronda):
+
+- **Un cuerpo JSON mal formado se rechaza antes de mirar los permisos y el
+  objeto**: Spring lo lee al entrar; DRF solo al usarlo. Un usuario sin
+  permiso que manda JSON roto recibe aquí el 400 de JSON y en Django el 403.
+- **Solo se aceptan cuerpos JSON**: Django acepta también formularios
+  (`application/x-www-form-urlencoded` y `multipart/form-data`); aquí son un
+  415. El panel y la app mandan siempre JSON.
+
+## 23. Lo que la pantalla de Pagos aún no tiene
+
+- **El comprobante del cobro** (`GET /finanzas/cobros/{id}/comprobante/`, el
+  PDF que numera el cobro) es del módulo de finanzas, sin portar.
+- **La tarea diaria que marca las cuotas vencidas** (`mark_overdue_installments`,
+  Celery, 00:30): no hay tareas programadas en Kotlin todavía. El estado de
+  cuenta no depende de ella (calcula lo vencido con la fecha), pero la columna
+  «Estado» de una cuota se queda en «Pendiente» hasta que la tarea exista.

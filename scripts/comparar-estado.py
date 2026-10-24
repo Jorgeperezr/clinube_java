@@ -74,6 +74,12 @@ RESUMENES = {
                        i.treatment_id, i.tooth_fdi_code, i.quantity, i.unit_price::text
                        from billing_budget b left join billing_budgetitem i on i.budget_id = b.id
                        order by b.patient_id, b.total_amount, b.notes, i.treatment_id, i.tooth_fdi_code, i.unit_price""",
+    "planes de pago": """select pp.patient_id, pp.total_amount::text, pp.installment_count, pp.tenant_id, i.number, i.due_date,
+                         i.amount::text, i.status from billing_paymentplan pp left join billing_installment i on i.payment_plan_id = pp.id
+                         order by pp.patient_id, pp.total_amount, pp.installment_count, i.number""",
+    "pagos": """select patient_id, installment_id, amount::text, method, date, registered_by_id, profesional_id,
+                numero_comprobante, tenant_id from billing_payment
+                order by patient_id, date, amount, method, installment_id""",
     "marca": "select tenant_id, theme, paleta, temas, display_name from configuration_clinicbranding order by tenant_id",
     "configuración": """select platform_name, canal_codigo_paciente, funciones_publicadas, google_client_id
                         from common_platformconfiguration""",

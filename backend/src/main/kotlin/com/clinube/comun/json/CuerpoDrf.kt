@@ -311,6 +311,10 @@ class CamposDrf(private val datos: ObjectNode, private val parcial: Boolean = fa
         nulo: Boolean = false,
         existe: (UUID) -> Boolean,
     ): Leido<UUID> {
+        // `RelatedField.run_validation`: un "" en un campo relacional es None.
+        if (datos.get(campo)?.let { it.isTextual && it.textValue().isEmpty() } == true) {
+            datos.putNull(campo)
+        }
         val (valor, decidido) = vacio(campo, requerido, nulo)
         if (decidido != null) return decidido
         valor!!
@@ -318,10 +322,11 @@ class CamposDrf(private val datos: ObjectNode, private val parcial: Boolean = fa
             error(campo, "Tipo incorrecto. Se esperaba valor de clave primaria y se recibió bool.")
             return Leido.Ausente
         }
-        val texto = if (valor.isTextual) valor.textValue() else if (valor.isNumber) valor.asText() else CuerpoDrf.reprDePython(valor)
+        val texto = if (valor.isTextual) valor.textValue() else Python.str(valor)
         // Un número lo convierte Django en UUID (`UUID(int=n)`), así que no
-        // es «UUID inválido» sino «no existe».
-        if (valor.isIntegralNumber) {
+        // es «UUID inválido» sino «no existe»; salvo que no quepa en 128 bits
+        // o sea negativo, que `UUID(int=…)` rechaza.
+        if (valor.isIntegralNumber && valor.bigIntegerValue().signum() >= 0 && valor.bigIntegerValue().bitLength() <= 128) {
             error(campo, MensajesDeDjango.claveInexistente(texto))
             return Leido.Ausente
         }
@@ -348,19 +353,19 @@ class CamposDrf(private val datos: ObjectNode, private val parcial: Boolean = fa
         val NULOS = setOf("null", "Null", "NULL", "")
 
         /**
-         * `uuid.UUID(texto)` de Python: admite el UUID con o sin guiones,
-         * entre llaves y con prefijo «urn:uuid:». `UUID.fromString` de Java
-         * es más permisivo con los ceros a la izquierda, así que se
-         * comprueba también la forma.
+         * `uuid.UUID(hex=texto)` de Python, que es lo que hace el `UUIDField`
+         * de Django: quita «urn:» y «uuid:» donde estén, las llaves de los
+         * extremos y TODOS los guiones; lo que queda tiene que medir 32 y ser
+         * un `int(…, 16)` entre 0 y 2¹²⁸ (con su signo, «0x», guiones bajos y
+         * espacios que Python admite). `UUID.fromString` de Java no sirve:
+         * es más permisivo con los ceros y más estricto con todo lo demás.
          */
-        private val UUID_DE_PYTHON = Regex("""^(urn:uuid:)?\{?[0-9a-fA-F]{8}-?[0-9a-fA-F]{4}-?[0-9a-fA-F]{4}-?[0-9a-fA-F]{4}-?[0-9a-fA-F]{12}}?$""")
-
-        /** El UUID como lo lee Python, o nulo si no lo es. */
         fun uuidDePython(texto: String): UUID? {
-            if (!UUID_DE_PYTHON.matches(texto)) return null
-            val hex = texto.removePrefix("urn:uuid:").removePrefix("{").removeSuffix("}").replace("-", "")
-            return UUID.fromString("${hex.substring(0, 8)}-${hex.substring(8, 12)}-${hex.substring(12, 16)}-" +
-                "${hex.substring(16, 20)}-${hex.substring(20)}")
+            val hex = texto.replace("urn:", "").replace("uuid:", "").trim('{', '}').replace("-", "")
+            if (Python.longitud(hex) != 32) return null
+            val numero = Python.enteroEnBase16(hex) ?: return null
+            if (numero.signum() < 0 || numero.bitLength() > 128) return null
+            return UUID(numero.shiftRight(64).toLong(), numero.toLong())
         }
     }
 

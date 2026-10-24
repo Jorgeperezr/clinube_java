@@ -39,10 +39,24 @@ class Permisos(
     /** `RequiereFuncionalidad.para(clave)`: la clínica la tiene y la usa. */
     data class Funcionalidad(val clave: String) : Permiso
 
+    /**
+     * `A | B` de DRF: basta con uno. Si fallan los dos, el mensaje es el de
+     * DRF por defecto, no el de ninguno de ellos (`OR` no tiene `message`).
+     */
+    data class O(val uno: Permiso, val otro: Permiso) : Permiso
+
     fun exigir(vararg permisos: Permiso): Usuario {
         val usuario = contexto.exigirUsuario()
-        permisos.forEach { permiso ->
+        permisos.forEach { permiso -> comprobar(usuario, permiso) }
+        return usuario
+    }
+
+    private fun cumple(usuario: Usuario, permiso: Permiso): Boolean =
+        runCatching { comprobar(usuario, permiso) }.isSuccess
+
+    private fun comprobar(usuario: Usuario, permiso: Permiso) {
             when (permiso) {
+                is O -> if (!cumple(usuario, permiso.uno) && !cumple(usuario, permiso.otro)) throw ExcepcionApi.sinPermiso()
                 is Rol -> if (usuario.rol !in permiso.roles && !usuario.esSuperusuario) {
                     throw ExcepcionApi.sinPermiso()
                 }
@@ -61,14 +75,13 @@ class Permisos(
                     )
                 }
             }
-        }
-        return usuario
     }
 
     companion object {
         fun rol(vararg roles: String) = Rol(roles.toSet())
         fun funcion(clave: String) = Funcion(clave)
         fun funcionalidad(clave: String) = Funcionalidad(clave)
+        fun o(uno: Permiso, otro: Permiso) = O(uno, otro)
 
         /** Los cuatro roles del personal: lo que Django llama `CAN_VIEW` en casi todas las apps. */
         val PERSONAL = rol("admin", "reception", "doctor", "auxiliary")

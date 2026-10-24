@@ -3224,6 +3224,715 @@
       "metodo": "GET",
       "ruta": "/api/v1/patients/ad39aa87-911f-5a6a-985b-7b36250cb51f/",
       "usuario": "admin"
+    },
+    {
+      "nombre": "presupuestos del paciente",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/04efc017-d7d3-546e-9b43-46b5a47e9002/budgets/",
+      "usuario": "recepcion"
+    },
+    {
+      "nombre": "presupuestos, auxiliar",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/04efc017-d7d3-546e-9b43-46b5a47e9002/budgets/",
+      "usuario": "auxiliar"
+    },
+    {
+      "nombre": "presupuestos de otra clínica",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/92f3248c-fcd2-5d23-991f-58410f9ce47c/budgets/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "presupuesto nuevo como el panel",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/budgets/",
+      "usuario": "recepcion",
+      "cuerpo": {
+        "patient": "3d639a68-903b-5007-a4bd-f63cb20310dd",
+        "notes": ""
+      },
+      "volatiles": [
+        "id",
+        "created_at"
+      ]
+    },
+    {
+      "nombre": "presupuesto nuevo con otro paciente en el cuerpo",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/budgets/",
+      "usuario": "admin",
+      "cuerpo": {
+        "patient": "04efc017-d7d3-546e-9b43-46b5a47e9002",
+        "notes": " Nota "
+      },
+      "volatiles": [
+        "id",
+        "created_at"
+      ]
+    },
+    {
+      "nombre": "presupuesto sin paciente",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/budgets/",
+      "usuario": "admin",
+      "cuerpo": {
+        "notes": "x"
+      }
+    },
+    {
+      "nombre": "presupuesto con paciente ajeno",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/budgets/",
+      "usuario": "admin",
+      "cuerpo": {
+        "patient": "92f3248c-fcd2-5d23-991f-58410f9ce47c"
+      }
+    },
+    {
+      "nombre": "presupuesto con paciente inexistente",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/budgets/",
+      "usuario": "admin",
+      "cuerpo": {
+        "patient": "00000000-0000-4000-8000-000000000000"
+      }
+    },
+    {
+      "nombre": "presupuesto de un paciente de baja",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/f392b107-da73-5a13-948a-727cbcaa6cb2/budgets/",
+      "usuario": "admin",
+      "cuerpo": {
+        "patient": "f392b107-da73-5a13-948a-727cbcaa6cb2"
+      }
+    },
+    {
+      "nombre": "presupuesto, auxiliar",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/budgets/",
+      "usuario": "auxiliar",
+      "cuerpo": {
+        "patient": "3d639a68-903b-5007-a4bd-f63cb20310dd"
+      }
+    },
+    {
+      "nombre": "ver presupuesto",
+      "metodo": "GET",
+      "ruta": "/api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/",
+      "usuario": "recepcion"
+    },
+    {
+      "nombre": "ver presupuesto, doctora sin la función",
+      "metodo": "GET",
+      "ruta": "/api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/",
+      "usuario": "doctora"
+    },
+    {
+      "nombre": "ver presupuesto ajeno",
+      "metodo": "GET",
+      "ruta": "/api/v1/budgets/dd678dd2-d565-50a0-91ea-d6618b72cf29/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "patch de presupuesto",
+      "metodo": "PATCH",
+      "ruta": "/api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/",
+      "usuario": "recepcion",
+      "cuerpo": {
+        "notes": "Revisado",
+        "status": "approved",
+        "total_amount": "1"
+      }
+    },
+    {
+      "nombre": "put de presupuesto sin paciente",
+      "metodo": "PUT",
+      "ruta": "/api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/",
+      "usuario": "admin",
+      "cuerpo": {
+        "notes": "x"
+      }
+    },
+    {
+      "nombre": "línea de presupuesto como el panel",
+      "metodo": "POST",
+      "ruta": "/api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/items/",
+      "usuario": "recepcion",
+      "cuerpo": {
+        "treatment": "6f7e7292-fa75-5883-a0a4-4b63f5fe009e",
+        "tooth_fdi_code": "",
+        "quantity": 1,
+        "unit_price": "33.34"
+      },
+      "volatiles": [
+        "id"
+      ]
+    },
+    {
+      "nombre": "línea de presupuesto con cantidad",
+      "metodo": "POST",
+      "ruta": "/api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/items/",
+      "usuario": "admin",
+      "cuerpo": {
+        "treatment": "6f7e7292-fa75-5883-a0a4-4b63f5fe009e",
+        "quantity": "3",
+        "unit_price": 12.5
+      },
+      "volatiles": [
+        "id"
+      ]
+    },
+    {
+      "nombre": "línea de presupuesto con todo mal",
+      "metodo": "POST",
+      "ruta": "/api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/items/",
+      "usuario": "admin",
+      "cuerpo": {
+        "treatment": "x",
+        "tooth_fdi_code": "123",
+        "quantity": -1,
+        "unit_price": "1.234"
+      }
+    },
+    {
+      "nombre": "línea de presupuesto sin precio",
+      "metodo": "POST",
+      "ruta": "/api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/items/",
+      "usuario": "admin",
+      "cuerpo": {
+        "treatment": "6f7e7292-fa75-5883-a0a4-4b63f5fe009e"
+      }
+    },
+    {
+      "nombre": "línea en presupuesto ajeno",
+      "metodo": "POST",
+      "ruta": "/api/v1/budgets/dd678dd2-d565-50a0-91ea-d6618b72cf29/items/",
+      "usuario": "admin",
+      "cuerpo": {
+        "treatment": "6f7e7292-fa75-5883-a0a4-4b63f5fe009e",
+        "unit_price": "1"
+      }
+    },
+    {
+      "nombre": "presupuesto tras las líneas",
+      "metodo": "GET",
+      "ruta": "/api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/",
+      "usuario": "admin",
+      "volatiles": [
+        "id"
+      ]
+    },
+    {
+      "nombre": "plan de un presupuesto sin aprobar",
+      "metodo": "POST",
+      "ruta": "/api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/generate-payment-plan/",
+      "usuario": "admin",
+      "cuerpo": {
+        "installment_count": 3,
+        "first_due_date": "2026-01-31"
+      }
+    },
+    {
+      "nombre": "aprobar presupuesto",
+      "metodo": "POST",
+      "ruta": "/api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/approve/",
+      "usuario": "recepcion",
+      "volatiles": [
+        "id"
+      ]
+    },
+    {
+      "nombre": "aprobar un rechazado",
+      "metodo": "POST",
+      "ruta": "/api/v1/budgets/3a315ead-9b9a-5b84-a2b2-db888512420d/approve/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "aprobar ajeno",
+      "metodo": "POST",
+      "ruta": "/api/v1/budgets/dd678dd2-d565-50a0-91ea-d6618b72cf29/approve/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "aprobar, doctora",
+      "metodo": "POST",
+      "ruta": "/api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/approve/",
+      "usuario": "doctora"
+    },
+    {
+      "nombre": "plan con datos malos",
+      "metodo": "POST",
+      "ruta": "/api/v1/budgets/6c51e480-c019-51bd-9f65-d8f57aa71c68/generate-payment-plan/",
+      "usuario": "admin",
+      "cuerpo": {
+        "installment_count": 61,
+        "first_due_date": "31/01/2026"
+      }
+    },
+    {
+      "nombre": "plan sin datos",
+      "metodo": "POST",
+      "ruta": "/api/v1/budgets/6c51e480-c019-51bd-9f65-d8f57aa71c68/generate-payment-plan/",
+      "usuario": "admin",
+      "cuerpo": {}
+    },
+    {
+      "nombre": "plan de 3 cuotas desde un 31",
+      "metodo": "POST",
+      "ruta": "/api/v1/budgets/6c51e480-c019-51bd-9f65-d8f57aa71c68/generate-payment-plan/",
+      "usuario": "recepcion",
+      "cuerpo": {
+        "installment_count": "3",
+        "first_due_date": "2026-01-31"
+      },
+      "volatiles": [
+        "id",
+        "created_at"
+      ]
+    },
+    {
+      "nombre": "plan otra vez",
+      "metodo": "POST",
+      "ruta": "/api/v1/budgets/6c51e480-c019-51bd-9f65-d8f57aa71c68/generate-payment-plan/",
+      "usuario": "recepcion",
+      "cuerpo": {
+        "installment_count": 3,
+        "first_due_date": "2026-01-31"
+      }
+    },
+    {
+      "nombre": "plan de total cero",
+      "metodo": "POST",
+      "ruta": "/api/v1/budgets/d5ae5000-5476-5981-824e-2273ebe07e88/generate-payment-plan/",
+      "usuario": "admin",
+      "cuerpo": {
+        "installment_count": 7,
+        "first_due_date": "2028-02-29"
+      },
+      "volatiles": [
+        "id",
+        "created_at"
+      ]
+    },
+    {
+      "nombre": "plan del presupuesto aprobado en el panel",
+      "metodo": "POST",
+      "ruta": "/api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/generate-payment-plan/",
+      "usuario": "admin",
+      "cuerpo": {
+        "installment_count": 6,
+        "first_due_date": "2026-10-22"
+      },
+      "volatiles": [
+        "id",
+        "created_at"
+      ]
+    },
+    {
+      "nombre": "presupuesto con su plan",
+      "metodo": "GET",
+      "ruta": "/api/v1/budgets/6c51e480-c019-51bd-9f65-d8f57aa71c68/",
+      "usuario": "admin",
+      "volatiles": [
+        "payment_plan_id"
+      ]
+    },
+    {
+      "nombre": "cuotas de un plan",
+      "metodo": "GET",
+      "ruta": "/api/v1/payment-plans/8f75e6fe-9903-577a-b2a2-267890d61c2f/installments/",
+      "usuario": "doctora"
+    },
+    {
+      "nombre": "cuotas de un plan, auxiliar",
+      "metodo": "GET",
+      "ruta": "/api/v1/payment-plans/8f75e6fe-9903-577a-b2a2-267890d61c2f/installments/",
+      "usuario": "auxiliar"
+    },
+    {
+      "nombre": "cuotas de un plan ajeno",
+      "metodo": "GET",
+      "ruta": "/api/v1/payment-plans/0bf53add-40e8-5a33-8324-42fd4ee7bad0/installments/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "pagar parte de una cuota",
+      "metodo": "POST",
+      "ruta": "/api/v1/installments/ff59ba29-e1f6-5420-8747-1eba430b217f/pay/",
+      "usuario": "recepcion",
+      "cuerpo": {
+        "amount": "20.00",
+        "method": "cash",
+        "date": "2026-10-01"
+      }
+    },
+    {
+      "nombre": "pagar el resto de la cuota",
+      "metodo": "POST",
+      "ruta": "/api/v1/installments/ff59ba29-e1f6-5420-8747-1eba430b217f/pay/",
+      "usuario": "recepcion",
+      "cuerpo": {
+        "amount": 50,
+        "method": "transfer",
+        "profesional": "4584919b-4cbf-5952-8857-0fd8c0b1d818"
+      }
+    },
+    {
+      "nombre": "pagar de más una cuota pagada",
+      "metodo": "POST",
+      "ruta": "/api/v1/installments/fb16ca87-e75d-5b1a-8812-fb2df7135da9/pay/",
+      "usuario": "admin",
+      "cuerpo": {
+        "amount": "0.01",
+        "method": "card",
+        "profesional": ""
+      }
+    },
+    {
+      "nombre": "pagar con todo mal",
+      "metodo": "POST",
+      "ruta": "/api/v1/installments/a368806d-34f2-5dd3-86fa-01329071ef27/pay/",
+      "usuario": "admin",
+      "cuerpo": {
+        "amount": "0",
+        "method": "bitcoin",
+        "date": "ayer",
+        "profesional": "abc"
+      }
+    },
+    {
+      "nombre": "pagar con profesional de otra clínica",
+      "metodo": "POST",
+      "ruta": "/api/v1/installments/a368806d-34f2-5dd3-86fa-01329071ef27/pay/",
+      "usuario": "admin",
+      "cuerpo": {
+        "amount": "1",
+        "method": "cash",
+        "profesional": "f9c446be-930a-516d-974f-05bfce1c3fb5"
+      }
+    },
+    {
+      "nombre": "pagar con profesional recepción",
+      "metodo": "POST",
+      "ruta": "/api/v1/installments/a368806d-34f2-5dd3-86fa-01329071ef27/pay/",
+      "usuario": "admin",
+      "cuerpo": {
+        "amount": "1",
+        "method": "cash",
+        "profesional": "22f0eb4e-baf2-588f-86f9-ba92a5e38f6a"
+      }
+    },
+    {
+      "nombre": "pagar sin datos",
+      "metodo": "POST",
+      "ruta": "/api/v1/installments/a368806d-34f2-5dd3-86fa-01329071ef27/pay/",
+      "usuario": "admin",
+      "cuerpo": {}
+    },
+    {
+      "nombre": "pagar cuota ajena",
+      "metodo": "POST",
+      "ruta": "/api/v1/installments/4f8608e4-aff3-524a-84e4-e2f6fe87ca0e/pay/",
+      "usuario": "admin",
+      "cuerpo": {
+        "amount": "1",
+        "method": "cash"
+      }
+    },
+    {
+      "nombre": "pagar, doctora",
+      "metodo": "POST",
+      "ruta": "/api/v1/installments/a368806d-34f2-5dd3-86fa-01329071ef27/pay/",
+      "usuario": "doctora",
+      "cuerpo": {
+        "amount": "1",
+        "method": "cash"
+      }
+    },
+    {
+      "nombre": "cuotas tras pagar",
+      "metodo": "GET",
+      "ruta": "/api/v1/payment-plans/8f75e6fe-9903-577a-b2a2-267890d61c2f/installments/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "pagos del paciente",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/e94cdd80-71c7-5e48-ba65-27d342d0cf1e/payments/",
+      "usuario": "recepcion",
+      "volatiles": [
+        "id",
+        "created_at"
+      ]
+    },
+    {
+      "nombre": "pagos, doctora",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/e94cdd80-71c7-5e48-ba65-27d342d0cf1e/payments/",
+      "usuario": "doctora"
+    },
+    {
+      "nombre": "pago directo",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/98bda393-fdd2-510c-b7fc-5934d5e02762/payments/",
+      "usuario": "recepcion",
+      "cuerpo": {
+        "amount": "15.5",
+        "method": "card",
+        "date": "2026-10-20"
+      },
+      "volatiles": [
+        "id",
+        "created_at"
+      ]
+    },
+    {
+      "nombre": "pago directo a una cuota",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/98bda393-fdd2-510c-b7fc-5934d5e02762/payments/",
+      "usuario": "admin",
+      "cuerpo": {
+        "installment": "4a0e9412-7b2e-521b-a3d5-07f4859d246f",
+        "amount": "-0",
+        "method": "cash",
+        "date": "2026-10-20",
+        "profesional": null
+      },
+      "volatiles": [
+        "id",
+        "created_at"
+      ]
+    },
+    {
+      "nombre": "pago directo con todo mal",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/98bda393-fdd2-510c-b7fc-5934d5e02762/payments/",
+      "usuario": "admin",
+      "cuerpo": {
+        "installment": "x",
+        "amount": "x",
+        "method": "x",
+        "date": "x"
+      }
+    },
+    {
+      "nombre": "pago directo vacío",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/98bda393-fdd2-510c-b7fc-5934d5e02762/payments/",
+      "usuario": "admin",
+      "cuerpo": {}
+    },
+    {
+      "nombre": "pago directo a un paciente de baja",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/f392b107-da73-5a13-948a-727cbcaa6cb2/payments/",
+      "usuario": "admin",
+      "cuerpo": {
+        "amount": "1",
+        "method": "cash",
+        "date": "2026-10-20"
+      },
+      "volatiles": [
+        "id",
+        "created_at"
+      ]
+    },
+    {
+      "nombre": "pago directo a un paciente ajeno",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/92f3248c-fcd2-5d23-991f-58410f9ce47c/payments/",
+      "usuario": "admin",
+      "cuerpo": {
+        "amount": "1",
+        "method": "cash",
+        "date": "2026-10-20"
+      }
+    },
+    {
+      "nombre": "pagos tras los cobros",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/98bda393-fdd2-510c-b7fc-5934d5e02762/payments/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "created_at"
+      ]
+    },
+    {
+      "nombre": "estado de cuenta",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/e94cdd80-71c7-5e48-ba65-27d342d0cf1e/account-statement/",
+      "usuario": "doctora"
+    },
+    {
+      "nombre": "estado de cuenta con saldo a favor",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/98bda393-fdd2-510c-b7fc-5934d5e02762/account-statement/",
+      "usuario": "recepcion"
+    },
+    {
+      "nombre": "estado de cuenta sin cuotas",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/account-statement/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "estado de cuenta, auxiliar",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/e94cdd80-71c7-5e48-ba65-27d342d0cf1e/account-statement/",
+      "usuario": "auxiliar"
+    },
+    {
+      "nombre": "estado de cuenta de un paciente de baja",
+      "metodo": "GET",
+      "ruta": "/api/v1/patients/f392b107-da73-5a13-948a-727cbcaa6cb2/account-statement/",
+      "usuario": "admin"
+    },
+    {
+      "nombre": "línea con subtotal -0.00",
+      "metodo": "POST",
+      "ruta": "/api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/items/",
+      "usuario": "admin",
+      "cuerpo": {
+        "treatment": "6f7e7292-fa75-5883-a0a4-4b63f5fe009e",
+        "quantity": 0,
+        "unit_price": "-5.00"
+      },
+      "volatiles": [
+        "id"
+      ]
+    },
+    {
+      "nombre": "línea con precio -0",
+      "metodo": "POST",
+      "ruta": "/api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/items/",
+      "usuario": "admin",
+      "cuerpo": {
+        "treatment": "6f7e7292-fa75-5883-a0a4-4b63f5fe009e",
+        "quantity": 3,
+        "unit_price": "-0"
+      },
+      "volatiles": [
+        "id"
+      ]
+    },
+    {
+      "nombre": "línea con tratamiento entre llaves y sin guiones",
+      "metodo": "POST",
+      "ruta": "/api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/items/",
+      "usuario": "admin",
+      "cuerpo": {
+        "treatment": "{6F7E7292FA755883A0A44B63F5FE009E}",
+        "unit_price": "1"
+      },
+      "volatiles": [
+        "id"
+      ]
+    },
+    {
+      "nombre": "línea con tratamiento urn:uuid",
+      "metodo": "POST",
+      "ruta": "/api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/items/",
+      "usuario": "admin",
+      "cuerpo": {
+        "treatment": "urn:uuid:6f7e7292-fa75-5883-a0a4-4b63f5fe009e",
+        "unit_price": "1"
+      },
+      "volatiles": [
+        "id"
+      ]
+    },
+    {
+      "nombre": "línea con tratamiento con 0x y guiones raros",
+      "metodo": "POST",
+      "ruta": "/api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/items/",
+      "usuario": "admin",
+      "cuerpo": {
+        "treatment": "0x7e72-92fa755883a0a44b63f5fe009e",
+        "unit_price": "1"
+      },
+      "volatiles": [
+        "id"
+      ]
+    },
+    {
+      "nombre": "línea con tratamiento vacío",
+      "metodo": "POST",
+      "ruta": "/api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/items/",
+      "usuario": "admin",
+      "cuerpo": {
+        "treatment": "",
+        "unit_price": "1"
+      },
+      "volatiles": [
+        "id"
+      ]
+    },
+    {
+      "nombre": "línea con tratamiento numérico",
+      "metodo": "POST",
+      "ruta": "/api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/items/",
+      "usuario": "admin",
+      "cuerpo": {
+        "treatment": 12,
+        "unit_price": "1"
+      },
+      "volatiles": [
+        "id"
+      ]
+    },
+    {
+      "nombre": "línea con tratamiento negativo",
+      "metodo": "POST",
+      "ruta": "/api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/items/",
+      "usuario": "admin",
+      "cuerpo": {
+        "treatment": -1,
+        "unit_price": "1"
+      },
+      "volatiles": [
+        "id"
+      ]
+    },
+    {
+      "nombre": "línea con tratamiento decimal",
+      "metodo": "POST",
+      "ruta": "/api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/items/",
+      "usuario": "admin",
+      "cuerpo": {
+        "treatment": 1.5,
+        "unit_price": "1"
+      },
+      "volatiles": [
+        "id"
+      ]
+    },
+    {
+      "nombre": "presupuesto con las líneas raras",
+      "metodo": "GET",
+      "ruta": "/api/v1/budgets/a786946a-2cac-585c-bf75-0ab15f946cf9/",
+      "usuario": "admin",
+      "volatiles": [
+        "id",
+        "payment_plan_id"
+      ]
+    },
+    {
+      "nombre": "pago directo con cuota vacía",
+      "metodo": "POST",
+      "ruta": "/api/v1/patients/3d639a68-903b-5007-a4bd-f63cb20310dd/payments/",
+      "usuario": "admin",
+      "cuerpo": {
+        "installment": "",
+        "amount": "1",
+        "method": "cash",
+        "date": "2026-10-20"
+      },
+      "volatiles": [
+        "id",
+        "created_at"
+      ]
     }
   ]
 }

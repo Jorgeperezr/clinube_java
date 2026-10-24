@@ -40,7 +40,7 @@ from django.utils import timezone  # noqa: E402
 from apps.accounts.models import User  # noqa: E402
 from apps.agenda.models import Appointment, Doctor  # noqa: E402
 from apps.app_paciente.models import MensajeConsultorio, SolicitudCita  # noqa: E402
-from apps.billing.models import Budget, Installment, Payment, PaymentPlan  # noqa: E402
+from apps.billing.models import Budget, BudgetItem, Installment, Payment, PaymentPlan  # noqa: E402
 from apps.clinical.models import (  # noqa: E402
     Diagnosis, Evolution, Form033Record, OdontogramState, ToothRecord, TreatmentPlan, TreatmentPlanItem,
     TreatmentPlanTemplate, TreatmentPlanTemplateItem,
@@ -235,13 +235,13 @@ def sembrar():
 
     # ── Cuotas vencidas, con pagos parciales y uno de más ────────────
     def plan(p, cuotas):
-        presupuesto = Budget.objects.create(tenant=demo, patient=p, created_by=admin,
-                                            total_amount=sum(Decimal(c[1]) for c in cuotas))
-        pp = PaymentPlan.objects.create(tenant=demo, budget=presupuesto, patient=p,
+        presupuesto = Budget.objects.create(id=fijo(f"presupuesto-{p.national_id}"), tenant=demo, patient=p, created_by=admin,
+                                            status="approved", total_amount=sum(Decimal(c[1]) for c in cuotas))
+        pp = PaymentPlan.objects.create(id=fijo(f"plan-de-pago-{p.national_id}"), tenant=demo, budget=presupuesto, patient=p,
                                         total_amount=presupuesto.total_amount, installment_count=len(cuotas))
         hechas = []
         for n, (dias, monto, estado, pagado) in enumerate(cuotas, start=1):
-            c = Installment.objects.create(tenant=demo, payment_plan=pp, patient=p, number=n,
+            c = Installment.objects.create(id=fijo(f"cuota-{p.national_id}-{n}"), tenant=demo, payment_plan=pp, patient=p, number=n,
                                            due_date=hoy + timedelta(days=dias), amount=Decimal(monto), status=estado)
             if pagado:
                 Payment.objects.create(tenant=demo, patient=p, installment=c, amount=Decimal(pagado),
@@ -251,6 +251,22 @@ def sembrar():
     plan(pacientes[8], [(-40, "100.00", "pending", "30.00"), (-10, "100.00", "overdue", None), (20, "100.00", "pending", None)])
     plan(pacientes[9], [(-5, "50.00", "paid", "50.00"), (-2, "80.00", "pending", None)])
     plan(pacientes[10], [(-15, "100.00", "pending", "120.00")])
+
+    # ── Presupuestos para la pantalla de Pagos (paciente-11) ─────────
+    resina_pagos = Treatment.objects.create(id=fijo("tratamiento-pagos"), tenant=demo, name="Profilaxis",
+                                            specialty=Specialty.objects.get(tenant=demo, name="Clínica general"),
+                                            base_price=Decimal("33.335"))
+    borrador = Budget.objects.create(id=fijo("presupuesto-borrador"), tenant=demo, patient=pacientes[11],
+                                     created_by=admin, notes="Borrador con líneas")
+    BudgetItem.objects.create(id=fijo("linea-presupuesto-1"), budget=borrador, treatment=resina_pagos,
+                              tooth_fdi_code="16", quantity=2, unit_price=Decimal("40.00"))
+    borrador.recalculate_total()
+    Budget.objects.create(id=fijo("presupuesto-aprobado"), tenant=demo, patient=pacientes[11], created_by=admin,
+                          status="approved", total_amount=Decimal("100.01"), notes="Para repartir en cuotas")
+    Budget.objects.create(id=fijo("presupuesto-cero"), tenant=demo, patient=pacientes[11], created_by=admin,
+                          status="approved", total_amount=Decimal("0.00"))
+    Budget.objects.create(id=fijo("presupuesto-rechazado"), tenant=demo, patient=pacientes[11], created_by=admin,
+                          status="rejected", total_amount=Decimal("10.00"))
 
     # ── Seguimientos clínicos ────────────────────────────────────────
     larga = ("Control de la endodoncia en la pieza 36 🦷 con radiografía periapical; revisar la "
@@ -355,6 +371,12 @@ def sembrar():
     pv = Patient.objects.create(id=fijo("paciente-vecina"), tenant=vecina, first_name="Ana", last_name="Vecina", national_id="1700000000",
                                 birth_date=datetime(1970, hoy.month, min(hoy.day, 28)).date())
     Payment.objects.create(tenant=vecina, patient=pv, amount=Decimal("5000.00"), method="cash", date=hoy)
+    presupuesto_ajeno = Budget.objects.create(id=fijo("presupuesto-vecina"), tenant=vecina, patient=pv, status="approved",
+                                              total_amount=Decimal("90"))
+    plan_ajeno_pago = PaymentPlan.objects.create(id=fijo("plan-de-pago-vecina"), tenant=vecina, budget=presupuesto_ajeno,
+                                                 patient=pv, total_amount=Decimal("90"), installment_count=1)
+    Installment.objects.create(id=fijo("cuota-vecina"), tenant=vecina, payment_plan=plan_ajeno_pago, patient=pv, number=1,
+                               due_date=hoy, amount=Decimal("90"))
     Product.objects.create(tenant=vecina, name="Ajeno", min_stock=Decimal("1000"))
     uv = User(id=fijo("doctor-vecina@clinube.local"), email="doctor-vecina@clinube.local", role="doctor",
               tenant=vecina, full_name="Dr. Vecino")

@@ -236,3 +236,13 @@ Sin la corrección falla siempre con el 500; con ella pasa siempre.
 
 En Django esas altas son `get_or_create`, que no falla si otro proceso crea la
 fila a la vez. Aquí, `insert … on conflict do nothing`.
+
+## 18. El UUID de Python, entero
+
+`CamposDrf.uuidDePython` hace lo mismo que `uuid.UUID(hex=…)`, que es lo que
+usa el `UUIDField` de Django: quita «urn:» y «uuid:», las llaves de los
+extremos y todos los guiones, y lo que queda es un `int(…, 16)` de 32
+caracteres (con lo que admite Python: «0x», guiones bajos). Antes solo se
+aceptaban las formas habituales; lo encontró la revisión adversarial de la
+pantalla de Pagos, junto con el «""» en un campo relacional (DRF lo trata
+como nulo) y el «-0.00» de un subtotal (`0 * Decimal("-5.00")`).

@@ -164,6 +164,23 @@ object Python {
 
     private val ENTERO = Regex("""([+-]?)([0-9](?:_?[0-9])*)""")
 
+    /** `int(texto, 16)`, o null si Python da `ValueError`: admite «0x» y guiones bajos entre cifras. */
+    fun enteroEnBase16(texto: String): BigInteger? {
+        val ascii = StringBuilder()
+        for (c in texto.codePoints()) {
+            when {
+                c < 128 -> ascii.append(c.toChar())
+                esEspacio(c) -> ascii.append(' ')
+                else -> ascii.append(cifraAscii(c) ?: return null)
+            }
+        }
+        val m = HEX.matchEntire(ascii.trim { it == ' ' || it in '\t'..'\r' }) ?: return null
+        val numero = BigInteger(m.groupValues[2].replace("_", ""), 16)
+        return if (m.groupValues[1] == "-") numero.negate() else numero
+    }
+
+    private val HEX = Regex("""([+-]?)(?:0[xX]_?)?([0-9a-fA-F](?:_?[0-9a-fA-F])*)""")
+
     /** Un `Decimal` de Python: signo, cifras sin ceros a la izquierda y exponente. */
     sealed interface Decimal {
         /** NaN, sNaN o infinito: DRF los rechaza todos. */

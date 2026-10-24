@@ -9,11 +9,11 @@ diferencia entre los dos últimos importa:
 | **hecha** | Implementada y con sus pruebas en verde. **No basta:** las pruebas propias pueden pasar y la respuesta no ser la de Django. |
 | **igual a Django** | Comprobada con `scripts/comparar-contrato`: mismo código HTTP, mismas claves, mismo orden, mismos valores. |
 
-**53 de 202** igual a Django (26 %), y **5 más en parte** (falta un método o una exportación),
-comprobadas con `scripts/comparar-contrato` (362 de 362 peticiones iguales y las 19 tablas tocadas idénticas en las dos bases, informe en `docs/contrato/INFORME-COMPARADOR.md`).
+**62 de 202** igual a Django (30 %), y **5 más en parte** (falta un método o una exportación),
+comprobadas con `scripts/comparar-contrato` (433 de 433 peticiones iguales y las 21 tablas tocadas idénticas en las dos bases, informe en `docs/contrato/INFORME-COMPARADOR.md`).
 
-> **Estado a 2026-10-22:** el servidor compila sin errores ni avisos y la
-> suite pasa entera dos veces (165 pruebas en UTC y 165 en
+> **Estado a 2026-10-23:** el servidor compila sin errores ni avisos y la
+> suite pasa entera dos veces (169 pruebas en UTC y 169 en
 > Pacific/Kiritimati), incluidas las de integración contra PostgreSQL 16 con
 > la línea base de Flyway y Hibernate en `validate`.
 >
@@ -28,7 +28,9 @@ comprobadas con `scripts/comparar-contrato` (362 de 362 peticiones iguales y las
 > realizada; crear una plantilla en Configuración, aplicarla a una paciente
 > con convenio —con sus precios— y generar el presupuesto); y en la agenda
 > confirmar, marcar la llegada, iniciar y finalizar la atención y crear una
-> cita. De la ficha faltan la receta en PDF, los documentos, los
+> cita; y en **Pagos**, del presupuesto generado desde el plan hasta una cuota
+> cobrada (aprobarlo, generar el plan de cuotas y cobrar), con el cobro visible
+> en la pestaña Cobros de la ficha. De la ficha faltan la receta en PDF, los documentos, los
 > consentimientos, los cobros, las exportaciones del 033 a PDF y Excel, y
 > WhatsApp (fase 13).
 
@@ -218,21 +220,21 @@ comprobadas con `scripts/comparar-contrato` (362 de 362 peticiones iguales y las
 | POST | `/api/v1/treatment-plans/<uuid:pk>/generate-budget/` | igual a Django |
 | POST | `/api/v1/treatment-plans/<uuid:pk>/items/` | igual a Django, salvo el tratamiento de otra clínica (diferencia deliberada) |
 
-### Fase 7 · `billing` — Cobros (3/17)
+### Fase 7 · `billing` — Cobros (12/17)
 
 | Métodos | Ruta | Estado |
 |---|---|---|
-| GET PUT PATCH | `/api/v1/budgets/<uuid:pk>/` | pendiente |
-| POST | `/api/v1/budgets/<uuid:pk>/approve/` | pendiente |
-| POST | `/api/v1/budgets/<uuid:pk>/generate-payment-plan/` | pendiente |
-| POST | `/api/v1/budgets/<uuid:pk>/items/` | pendiente |
+| GET PUT PATCH | `/api/v1/budgets/<uuid:pk>/` | igual a Django |
+| POST | `/api/v1/budgets/<uuid:pk>/approve/` | igual a Django |
+| POST | `/api/v1/budgets/<uuid:pk>/generate-payment-plan/` | igual a Django |
+| POST | `/api/v1/budgets/<uuid:pk>/items/` | igual a Django, salvo el tratamiento de otra clínica (diferencia deliberada) |
 | GET POST | `/api/v1/doctors/<uuid:pk>/fees/` | pendiente |
-| POST | `/api/v1/installments/<uuid:pk>/pay/` | pendiente |
-| GET | `/api/v1/patients/<uuid:pk>/account-statement/` | pendiente |
-| GET POST | `/api/v1/patients/<uuid:pk>/budgets/` | pendiente |
-| GET POST | `/api/v1/patients/<uuid:pk>/payments/` | pendiente |
+| POST | `/api/v1/installments/<uuid:pk>/pay/` | igual a Django |
+| GET | `/api/v1/patients/<uuid:pk>/account-statement/` | igual a Django |
+| GET POST | `/api/v1/patients/<uuid:pk>/budgets/` | igual a Django |
+| GET POST | `/api/v1/patients/<uuid:pk>/payments/` | igual a Django, salvo la cuota de otra clínica (diferencia deliberada) |
 | GET | `/api/v1/patients/birthdays/` | igual a Django |
-| GET | `/api/v1/payment-plans/<uuid:pk>/installments/` | pendiente |
+| GET | `/api/v1/payment-plans/<uuid:pk>/installments/` | igual a Django |
 | GET | `/api/v1/reports/appointments-summary/` | pendiente |
 | GET | `/api/v1/reports/delinquency/` | igual a Django |
 | GET | `/api/v1/reports/financial/` | igual a Django salvo `?export=excel` (pendiente: responde 501) |
